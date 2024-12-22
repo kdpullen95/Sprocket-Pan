@@ -5,6 +5,7 @@ import { Environment, Script } from '@/types/data/workspace';
 import { log } from '@/utils/logging';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { activeThunkName, activeActions } from '../slice';
+import { getAncestors, getDescendents } from '@/utils/getters';
 
 type ParsedWorkspaceData = ParsedServiceWorkspaceData & { environments?: Environment[]; scripts?: Script[] };
 
@@ -33,10 +34,26 @@ export const injectLoadedData = createAsyncThunk<void, ParsedWorkspaceData, { st
 export const saveActiveData = createAsyncThunk<void, void, { state: RootState }>(
 	`${activeThunkName}/saveData`,
 	(_, thunk) => {
-		const { lastModified, lastSaved, ...data } = thunk.getState().active;
-		if (lastModified > lastSaved) {
-			thunk.dispatch(activeActions.setSavedNow());
-			return WorkspaceDataManager.saveData(data);
+		const { active, tabs } = thunk.getState();
+		const { lastModified, lastSaved, ...data } = active;
+		if (lastModified < lastSaved || tabs.orphans != null) return;
+		thunk.dispatch(activeActions.setSavedNow());
+		return WorkspaceDataManager.saveData(data);
+	},
+);
+
+export const toggleSync = createAsyncThunk<void, string, { state: RootState }>(
+	`${activeThunkName}/toggleSync`,
+	(id, thunk) => {
+		const state = thunk.getState().active;
+		if (state.syncMetadata.items[id]) {
+			[id, ...getDescendents(state, id)].forEach((itemId) => {
+				thunk.dispatch(activeActions.setSyncItem({ id: itemId, value: false }));
+			});
+		} else {
+			[id, ...getAncestors(state, id)].forEach((itemId) => {
+				thunk.dispatch(activeActions.setSyncItem({ id: itemId, value: true }));
+			});
 		}
 	},
 );
