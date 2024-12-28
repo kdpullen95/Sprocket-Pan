@@ -1,4 +1,4 @@
-use std::fs::{self};
+use std::{fs::{self}, io::Error};
 use serde::Deserialize;
 use rayon::iter::{IndexedParallelIterator, IntoParallelRefIterator, ParallelIterator};
 
@@ -10,14 +10,15 @@ pub struct FileData {
 
 #[tauri::command]
 pub async fn save_files(data: Vec<FileData>) -> bool {
-	let mut errors = Vec::new();
-	data
+	let results: Vec<Result<(), Error>> = data
 		.par_iter()
 		.enumerate()
 		.map(|(_, file_data)| {
 			fs::write(&file_data.path, &file_data.contents)
 		})
-		.collect_into_vec(&mut errors);
-	let no_failures = errors.len() == 0;
-	no_failures
+		.collect();
+	let failures = results
+		.iter()
+		.any(|res| res.is_err());
+	!failures
 }
