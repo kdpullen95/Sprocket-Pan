@@ -19,6 +19,6 @@ pub async fn save_files(data: Vec<FileData>) -> bool {
 		.collect();
 	let failures = results
 		.iter()
-		.any(|res| res.is_err());
+		.any(Result::is_err);
 	!failures
 }
