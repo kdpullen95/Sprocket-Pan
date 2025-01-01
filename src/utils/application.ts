@@ -1,11 +1,13 @@
 import { v4 } from 'uuid';
 import { QueryParams } from '@/types/data/shared';
 import { Environment, WorkspaceData } from '@/types/data/workspace';
-import { KeyValueValues, OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
+import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
 import { BuildEnvironmentVariablesArgs, EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
 import { mergeDeep } from './variables';
 import { Settings } from '@/types/data/settings';
-import { RootState } from '@/state/store';
+import { MS_IN_DAY } from '@/constants/constants';
+import { GlobalData } from '@/types/data/global';
+import { KeyValueValues } from '@/types/shared/keyValues';
 
 export function queryParamsToString(
 	queryParams: QueryParams,
@@ -68,6 +70,18 @@ export function getEnvValuesFromData(data: WorkspaceData, requestId?: string): B
 	return values;
 }
 
-export function getSettingsFromState({ global, active }: RootState): Settings {
+type MinimumSettingsObject = { global: Pick<GlobalData, 'settings'>; active: Pick<WorkspaceData, 'settings'> };
+
+export function getSettingsFromState({ global, active }: MinimumSettingsObject): Settings {
 	return mergeDeep(global.settings, active.settings);
+}
+
+export function filterOldHistoryEntries(history: WorkspaceData['history'], days: number) {
+	if (days >= 0) {
+		const earliestTime = new Date().getTime() - days * MS_IN_DAY;
+		for (const key in history) {
+			history[key] = history[key].filter((entry) => entry.request.dateTime >= earliestTime);
+		}
+	}
+	return history;
 }

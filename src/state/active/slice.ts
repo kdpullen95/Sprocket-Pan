@@ -1,18 +1,16 @@
-import { KeyValuePair } from '@/classes/OrderedKeyValuePairs';
 import { defaultWorkspaceData } from '@/managers/data/WorkspaceDataManager';
-import { AuditLog } from '@/types/data/audit';
 import { IdSpecificUiMetadata } from '@/types/data/shared';
 import {
 	Endpoint,
 	EndpointRequest,
-	EndpointResponse,
-	NetworkFetchRequest,
+	HistoricalEndpointResponse,
 	RootEnvironment,
 	Script,
 	Service,
 	SyncMetadata,
 	WorkspaceData,
 } from '@/types/data/workspace';
+import { KeyValuePair } from '@/types/shared/keyValues';
 import { RecursivePartial } from '@/types/utils/utils';
 import { log } from '@/utils/logging';
 import { mergeDeep } from '@/utils/variables';
@@ -31,12 +29,10 @@ const initialState: ActiveWorkspaceSlice = {
 	lastSaved: 0,
 };
 
-interface AddResponseToHistory {
+interface AddResponseToHistory extends HistoricalEndpointResponse {
 	requestId: string;
-	networkRequest: NetworkFetchRequest;
-	response: EndpointResponse;
-	auditLog?: AuditLog;
 	maxLength: number;
+	discard: boolean;
 }
 
 interface DeleteResponseFromHistory {
@@ -219,13 +215,12 @@ export const activeSlice = createSlice({
 			log.debug(`deleteAllHistory called`);
 		},
 		addResponseToHistory: (state, action: PayloadAction<AddResponseToHistory>) => {
-			const { requestId, networkRequest, response, auditLog, maxLength } = action.payload;
-			if (state.history[requestId] == null) state.history[requestId] = [];
-			state.history[requestId].push({
-				request: networkRequest,
-				response,
-				auditLog,
-			});
+			const { requestId, maxLength, discard, ...entry } = action.payload;
+			// eliminate any errors in history (we only want the latest error) also instantiate empty histories
+			state.history[requestId] = (state.history[requestId] ?? []).filter((entry) => entry.error == null);
+			// don't pollute the data with a bunch of discard: falses
+			if (discard) (entry as HistoricalEndpointResponse).discard = true;
+			state.history[requestId].push(entry);
 			if (maxLength > 0 && state.history[requestId].length > maxLength) {
 				state.history[requestId].shift();
 			}

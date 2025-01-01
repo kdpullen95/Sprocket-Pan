@@ -1,16 +1,16 @@
-import { KeyValuePair } from '@/classes/OrderedKeyValuePairs';
+import { KeyValuePair } from '../shared/keyValues';
+import { SprocketError } from '../state/state';
 import { RecursivePartial } from '../utils/utils';
 import { AuditLog } from './audit';
 import { Settings } from './settings';
 import { QueryParams, RawBodyType, RequestBodyType, RESTfulRequestVerb, SPHeaders, UiMetadata } from './shared';
 
-export interface WorkspaceItem {
+export interface Item {
 	id: string;
 	name: string;
 }
 
-export interface WorkspaceMetadata {
-	name: string;
+export interface WorkspaceMetadata extends Item {
 	description: string;
 	fileName: string;
 	lastModified: number;
@@ -24,7 +24,7 @@ export interface EndpointResponse {
 	dateTime: number;
 }
 
-export interface Service<TBaseUrl extends string = string> extends WorkspaceItem {
+export interface Service<TBaseUrl extends string = string> extends Item {
 	description: string;
 	version: string;
 	baseUrl: TBaseUrl;
@@ -37,17 +37,12 @@ export interface Service<TBaseUrl extends string = string> extends WorkspaceItem
 	linkedEnvMode?: boolean;
 }
 
-export interface Script extends WorkspaceItem {
+export interface Script extends Item {
 	scriptCallableName: string;
-	returnVariableName: string | null;
-	returnVariableType?: {
-		isClass?: boolean;
-		typeText: string;
-	};
 	content: string;
 }
 
-export interface EndpointRequest<TRequestBodyType extends RequestBodyType = RequestBodyType> extends WorkspaceItem {
+export interface EndpointRequest<TRequestBodyType extends RequestBodyType = RequestBodyType> extends Item {
 	endpointId: string;
 	headers: SPHeaders;
 	queryParams: QueryParams;
@@ -79,12 +74,14 @@ export interface NetworkFetchRequest {
 }
 
 export interface HistoricalEndpointResponse {
-	request: NetworkFetchRequest;
-	response: EndpointResponse;
+	request?: NetworkFetchRequest;
+	response?: EndpointResponse;
 	auditLog?: AuditLog;
+	discard?: boolean;
+	error?: SprocketError;
 }
 
-export interface Endpoint<TUrlBase extends string = string> extends WorkspaceItem {
+export interface Endpoint<TUrlBase extends string = string> extends Item {
 	url: `${TUrlBase}${string}`;
 	verb: RESTfulRequestVerb;
 	baseHeaders: SPHeaders;
@@ -97,7 +94,7 @@ export interface Endpoint<TUrlBase extends string = string> extends WorkspaceIte
 	defaultRequest: string | null;
 }
 
-export interface Environment extends WorkspaceItem {
+export interface Environment extends Item {
 	pairs: KeyValuePair[];
 }
 
@@ -145,5 +142,3 @@ export enum WorkspaceItemKey {
 	ENVIRONMENTS = 'environments',
 	SCRIPTS = 'scripts',
 }
-
-export type TabType = WorkspaceItemType | 'secrets';

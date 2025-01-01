@@ -7,12 +7,14 @@ import { fileSystemEmitter } from '../file-system/FileSystemEmitter';
 import { FileSystemManager } from '../file-system/FileSystemManager';
 import { FileSystemWorker } from '../file-system/FileSystemWorker';
 import { WorkspaceDataManager } from './WorkspaceDataManager';
+import { v4 } from 'uuid';
 
 export const defaultWorkspaceMetadata: WorkspaceMetadata = {
 	name: 'Default Workspace',
 	description: 'The default workspace in SprocketPan',
 	lastModified: new Date().getTime(),
 	fileName: 'sprocketpan-default',
+	id: 'sprocketpan-default',
 };
 
 export class GlobalDataManager {
@@ -20,11 +22,18 @@ export class GlobalDataManager {
 
 	static async createWorkspace({ fileName, ...workspace }: WorkspaceMetadata) {
 		const paths = WorkspaceDataManager.getWorkspacePath(fileName);
+		if (workspace.id == null) workspace.id = v4();
 		return fileSystemEmitter.createWorkspace(paths, JSON.stringify(workspace));
 	}
 
 	static async getWorkspaces() {
-		return FileSystemManager.getWorkspaces();
+		const ret: Record<string, WorkspaceMetadata> = {};
+		const list = await FileSystemManager.getWorkspaces();
+		list.forEach((workspace) => {
+			workspace.id = workspace.id ?? v4();
+			ret[workspace.id] = workspace;
+		});
+		return ret;
 	}
 
 	static deleteWorkspace(name: string) {

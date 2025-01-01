@@ -100,9 +100,10 @@ export class WorkspaceDataManager {
 		} = data;
 
 		const paths = this.getWorkspacePath(fileName);
+		const processedHistory = this.processHistoryForSave(history);
 		const filesToWrite = [
 			{ path: paths.data, contents: JSON.stringify(strippedData) },
-			{ path: paths.history, contents: JSON.stringify(history) },
+			{ path: paths.history, contents: JSON.stringify(processedHistory) },
 			{ path: paths.metadata, contents: JSON.stringify({ ...metadata, lastModified: new Date().getTime() }) },
 			{ path: paths.uiMetadata, contents: JSON.stringify(uiMetadata) },
 			{ path: paths.secrets, contents: JSON.stringify(secrets) },
@@ -115,6 +116,15 @@ export class WorkspaceDataManager {
 		}
 
 		await FileSystemWorker.writeFiles(filesToWrite);
+	}
+
+	private static processHistoryForSave(history: WorkspaceData['history']) {
+		for (const key in history) {
+			history[key] = history[key].filter((res) => !res.discard);
+			// cleanliness
+			if (history[key].length === 0) delete history[key];
+		}
+		return history;
 	}
 
 	public static findOrphans(data: WorkspaceData) {
