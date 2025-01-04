@@ -20,8 +20,7 @@ import { postmanParseManager } from '../parsers/postman/PostmanParseManager';
 import swaggerParseManager from '../parsers/SwaggerParseManager';
 import { SaveUpdateManager } from '../SaveUpdateManager';
 import { defaultWorkspaceMetadata } from './GlobalDataManager';
-import { getDefinedWorkspaceItemType } from '@/utils/getters';
-import { mergeDeep } from '@/utils/variables';
+import { getWorkspaceItemType } from '@/utils/getters';
 
 export const defaultWorkspaceSyncedData: WorkspaceSyncedData = {
 	services: {},
@@ -201,7 +200,6 @@ export class WorkspaceDataManager {
 
 	private static async loadDataFromFile(workspace: WorkspaceMetadata) {
 		const paths = this.getWorkspacePath(workspace.fileName);
-
 		const [data, metadata, history, uiMetadata, secrets] = await Promise.all([
 			FileSystemWorker.readTextFile(paths.data),
 			FileSystemWorker.readTextFile(paths.metadata),
@@ -210,7 +208,7 @@ export class WorkspaceDataManager {
 			FileSystemWorker.readTextFile(paths.secrets),
 		]);
 
-		let parsedData = JSON.parse(data) as WorkspaceData;
+		const parsedData = JSON.parse(data) as WorkspaceData;
 		parsedData.history = JSON.parse(history);
 		parsedData.metadata = {
 			fileName: workspace.fileName,
@@ -221,8 +219,8 @@ export class WorkspaceDataManager {
 		const syncLocation = this.getSyncLocation(parsedData);
 		if (syncLocation != null) {
 			const parsedSync = JSON.parse(await FileSystemWorker.readTextFile(syncLocation));
-			parsedData = mergeDeep(parsedSync, parsedData);
 			Object.values(WorkspaceItemKey).forEach((key) => {
+				parsedData[key] = { ...parsedData[key], ...parsedSync[key] };
 				Object.keys(parsedSync[key]).forEach((id) => {
 					parsedData.syncMetadata.items[id] = true;
 				});
@@ -241,7 +239,8 @@ export class WorkspaceDataManager {
 		const syncData: WorkspaceSyncedData = structuredClone(defaultWorkspaceSyncedData);
 		Object.entries(data.syncMetadata.items).forEach(([key, value]) => {
 			if (value) {
-				const type = getDefinedWorkspaceItemType(data, key);
+				const type = getWorkspaceItemType(data, key);
+				if (type == null) return;
 				delete retData[type][key];
 				syncData[type][key] = data[type][key];
 			}

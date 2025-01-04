@@ -1,16 +1,16 @@
-import { ListItemDecorator, ListSubheader } from '@mui/joy';
-import TableChartIcon from '@mui/icons-material/TableChart';
 import { useSelector } from 'react-redux';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
-import { EllipsisSpan } from '@/components/shared/EllipsisTypography';
 import { selectSelectedEnvironment, selectEnvironmentsById } from '@/state/active/selectors';
 import { activeActions } from '@/state/active/slice';
 import { addNewEnvironmentById } from '@/state/active/thunks/environments';
 import { useAppDispatch } from '@/state/store';
 import { tabsActions } from '@/state/tabs/slice';
-import { menuOptionDuplicate, menuOptionDelete } from '../FileSystemDropdown';
+import { menuOptionDuplicate, menuOptionDelete } from '../tree/FileSystemDropdown';
 import { FileSystemLeaf } from '../tree/FileSystemLeaf';
-import { SyncBadge } from '../SyncBadge';
+import { useShowSync } from '@/hooks/useShowSync';
+import { FluentCubeLinkSvg } from '@/assets/icons/fluent/FluentCubeLink';
+import { FluentCubeSvg } from '@/assets/icons/fluent/FluentCube';
+import { EllipsesP } from '../components/EllipsesP';
 
 interface EnvironmentFileSystemProps {
 	environmentId: string;
@@ -21,11 +21,11 @@ export function EnvironmentFileSystem({ environmentId }: EnvironmentFileSystemPr
 	const envSelected = selectedEnvironment === environmentId;
 	const environment = useSelector((state) => selectEnvironmentsById(state, environmentId));
 	const dispatch = useAppDispatch();
+	const showSync = useShowSync(environmentId);
 	return (
 		<FileSystemLeaf
 			id={environmentId}
 			tabType="environment"
-			color={envSelected ? 'success' : 'neutral'}
 			menuOptions={[
 				{
 					onClick: () => dispatch(activeActions.selectEnvironment(envSelected ? undefined : environment.id)),
@@ -36,14 +36,8 @@ export function EnvironmentFileSystem({ environmentId }: EnvironmentFileSystemPr
 				menuOptionDelete(() => dispatch(tabsActions.addToDeleteQueue(environment.id))),
 			]}
 		>
-			<ListItemDecorator>
-				<SyncBadge id={environmentId}>
-					<TableChartIcon fontSize="small" />
-				</SyncBadge>
-			</ListItemDecorator>
-			<ListSubheader sx={{ width: '100%' }}>
-				<EllipsisSpan>{environment.name}</EllipsisSpan>
-			</ListSubheader>
+			<div style={{ flex: 0 }}>{showSync ? <FluentCubeLinkSvg /> : <FluentCubeSvg />}</div>
+			<EllipsesP>{environment.name}</EllipsesP>
 		</FileSystemLeaf>
 	);
 }
