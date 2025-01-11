@@ -34,7 +34,6 @@ export const saveActiveData = createAsyncThunk<void, void, { state: RootState }>
 		try {
 			await WorkspaceDataManager.saveData(data);
 			thunk.dispatch(activeActions.setSavedNow());
-			throw new Error('Test error with a decent bit of length you know');
 		} catch (err) {
 			log.error(err);
 			thunk.dispatch(
