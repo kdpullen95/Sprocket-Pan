@@ -60,20 +60,22 @@ export function EnvironmentPanel({ id }: PanelProps) {
 				<EditableData
 					actions={{
 						start: (
-							<Select
-								startDecorator={<AccountTree />}
-								sx={{ minWidth: '250px' }}
-								placeholder="None"
-								multiple
-								value={environment.parents ?? []}
-								onChange={(_, parents) => dispatch(activeActions.updateEnvironment({ parents, id }))}
-							>
-								{envList.map((env) => (
-									<Option key={env.id} value={env.id}>
-										{env.name}
-									</Option>
-								))}
-							</Select>
+							<SprocketTooltip text="Parent Environments">
+								<Select
+									startDecorator={<AccountTree />}
+									sx={{ minWidth: '250px' }}
+									placeholder="None"
+									multiple
+									value={environment.parents ?? []}
+									onChange={(_, parents) => dispatch(activeActions.updateEnvironment({ parents, id }))}
+								>
+									{envList.map((env) => (
+										<Option key={env.id} value={env.id}>
+											{env.name}
+										</Option>
+									))}
+								</Select>
+							</SprocketTooltip>
 						),
 					}}
 					initialValues={environment.pairs}
