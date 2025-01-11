@@ -12,7 +12,7 @@ export function SettingsTabs({ goToWorkspaceSelection, ...tabProps }: SettingsTa
 			<TabList>
 				<Tab>General</Tab>
 				<Tab>Actions</Tab>
-				<Tab>Theme</Tab>
+				<Tab>Display</Tab>
 				<Tab>Data</Tab>
 				<Tab>Workspace</Tab>
 			</TabList>
