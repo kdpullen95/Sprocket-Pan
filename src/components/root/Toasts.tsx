@@ -24,7 +24,7 @@ export function Toasts() {
 	}, [toast]);
 	return (
 		<Snackbar
-			sx={{ maxWidth: '1000px' }}
+			sx={{ maxWidth: '900px' }}
 			startDecorator={
 				toast?.color === 'danger' || toast?.color === 'warning' ? (
 					<Warning fontSize="large" />
