@@ -65,6 +65,7 @@ export const saveActiveData = createAsyncThunk<void, void, { state: RootState }>
 					color: 'danger',
 				}),
 			);
+			log.error(err);
 		}
 	},
 );
