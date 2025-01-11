@@ -5,6 +5,8 @@ import { uiSlice } from './ui/slice';
 import { globalSlice } from './global/slice';
 import { isModifiedListener } from './active/listeners/isModifiedListener';
 import { stateAccessListener } from './active/listeners/stateAccessListener';
+import { closeTabsListener, openTabsListener } from './ui/listeners';
+import { workspaceSelectionListener } from './global/listeners';
 
 const rootReducer = combineReducers({
 	[globalSlice.name]: globalSlice.reducer,
@@ -17,7 +19,13 @@ export function setupStore(preloadedState?: Partial<RootState>) {
 		reducer: rootReducer,
 		preloadedState,
 		middleware: (getDefaultMiddleware) =>
-			getDefaultMiddleware().concat(isModifiedListener.middleware, stateAccessListener.middleware),
+			getDefaultMiddleware().concat(
+				isModifiedListener.middleware,
+				stateAccessListener.middleware,
+				closeTabsListener.middleware,
+				openTabsListener.middleware,
+				workspaceSelectionListener.middleware,
+			),
 	});
 }
 

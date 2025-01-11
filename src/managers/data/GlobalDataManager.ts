@@ -3,11 +3,10 @@ import { GlobalState } from '@/state/global/slice';
 import { GlobalData } from '@/types/data/global';
 import { WorkspaceMetadata } from '@/types/data/workspace';
 import { mergeDeep } from '@/utils/variables';
-import { fileSystemEmitter } from '../file-system/FileSystemEmitter';
 import { FileSystemManager } from '../file-system/FileSystemManager';
 import { FileSystemWorker } from '../file-system/FileSystemWorker';
 import { WorkspaceDataManager } from './WorkspaceDataManager';
-import { v4 } from 'uuid';
+import { SaveUpdateManager } from '../SaveUpdateManager';
 
 export const defaultWorkspaceMetadata: WorkspaceMetadata = {
 	name: 'Default Workspace',
@@ -22,23 +21,29 @@ export class GlobalDataManager {
 
 	static async createWorkspace({ fileName, ...workspace }: WorkspaceMetadata) {
 		const paths = WorkspaceDataManager.getWorkspacePath(fileName);
-		if (workspace.id == null) workspace.id = v4();
-		return fileSystemEmitter.createWorkspace(paths, JSON.stringify(workspace));
+		return FileSystemManager.createWorkspace(paths, workspace);
+	}
+
+	static async updateWorkspace(workspace: WorkspaceMetadata) {
+		const paths = WorkspaceDataManager.getWorkspacePath(workspace.fileName);
+		return FileSystemManager.updateWorkspace(paths, workspace);
 	}
 
 	static async getWorkspaces() {
 		const ret: Record<string, WorkspaceMetadata> = {};
-		const list = await FileSystemManager.getWorkspaces();
+		const { list, updated } = SaveUpdateManager.updateWorkspaces(await FileSystemManager.getWorkspaces());
 		list.forEach((workspace) => {
-			workspace.id = workspace.id ?? v4();
 			ret[workspace.id] = workspace;
+		});
+		updated.forEach((id) => {
+			this.updateWorkspace(ret[id]);
 		});
 		return ret;
 	}
 
 	static deleteWorkspace(name: string) {
 		const paths = WorkspaceDataManager.getWorkspacePath(name);
-		return fileSystemEmitter.deleteWorkspace(paths);
+		return FileSystemManager.deleteWorkspace(paths);
 	}
 
 	static async getGlobalData(): Promise<GlobalData> {
@@ -53,6 +58,6 @@ export class GlobalDataManager {
 	}
 
 	static async saveGlobalData({ activeWorkspace, workspaces, ...state }: GlobalState) {
-		return fileSystemEmitter.upsertFile(GlobalDataManager.PATH, JSON.stringify(state));
+		return FileSystemWorker.upsertFile({ path: GlobalDataManager.PATH, content: JSON.stringify(state) });
 	}
 }

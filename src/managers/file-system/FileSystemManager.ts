@@ -3,7 +3,28 @@ import { log } from '@/utils/logging';
 import { WorkspaceDataManager } from '../data/WorkspaceDataManager';
 import { FileSystemWorker } from './FileSystemWorker';
 
+type WorkspacePaths = { metadata: string; root: string };
+
 export class FileSystemManager {
+	static async createWorkspace(paths: WorkspacePaths, content: Omit<WorkspaceMetadata, 'fileName'>) {
+		if (await FileSystemWorker.exists(paths.metadata)) {
+			return;
+		}
+		await FileSystemWorker.createDir(paths.root);
+		await FileSystemWorker.writeFile({ path: paths.metadata, content: JSON.stringify(content) });
+	}
+
+	static async updateWorkspace(paths: WorkspacePaths, content: Omit<WorkspaceMetadata, 'fileName'>) {
+		return FileSystemWorker.upsertFile({ path: paths.metadata, content: JSON.stringify(content) });
+	}
+
+	static async deleteWorkspace(paths: WorkspacePaths) {
+		const doesExist = await FileSystemWorker.exists(paths.metadata);
+		if (!doesExist) {
+			return null;
+		}
+		await FileSystemWorker.removeDir(paths.root);
+	}
 	/**
 	 * This function creates a data folder if it does not already exist.
 	 * @returns true if it created a folder, false if not
@@ -34,7 +55,7 @@ export class FileSystemManager {
 			return false;
 		} else {
 			log.debug(`File does not exist, creating...`);
-			await FileSystemWorker.writeFile({ path, contents: JSON.stringify(content) });
+			await FileSystemWorker.writeFile({ path, content: JSON.stringify(content) });
 			return true;
 		}
 	}

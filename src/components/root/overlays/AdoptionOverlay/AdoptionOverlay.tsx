@@ -8,12 +8,10 @@ import { Check, Warning } from '@mui/icons-material';
 import { OrphanResolutionSummary } from './OrphanResolutionSummary';
 import { useAppDispatch } from '@/state/store';
 import { activeActions } from '@/state/active/slice';
-import { addNewService } from '@/state/active/thunks/services';
 import { uiActions } from '@/state/ui/slice';
-import { addNewEndpoint, deleteEndpoint } from '@/state/active/thunks/endpoints';
 import { groupBy } from '@/utils/variables';
-import { deleteRequest } from '@/state/active/thunks/requests';
 import { Endpoint, Service } from '@/types/data/workspace';
+import { itemActions } from '@/state/items';
 
 interface AdoptionOverlayProps {
 	orphanData: OrphanData | null;
@@ -49,64 +47,59 @@ export function AdoptionOverlay({ orphanData }: AdoptionOverlayProps) {
 
 	const onApply = async () => {
 		const {
-			[OrphanResolution.delete]: deleteEndpoints,
-			[OrphanResolution.create]: createEndpoints,
-			[OrphanResolution.revive]: reviveEndpoints,
-			[OrphanResolution.assign]: assignEndpoints,
+			delete: deleteEndpoints,
+			create: createEndpoints,
+			revive: reviveEndpoints,
+			assign: assignEndpoints,
 		} = groupBy(orphanData.endpoints, (item) => getGroup(strategy[item.orphan.id]));
 		const {
-			[OrphanResolution.delete]: deleteRequests,
-			[OrphanResolution.create]: createRequests,
-			[OrphanResolution.revive]: reviveRequests,
-			[OrphanResolution.assign]: assignRequests,
+			delete: deleteRequests,
+			create: createRequests,
+			revive: reviveRequests,
+			assign: assignRequests,
 		} = groupBy(orphanData.requests, (item) => getGroup(strategy[item.orphan.id]));
 
-		const revivedIds = new Set<string>();
+		const revivedIds = new Set();
+		if (reviveEndpoints?.length || reviveRequests?.length) {
+			reviveEndpoints?.forEach(({ parent }) => {
+				if (parent == null) throw new Error('trying to revive a non-existent parent');
+				if (!revivedIds.has(parent)) {
+					activeActions.insertService(orphanData.ancestors[parent] as Service);
+					revivedIds.add(parent);
+				}
+			});
+			reviveRequests?.forEach(({ parent, grandparent }) => {
+				if (parent == null || grandparent == null)
+					throw new Error('trying to revive a non-existent parent or grandparent');
+				if (services[grandparent] == null && !revivedIds.has(grandparent)) {
+					activeActions.insertService(orphanData.ancestors[grandparent] as Service);
+					revivedIds.add(grandparent);
+				}
+				if (!revivedIds.has(parent)) {
+					activeActions.insertEndpoint(orphanData.ancestors[parent] as Endpoint);
+				}
+			});
+		}
 
-		reviveEndpoints?.forEach(({ parent }) => {
-			if (parent == null) throw new Error('trying to revive a non-existent parent');
-			if (!revivedIds.has(parent)) {
-				dispatch(activeActions.insertService(orphanData.ancestors[parent] as Service));
-				revivedIds.add(parent);
-			}
-		});
-		reviveRequests?.forEach(({ parent, grandparent }) => {
-			if (parent == null || grandparent == null)
-				throw new Error('trying to revive a non-existent parent or grandparent');
-			if (!revivedIds.has(grandparent) && services[grandparent] == null) {
-				dispatch(activeActions.insertService(orphanData.ancestors[grandparent] as Service));
-				revivedIds.add(grandparent);
-			}
-			if (!revivedIds.has(parent)) {
-				dispatch(activeActions.insertEndpoint(orphanData.ancestors[parent] as Endpoint));
-				revivedIds.add(parent);
-			}
-		});
-
-		deleteRequests?.forEach(({ orphan }) => dispatch(deleteRequest(orphan.id)));
-		deleteEndpoints?.forEach(({ orphan }) => dispatch(deleteEndpoint(orphan.id)));
+		deleteRequests?.forEach(({ orphan }) => dispatch(itemActions.request.delete(orphan.id)));
+		deleteEndpoints?.forEach(({ orphan }) => dispatch(itemActions.endpoint.delete(orphan.id)));
 
 		assignEndpoints?.forEach(({ orphan }) =>
-			activeActions.addEndpointToService({ endpointId: orphan.id, serviceId: strategy[orphan.id] }),
+			activeActions.addEndpointToService({ id: orphan.id, serviceId: strategy[orphan.id] }),
 		);
 		assignRequests?.forEach(({ orphan }) =>
-			activeActions.addRequestToEndpoint({ requestId: orphan.id, endpointId: strategy[orphan.id] }),
+			activeActions.addRequestToEndpoint({ id: orphan.id, endpointId: strategy[orphan.id] }),
 		);
 
 		if (createEndpoints?.length || createRequests?.length) {
-			const serviceId = await dispatch(addNewService(autogenService)).unwrap();
+			const serviceId = await dispatch(itemActions.service.create(autogenService)).unwrap();
 			createEndpoints?.forEach(({ orphan }) =>
-				dispatch(activeActions.addEndpointToService({ endpointId: orphan.id, serviceId })),
+				dispatch(activeActions.addEndpointToService({ id: orphan.id, serviceId })),
 			);
 			if (createRequests?.length) {
-				const endpointId = await dispatch(
-					addNewEndpoint({
-						serviceId,
-						data: autogenEndpoint,
-					}),
-				).unwrap();
+				const endpointId = await dispatch(itemActions.endpoint.create({ ...autogenEndpoint, serviceId })).unwrap();
 				createRequests?.forEach(({ orphan }) =>
-					dispatch(activeActions.addRequestToEndpoint({ requestId: orphan.id, endpointId })),
+					dispatch(activeActions.addRequestToEndpoint({ id: orphan.id, endpointId })),
 				);
 			}
 		}

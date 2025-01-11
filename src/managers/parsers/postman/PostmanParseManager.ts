@@ -32,7 +32,6 @@ import yaml from 'js-yaml';
 import { postmanScriptParseManager } from './PostmanScriptParseManager';
 import { CONTENT_TYPE } from '../../../constants/request';
 import { OrderedKeyValuePairs } from '../../../classes/OrderedKeyValuePairs';
-import { cloneEnv } from '../../../utils/application';
 import {
 	QueryParams,
 	RawBodyType,
@@ -49,6 +48,7 @@ import {
 	getStringDifference,
 	camelCaseToTitle,
 } from '@/utils/string';
+import { ItemFactory } from '@/managers/data/ItemFactory';
 
 type PostmanCollection = V200Schema | V210Schema;
 
@@ -118,7 +118,6 @@ class PostmanParseManager {
 				scripts.push({
 					name,
 					scriptCallableName: toValidFunctionName(name),
-					returnVariableName: null,
 					id: v4(),
 					content: script,
 				});
@@ -201,7 +200,10 @@ class PostmanParseManager {
 	}
 
 	private importVariables(variables: { [key: string]: string }[], importSource: ImportSource): Environment {
-		return cloneEnv({ name: `${importSource} Variables`, pairs: variables.map(({ key, value }) => ({ key, value })) });
+		return ItemFactory.environment({
+			name: `${importSource} Variables`,
+			pairs: variables.map(({ key, value }) => ({ key, value })),
+		});
 	}
 
 	private importItems = (
@@ -293,7 +295,7 @@ class PostmanParseManager {
 			headers: [],
 			queryParams: [],
 			history: [],
-			environmentOverride: cloneEnv(),
+			environmentOverride: ItemFactory.environment(),
 			body,
 			bodyType,
 			rawType,

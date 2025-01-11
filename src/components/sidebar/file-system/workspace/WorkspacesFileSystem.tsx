@@ -4,26 +4,48 @@ import { ActiveWorkspaceFileCard } from './ActiveWorkspaceFileCard';
 import { WorkspaceFileCard } from './WorkspaceFileCard';
 import { Box, Stack } from '@mui/joy';
 import { SideDrawerHeader } from '../../SideDrawerHeader';
+import { useAppDispatch } from '@/state/store';
+import { uiActions } from '@/state/ui/slice';
+import { AreYouSureModal } from '@/components/shared/modals/AreYouSureModal';
+import { useState } from 'react';
+import { globalActions } from '@/state/global/slice';
+import { WorkspaceMetadata } from '@/types/data/workspace';
 
 export function WorkspacesFileSystem() {
+	const [switchingTo, setSwitchingTo] = useState<WorkspaceMetadata | undefined>(undefined);
 	const workspaces = useSelector(selectWorkspacesList);
 	const activeWorkspace = useSelector(selectActiveWorkspace);
+	const dispatch = useAppDispatch();
 	const inactiveWorkspaces = workspaces.filter((workspace) => workspace.fileName !== activeWorkspace?.fileName);
+	const onOpenTab = (id: string) => {
+		dispatch(uiActions.addTab(id));
+		dispatch(uiActions.setSelectedTab(id));
+	};
 	return (
 		<>
 			<SideDrawerHeader content="Workspaces" />
 			<Stack gap={1} px={1} pb={1}>
 				{activeWorkspace != null && (
 					<Box mb={1}>
-						<ActiveWorkspaceFileCard workspace={activeWorkspace} />
+						<ActiveWorkspaceFileCard onOpenTab={onOpenTab} workspace={activeWorkspace} />
 					</Box>
 				)}
 				{inactiveWorkspaces.map((workspace) => (
 					<div key={workspace.fileName}>
-						<WorkspaceFileCard workspace={workspace} />
+						<WorkspaceFileCard
+							onSwitchTo={() => setSwitchingTo(workspace)}
+							onOpenTab={onOpenTab}
+							workspace={workspace}
+						/>
 					</div>
 				))}
 			</Stack>
+			<AreYouSureModal
+				open={switchingTo != null}
+				closeFunc={() => setSwitchingTo(undefined)}
+				action={`switch to workspace ${switchingTo?.name} without saving`}
+				actionFunc={() => dispatch(globalActions.setSelectedWorkspace(switchingTo))}
+			/>
 		</>
 	);
 }
