@@ -55,7 +55,7 @@ export function Toasts() {
 				direction={'row'}
 				sx={{
 					justifyContent: 'space-between',
-					alignItems: 'flex-start',
+					alignItems: 'center',
 				}}
 				divider={<Divider orientation="vertical" />}
 			>
