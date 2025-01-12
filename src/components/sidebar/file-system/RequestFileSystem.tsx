@@ -10,6 +10,8 @@ import { FluentSnippetSvg } from '@/assets/icons/fluent/FluentSnippet';
 import { FluentSnippetLinkSvg } from '@/assets/icons/fluent/FluentSnippetLink';
 import { useShowSync } from '@/hooks/useShowSync';
 import { itemActions } from '@/state/items';
+import { useTheme } from '@mui/joy';
+import { SVGProps } from 'react';
 
 interface RequestFileSystemProps {
 	requestId: string;
@@ -20,14 +22,17 @@ export function RequestFileSystem({ requestId }: RequestFileSystemProps) {
 	const request = useSelector((state) => itemActions.request.select(state, requestId));
 	const endpoint = useSelector((state) => itemActions.endpoint.select(state, request?.endpointId));
 	const dispatch = useAppDispatch();
-
-	if (request == null) return null;
-
+	if (request == null) {
+		return null;
+	}
+	const theme = useTheme();
+	const SnippetIcon = (props: SVGProps<SVGSVGElement>) =>
+		showSync ? <FluentSnippetLinkSvg {...props} /> : <FluentSnippetSvg {...props} />;
 	const isDefault = endpoint?.defaultRequest === request.id;
+	const color = isDefault ? theme.palette.primary[400] : undefined;
 	return (
 		<FileSystemLeaf
 			id={requestId}
-			tabType="request"
 			menuOptions={[
 				{
 					Icon: isDefault ? Close : Add,
@@ -41,8 +46,10 @@ export function RequestFileSystem({ requestId }: RequestFileSystemProps) {
 				menuOptionDelete(() => dispatch(uiActions.addToDeleteQueue(request.id))),
 			]}
 		>
-			<div style={{ flex: 0 }}>{showSync ? <FluentSnippetLinkSvg /> : <FluentSnippetSvg />}</div>
-			<EllipsesP>{request.name}</EllipsesP>
+			<div style={{ flex: 0 }}>
+				<SnippetIcon color={color} />
+			</div>
+			<EllipsesP style={{ color: color }}>{request.name}</EllipsesP>
 		</FileSystemLeaf>
 	);
 }
