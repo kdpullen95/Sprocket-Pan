@@ -11,6 +11,8 @@ import { FluentCubeLinkSvg } from '@/assets/icons/fluent/FluentCubeLink';
 import { FluentCubeSvg } from '@/assets/icons/fluent/FluentCube';
 import { EllipsesP } from '../components/EllipsesP';
 import { itemActions } from '@/state/items';
+import { SVGProps } from 'react';
+import { useTheme } from '@mui/joy';
 
 interface EnvironmentFileSystemProps {
 	environmentId: string;
@@ -22,6 +24,10 @@ export function EnvironmentFileSystem({ environmentId }: EnvironmentFileSystemPr
 	const environment = useSelector((state) => itemActions.environment.select(state, environmentId));
 	const dispatch = useAppDispatch();
 	const showSync = useShowSync(environmentId);
+	const theme = useTheme();
+	const CubeIcon = (props: SVGProps<SVGSVGElement>) =>
+		showSync ? <FluentCubeLinkSvg {...props} /> : <FluentCubeSvg {...props} />;
+	const color = envSelected ? theme.palette.primary[400] : undefined;
 	return (
 		<FileSystemLeaf
 			id={environmentId}
@@ -35,8 +41,10 @@ export function EnvironmentFileSystem({ environmentId }: EnvironmentFileSystemPr
 				menuOptionDelete(() => dispatch(uiActions.addToDeleteQueue(environment.id))),
 			]}
 		>
-			<div style={{ flex: 0 }}>{showSync ? <FluentCubeLinkSvg /> : <FluentCubeSvg />}</div>
-			<EllipsesP>{environment.name}</EllipsesP>
+			<div style={{ flex: 0 }}>
+				<CubeIcon color={color} />
+			</div>
+			<EllipsesP style={{ color: color }}>{environment.name}</EllipsesP>
 		</FileSystemLeaf>
 	);
 }
