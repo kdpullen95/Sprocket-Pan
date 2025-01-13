@@ -8,15 +8,16 @@ import { FileSystemDropdown, FileSystemMenuOption } from './FileSystemDropdown';
 export interface FileSystemLeafProps extends PropsWithChildren {
 	id: string;
 	menuOptions?: FileSystemMenuOption[];
+	color?: string;
 }
 
-export function FileSystemLeaf({ id, menuOptions, children }: FileSystemLeafProps) {
+export function FileSystemLeaf({ id, menuOptions, children, color }: FileSystemLeafProps) {
 	const dispatch = useAppDispatch();
 	const isSelected = useSelector((state) => selectIsActiveTab(state, id));
 	return (
 		<li id={`file_${id}`} style={{ display: 'flex' }} className={isSelected ? 'selected' : undefined}>
 			<button
-				style={{ gap: '7px', display: 'flex', alignItems: 'center', flex: 1, minWidth: '50px' }}
+				style={{ gap: '7px', display: 'flex', alignItems: 'center', flex: 1, minWidth: '50px', color }}
 				onClick={() => {
 					dispatch(uiActions.addTab(id));
 					dispatch(uiActions.setSelectedTab(id));
