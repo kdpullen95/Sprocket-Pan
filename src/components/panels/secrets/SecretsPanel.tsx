@@ -10,7 +10,7 @@ export function SecretsPanel({ id }: PanelProps) {
 	const secrets = useSelector(selectSecrets);
 	const dispatch = useAppDispatch();
 	return (
-		<Box sx={{ height: '70vh', pb: '5vh' }}>
+		<Box sx={{ height: '70vh', p: 2 }}>
 			<EditableData
 				initialValues={secrets}
 				onChange={(values) => dispatch(activeActions.setSecrets(values))}
