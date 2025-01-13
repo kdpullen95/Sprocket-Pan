@@ -3,6 +3,7 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import { SettingsTabProps } from './types';
 import { SettingsSelect, SettingsSlider } from './SettingsFields';
 import { BASE_THEME, LIST_STYLING, SCROLLBAR_VISIBILITY } from '@/types/data/settings';
+import { Opacity } from '@mui/icons-material';
 
 export function ThemeTab({ overlay, settings, onChange }: SettingsTabProps) {
 	return (
@@ -11,10 +12,18 @@ export function ThemeTab({ overlay, settings, onChange }: SettingsTabProps) {
 				value={settings.theme.zoom}
 				overlay={overlay?.theme?.zoom}
 				label="Zoom"
-				onChange={(val) => onChange({ theme: { zoom: val } })}
+				onChange={(zoom) => onChange({ theme: { zoom } })}
 				endDecorator="%"
 				icon={<ZoomInIcon />}
 				range={{ min: 25, max: 175 }}
+			/>
+			<SettingsSlider
+				value={settings.theme.decoration.opacity}
+				overlay={overlay?.theme?.decoration?.opacity}
+				label="Decoration Opacity"
+				onChange={(opacity) => onChange({ theme: { decoration: { opacity } } })}
+				icon={<Opacity />}
+				range={{ min: 0, max: 1, step: 0.05 }}
 			/>
 			<SettingsSelect
 				sx={{ width: 240 }}

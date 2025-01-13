@@ -77,10 +77,11 @@ const createEndpoint = createAsyncThunk<string, Create<Endpoint>, { state: RootS
 		console.log({ newEndpoint, state });
 		// re: [''], we want at least one request made for a new endpoint automatically
 		(requestIds ?? ['']).forEach((id) => {
-			// this avoids using createRequest b/c of the need to set the defaultRequest & desire to avoid awaiting all the thunks
+			// this avoids using createRequest b/c of the need to set the defaultRequest
 			const newRequest = ItemFactory.request({ ...state.requests[id], endpointId: newEndpoint.id });
+			console.log('creating a new request', newRequest);
 			if (newEndpoint.defaultRequest === id || id === '') newEndpoint.defaultRequest = newRequest.id;
-			console.log({ newRequest });
+			console.log('set the default (if applicable)', { newEndpoint, newRequest });
 			thunk.dispatch(activeActions.insertRequest(newRequest));
 		});
 		thunk.dispatch(activeActions.insertEndpoint(newEndpoint));

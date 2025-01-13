@@ -18,6 +18,9 @@ export const DEFAULT_SETTINGS: Settings = {
 		list: LIST_STYLING.default,
 		zoom: 100,
 		scrollbarVisibility: SCROLLBAR_VISIBILITY.compact,
+		decoration: {
+			opacity: 0.3,
+		},
 	},
 	history: {
 		maxLength: 250,

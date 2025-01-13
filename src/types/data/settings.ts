@@ -60,6 +60,9 @@ export interface Settings {
 		list: LIST_STYLING;
 		zoom: number;
 		scrollbarVisibility: SCROLLBAR_VISIBILITY;
+		decoration: {
+			opacity: number;
+		};
 	};
 	history: {
 		maxLength: number;

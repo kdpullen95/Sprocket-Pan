@@ -11,6 +11,7 @@ export interface InputSliderProps {
 	range: {
 		min: number;
 		max: number;
+		step?: number;
 	};
 }
 
@@ -27,6 +28,7 @@ export function InputSlider({ label, value, onChange, endDecorator, icon, range 
 						aria-labelledby={`input-slider-${label}`}
 						min={range.min}
 						max={range.max}
+						step={range.step}
 					/>
 				</Grid>
 				<Grid>

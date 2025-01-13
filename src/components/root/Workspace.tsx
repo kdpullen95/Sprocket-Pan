@@ -1,4 +1,4 @@
-import { Stack, Box } from '@mui/joy';
+import { Stack, Box, useTheme } from '@mui/joy';
 import { useAutosave } from './hooks/useAutosave';
 import { TabHeader } from '../header/TabHeader';
 import { SideDrawer } from '../sidebar/SideDrawer';
@@ -10,6 +10,7 @@ import { useRef, useState } from 'react';
 
 export function Workspace() {
 	const [tab, setTab] = useState<SidebarTabs>(SidebarTabs.Workspaces);
+	const theme = useTheme();
 	const [expanded, setIsExpanded] = useState(false);
 	const ref = useRef<ImperativePanelHandle>(null);
 	const setPanelTab = (newTab: SidebarTabs) => {
@@ -30,9 +31,7 @@ export function Workspace() {
 				minHeight: '100vh',
 				maxWidth: '100vw',
 				overflow: 'hidden',
-				backgroundImage: 'url(public/logo-universal.svg)',
-				backgroundRepeat: 'no-repeat',
-				backgroundPosition: 'center',
+				backgroundColor: theme.palette.background.level1,
 			}}
 		>
 			<Box sx={{ flex: 0, minWidth: '45px', maxWidth: '45px', height: '100%' }}>
