@@ -1,41 +1,40 @@
-import { WorkspaceItems, WorkspaceItemType } from '@/types/data/workspace';
+import { ItemPrefix, ItemProperty, ItemType } from '@/types/data/item';
+import { WorkspaceItems } from '@/types/data/workspace';
 
-export function getWorkspaceItemType(state: WorkspaceItems, id: string) {
-	const keys = Object.keys(state) as WorkspaceItemType[];
-	return keys.find((key) => state[key][id] != null);
+const itemPrefixes = Object.entries(ItemPrefix);
+
+/**
+ * Extracts the Item Type from the given id, returns undefined if invalid.
+ * @param id The item id (format string:uuid) to parse
+ */
+export function extractItemType(id: string) {
+	for (const [key, type] of itemPrefixes) {
+		if (id.startsWith(type)) return key as ItemType;
+	}
 }
 
-export function getDefinedWorkspaceItemType(state: WorkspaceItems, id: string) {
-	const type = getWorkspaceItemType(state, id);
-	if (type == null) throw new Error(`orphan id detected: ${id}`);
-	return type;
+export function extractProperty(id: string) {
+	const type = extractItemType(id);
+	return type == null ? null : ItemProperty[type];
 }
 
 export function getDescendents(state: WorkspaceItems, id: string): string[] {
-	const type = getDefinedWorkspaceItemType(state, id);
-	switch (type) {
-		case 'environments':
-		case 'scripts':
-		case 'requests':
-			return [];
-		case 'endpoints':
-			return state[type][id].requestIds;
-		case 'services':
-			return state[type][id].endpointIds.flatMap((id) => [id, ...state.endpoints[id].requestIds]);
+	if (id.startsWith(ItemPrefix.endpoint)) {
+		return state.endpoints[id].requestIds;
 	}
+	if (id.startsWith(ItemPrefix.service)) {
+		return state.services[id].endpointIds.flatMap((id) => [id, ...state.endpoints[id].requestIds]);
+	}
+	return [];
 }
 
 export function getAncestors(state: WorkspaceItems, id: string): string[] {
-	const type = getDefinedWorkspaceItemType(state, id);
-	switch (type) {
-		case 'environments':
-		case 'scripts':
-		case 'services':
-			return [];
-		case 'endpoints':
-			return [state[type][id].serviceId];
-		case 'requests':
-			const endId = state[type][id].endpointId;
-			return [endId, state.endpoints[endId].serviceId];
+	if (id.startsWith(ItemPrefix.endpoint)) {
+		return [state.endpoints[id].serviceId];
 	}
+	if (id.startsWith(ItemPrefix.request)) {
+		const endId = state.requests[id].endpointId;
+		return [endId, state.endpoints[endId].serviceId];
+	}
+	return [];
 }

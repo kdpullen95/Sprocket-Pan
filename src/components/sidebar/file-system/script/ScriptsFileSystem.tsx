@@ -41,11 +41,11 @@ export function ScriptsFileSystem() {
 				</Typography>
 			)}
 			<FileSystemTrunk
-				data={filteredScriptIds}
-				itemContent={(index, scriptId) => (
+				items={filteredScriptIds}
+				render={(id, index) => (
 					<>
 						{index !== 0 && <ListDivider />}
-						<ScriptFileSystem scriptId={scriptId} />
+						<ScriptFileSystem scriptId={id} />
 					</>
 				)}
 			/>

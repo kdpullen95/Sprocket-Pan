@@ -44,10 +44,7 @@ export function ServicesFileSystem() {
 					No services found.
 				</Typography>
 			)}
-			<FileSystemTrunk
-				data={serviceIds}
-				itemContent={(_index, serviceId) => <ServiceFileSystem serviceId={serviceId} />}
-			/>
+			<FileSystemTrunk items={serviceIds} render={(id) => <ServiceFileSystem serviceId={id} />} />
 		</>
 	);
 }

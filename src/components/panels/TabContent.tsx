@@ -9,15 +9,15 @@ import { SecretsPanel } from './secrets/SecretsPanel';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorFallback } from '../shared/ErrorFallback';
 import { WorkspacePanel } from './workspace/WorkspacePanel';
-import { ShortItemType } from '@/types/data/item';
+import { ItemPrefix } from '@/types/data/item';
 
 const contentMap: Record<string | 'secrets', FunctionComponent<PanelProps>> = {
-	[ShortItemType.request]: RequestPanel,
-	[ShortItemType.environment]: EnvironmentPanel,
-	[ShortItemType.service]: ServicePanel,
-	[ShortItemType.endpoint]: EndpointPanel,
-	[ShortItemType.script]: ScriptPanel,
-	[ShortItemType.workspace]: WorkspacePanel,
+	[ItemPrefix.request]: RequestPanel,
+	[ItemPrefix.environment]: EnvironmentPanel,
+	[ItemPrefix.service]: ServicePanel,
+	[ItemPrefix.endpoint]: EndpointPanel,
+	[ItemPrefix.script]: ScriptPanel,
+	[ItemPrefix.workspace]: WorkspacePanel,
 	secrets: SecretsPanel,
 };
 

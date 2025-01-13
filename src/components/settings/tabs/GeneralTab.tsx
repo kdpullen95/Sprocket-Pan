@@ -1,11 +1,11 @@
-import { Stack, Button, CircularProgress, Divider, Typography, Link } from '@mui/joy';
+import { Stack, Button, CircularProgress, Divider, Typography, Link, FormControl, FormLabel } from '@mui/joy';
 import { emit } from '@tauri-apps/api/event';
 import { useEffect, useState } from 'react';
 import HelpIcon from '@mui/icons-material/Help';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import { getVersion } from '@tauri-apps/api/app';
 import { SettingsTabProps } from './types';
-import { SettingsSelect } from './SettingsFields';
+import { SettingsSelect, SettingsSwitch } from './SettingsFields';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { Constants } from '@/constants/constants';
 import { VARIABLE_NAME_DISPLAY, TIPS_SECTION } from '@/types/data/settings';
@@ -53,6 +53,15 @@ export function GeneralTab({ overlay, settings, onChange }: SettingsTabProps) {
 					{ value: TIPS_SECTION.hidden, label: 'Hidden' },
 				]}
 			/>
+			<FormControl sx={{ width: 240 }}>
+				<FormLabel>List Virtualization</FormLabel>
+				<SettingsSwitch
+					checked={settings.virtualization.enabled}
+					onChange={(enabled) => onChange({ virtualization: { enabled } })}
+					endDecorator={settings.virtualization.enabled ? 'Enabled' : 'Disabled'}
+					overlay={overlay?.virtualization?.enabled}
+				/>
+			</FormControl>
 			<Divider />
 			<Typography level="body-md">
 				Version {version} -{' '}

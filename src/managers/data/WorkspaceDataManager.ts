@@ -19,9 +19,9 @@ import { insomniaParseManager } from '../parsers/InsomniaParseManager';
 import { postmanParseManager } from '../parsers/postman/PostmanParseManager';
 import swaggerParseManager from '../parsers/SwaggerParseManager';
 import { SaveUpdateManager } from '../SaveUpdateManager';
-import { getWorkspaceItemType } from '@/utils/getters';
 import { InvokerFileUpdate } from '../RustInvoker';
 import { mergeDeep } from '@/utils/variables';
+import { extractProperty } from '@/utils/getters';
 
 export const defaultWorkspaceSyncedData: WorkspaceSyncedData = {
 	services: {},
@@ -210,12 +210,15 @@ export class WorkspaceDataManager {
 		}
 		const retData: WorkspaceData = structuredClone(data);
 		const syncData: WorkspaceSyncedData = structuredClone(defaultWorkspaceSyncedData);
-		Object.entries(data.syncMetadata.items).forEach(([key, value]) => {
+		Object.entries(data.syncMetadata.items).forEach(([id, value]) => {
 			if (value) {
-				const type = getWorkspaceItemType(data, key);
-				if (type == null) return;
-				delete retData[type][key];
-				syncData[type][key] = data[type][key];
+				const key = extractProperty(id);
+				if (key == null || key == 'workspaces') {
+					delete retData.syncMetadata.items[id];
+					return;
+				}
+				delete retData[key][id];
+				syncData[key][id] = data[key][id];
 			}
 		});
 		return { data: retData, sync: syncData, location };

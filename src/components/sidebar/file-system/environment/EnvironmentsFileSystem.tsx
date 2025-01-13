@@ -1,6 +1,6 @@
 import { IconButton, ListDivider, Stack, Typography } from '@mui/joy';
 import { EnvironmentFileSystem } from './EnvironmentFileSystem';
-import { Fragment, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectEnvironments } from '@/state/active/selectors';
 import { searchEnvironments } from '@/utils/search';
@@ -48,11 +48,11 @@ export function EnvironmentsFileSystem() {
 				</Typography>
 			)}
 			<FileSystemTrunk
-				data={filteredEnvironmentIds}
-				itemContent={(index, environmentId) => (
+				items={filteredEnvironmentIds}
+				render={(id, index) => (
 					<>
 						{index !== 0 && <ListDivider />}
-						<EnvironmentFileSystem environmentId={environmentId} />
+						<EnvironmentFileSystem environmentId={id} />
 					</>
 				)}
 			/>

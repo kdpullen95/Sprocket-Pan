@@ -52,6 +52,9 @@ export enum TIPS_SECTION {
 }
 
 export interface Settings {
+	virtualization: {
+		enabled: boolean;
+	};
 	theme: {
 		base: BASE_THEME;
 		list: LIST_STYLING;

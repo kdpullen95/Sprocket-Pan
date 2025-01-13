@@ -32,16 +32,22 @@ const initialState: UiState = {
 	orphans: null,
 };
 
-function closeTab(state: UiState, { payload }: PayloadAction<string>) {
-	state.tabs = state.tabs.filter((id) => id !== payload);
-	if (payload === state.selectedTab) state.selectedTab = state.tabs.at(-1) ?? null;
+function closeTab(state: UiState, closeId: string) {
+	state.tabs = state.tabs.filter((id) => id !== closeId);
+	if (closeId === state.selectedTab) state.selectedTab = state.tabs.at(-1) ?? null;
 }
 
 export const uiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
-		closeTab,
+		closeTab: (state, { payload }: PayloadAction<string>) => {
+			closeTab(state, payload);
+		},
+		closeTabs: (state, { payload }: PayloadAction<string[]>) => {
+			console.log({ closeTabs: payload });
+			payload.forEach((id) => closeTab(state, id));
+		},
 		addToDiffQueue: (state, { payload }: PayloadAction<SelectedResponse | DiffQueueEntry>) => {
 			if ('original' in payload) {
 				state.diffQueue.push(payload);

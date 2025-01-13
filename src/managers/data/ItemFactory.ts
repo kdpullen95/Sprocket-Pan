@@ -1,4 +1,4 @@
-import { ShortItemType } from '@/types/data/item';
+import { ItemPrefix } from '@/types/data/item';
 import { Endpoint, EndpointRequest, Environment, Script, Service, WorkspaceMetadata } from '@/types/data/workspace';
 import { toValidFunctionName } from '@/utils/string';
 import { v4 } from 'uuid';
@@ -8,12 +8,12 @@ import { v4 } from 'uuid';
  * Assigns the proper & neccessary ID structure (type:uuid).
  */
 export class ItemFactory {
-	private static id(type: ShortItemType) {
+	private static id(type: ItemPrefix) {
 		return `${type}:${v4()}`;
 	}
 
 	static workspace(template?: Partial<WorkspaceMetadata>): WorkspaceMetadata {
-		const id = this.id(ShortItemType.workspace);
+		const id = this.id(ItemPrefix.workspace);
 		return {
 			name: 'New Workspace',
 			description: '',
@@ -31,7 +31,7 @@ export class ItemFactory {
 			content: '',
 			scriptCallableName,
 			...structuredClone(template),
-			id: this.id(ShortItemType.script),
+			id: this.id(ItemPrefix.script),
 		};
 	}
 
@@ -44,7 +44,7 @@ export class ItemFactory {
 			name: 'New Service',
 			description: '',
 			...structuredClone(template),
-			id: this.id(ShortItemType.service),
+			id: this.id(ItemPrefix.service),
 		};
 	}
 
@@ -53,7 +53,7 @@ export class ItemFactory {
 			name: 'New Environment',
 			pairs: [],
 			...structuredClone(template),
-			id: this.id(ShortItemType.environment),
+			id: this.id(ItemPrefix.environment),
 		};
 	}
 
@@ -69,14 +69,14 @@ export class ItemFactory {
 			name: 'New Endpoint',
 			requestIds: [],
 			...structuredClone(template),
-			id: this.id(ShortItemType.endpoint),
+			id: this.id(ItemPrefix.endpoint),
 		};
 	}
 
 	static request(template?: Partial<EndpointRequest>): EndpointRequest {
 		return {
 			name: 'New Request',
-			environmentOverride: { pairs: [], id: this.id(ShortItemType.environment), name: 'Request Environment Override' },
+			environmentOverride: { pairs: [], id: this.id(ItemPrefix.environment), name: 'Request Environment Override' },
 			rawType: 'Text',
 			body: '',
 			bodyType: 'none',
@@ -84,7 +84,7 @@ export class ItemFactory {
 			headers: [],
 			endpointId: 'EMPTY',
 			...structuredClone(template),
-			id: this.id(ShortItemType.request),
+			id: this.id(ItemPrefix.request),
 		};
 	}
 }

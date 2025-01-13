@@ -10,14 +10,16 @@ export function DeleteQueueModals() {
 	const dispatch = useAppDispatch();
 	const removeDeleteQueueEntry = () => dispatch(uiActions.removeFromDeleteQueue(nextForDeletion));
 	const actions = nextForDeletion == null ? null : extractActions(nextForDeletion);
+	const item = useSelector((state) => actions?.select(state, nextForDeletion));
 
 	return (
 		<AreYouSureModal
-			action={`delete '${actions?.item?.name}' and all its data`}
+			action={`delete '${item?.name}' and all its data`}
 			open={nextForDeletion != null}
 			closeFunc={removeDeleteQueueEntry}
 			actionFunc={() => {
-				if (actions == null) return;
+				if (actions == null)
+					throw new Error(`delete queue deletion called on id ${nextForDeletion} but a delete action was not present!`);
 				dispatch(actions.delete(nextForDeletion));
 				removeDeleteQueueEntry();
 			}}

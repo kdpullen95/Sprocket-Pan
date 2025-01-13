@@ -20,13 +20,13 @@ import { useAppDispatch } from '@/state/store';
 import { itemActions } from '@/state/items';
 
 export function CreateEnvironmentModal({ open, closeFunc }: CreateModalsProps) {
-	const [envName, setEnvName] = useState('');
+	const [name, setName] = useState('');
 	const [cloneFrom, setCloneFrom] = useState<string | null>(null);
 	const allEnvironments = useSelector(selectEnvironments);
 	const cloneEnv = cloneFrom == null || allEnvironments[cloneFrom] == null ? undefined : allEnvironments[cloneFrom];
 	const dispatch = useAppDispatch();
-	const envNameValid = envName.length > 0;
-	const allFieldsValid = envNameValid;
+	const nameValid = name.length > 0;
+	const allFieldsValid = nameValid;
 	const autoOptions = [
 		{ label: "Don't clone", value: null },
 		...Object.values(allEnvironments).map((env) => ({
@@ -45,7 +45,7 @@ export function CreateEnvironmentModal({ open, closeFunc }: CreateModalsProps) {
 				<DialogContent>
 					<FormControl>
 						<FormLabel>Environment Name *</FormLabel>
-						<Input value={envName} onChange={(e) => setEnvName(e.target.value)} error={!envNameValid} required />
+						<Input value={name} onChange={(e) => setName(e.target.value)} error={!nameValid} required />
 					</FormControl>
 					<FormControl>
 						<FormLabel>Clone from existing environment?</FormLabel>
@@ -62,7 +62,7 @@ export function CreateEnvironmentModal({ open, closeFunc }: CreateModalsProps) {
 						color="success"
 						disabled={!allFieldsValid}
 						onClick={() => {
-							dispatch(itemActions.environment.create(cloneEnv));
+							dispatch(itemActions.environment.create({ ...cloneEnv, name }));
 							closeFunc();
 						}}
 					>

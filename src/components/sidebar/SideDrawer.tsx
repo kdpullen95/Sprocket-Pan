@@ -1,4 +1,3 @@
-import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { Sheet, Stack, useTheme } from '@mui/joy';
 import { useSelector } from 'react-redux';
 import { selectActiveWorkspace } from '@/state/global/selectors';
@@ -12,7 +11,6 @@ interface SideDrawerProps {
 }
 
 export function SideDrawer({ tab }: SideDrawerProps) {
-	const { average: scrollbarTheme } = useScrollbarTheme();
 	const activeWorkspace = useSelector(selectActiveWorkspace);
 	const theme = useTheme();
 

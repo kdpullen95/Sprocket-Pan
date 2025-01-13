@@ -1,3 +1,5 @@
+import { WorkspaceItemType } from './workspace';
+
 export const ItemType = {
 	endpoint: 'endpoint',
 	service: 'service',
@@ -14,7 +16,7 @@ export interface Item {
 	name: string;
 }
 
-export const ShortItemType = {
+export const ItemPrefix = {
 	endpoint: 'end',
 	service: 'srv',
 	request: 'req',
@@ -23,4 +25,13 @@ export const ShortItemType = {
 	workspace: 'wrk',
 } as const;
 
-export type ShortItemType = (typeof ShortItemType)[keyof typeof ItemType];
+export type ItemPrefix = (typeof ItemPrefix)[keyof typeof ItemType];
+
+export const ItemProperty: { [key in ItemType]: WorkspaceItemType | 'workspaces' } = {
+	endpoint: 'endpoints',
+	service: 'services',
+	request: 'requests',
+	script: 'scripts',
+	environment: 'environments',
+	workspace: 'workspaces',
+};

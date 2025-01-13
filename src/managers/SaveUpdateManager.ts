@@ -34,11 +34,11 @@ import {
 } from '@/types/data/workspace';
 import { defaultWorkspaceData } from './data/WorkspaceDataManager';
 import { ItemFactory } from './data/ItemFactory';
-import { ShortItemType } from '@/types/data/item';
+import { ItemPrefix } from '@/types/data/item';
 
 function toTen(data: WorkspaceData) {
 	const transformedIds = new Set<string>();
-	const collectIds = (key: keyof WorkspaceItems, prefix: ShortItemType) => {
+	const collectIds = (key: keyof WorkspaceItems, prefix: ItemPrefix) => {
 		if (data[key] == null) return;
 		Object.keys(data[key]).forEach((id) => {
 			if (!id.startsWith(prefix)) {
@@ -46,11 +46,11 @@ function toTen(data: WorkspaceData) {
 			}
 		});
 	};
-	collectIds('endpoints', ShortItemType.endpoint);
-	collectIds('scripts', ShortItemType.script);
-	collectIds('environments', ShortItemType.environment);
-	collectIds('requests', ShortItemType.request);
-	collectIds('services', ShortItemType.service);
+	collectIds('endpoints', ItemPrefix.endpoint);
+	collectIds('scripts', ItemPrefix.script);
+	collectIds('environments', ItemPrefix.environment);
+	collectIds('requests', ItemPrefix.request);
+	collectIds('services', ItemPrefix.service);
 	// this is dumb but holy hell is it effective
 	let stringData = JSON.stringify(data);
 	transformedIds.forEach((id) => {

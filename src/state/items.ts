@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSelector } from '@reduxjs/toolkit';
+import { ActionCreatorWithPayload, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
 import { selectRequests, selectEndpoints, selectEnvironments, selectScripts, selectServices } from './active/selectors';
 import { activeActions } from './active/slice';
 import { globalActions } from './global/slice';
@@ -15,6 +15,9 @@ import {
 import { RootState } from './store';
 import { Create } from './types';
 import { ItemFactory } from '@/managers/data/ItemFactory';
+import { uiActions } from './ui/slice';
+import { ItemType } from '@/types/data/item';
+import { getDescendents } from '@/utils/getters';
 
 const selectRequest = createSelector([selectRequests, (_, id?: string) => id], (requests, id) =>
 	id == null ? null : requests[id],
@@ -42,12 +45,23 @@ const selectWorkspace = createSelector([selectWorkspaces, (_, id?: string) => id
 	id == null ? null : workspaces[id],
 );
 
+// we need deletes to be thunks so that the tab is closed _first_. TODO: find an alternative?
+const deletePrefix = 't/items/delete/';
+
+function constructDeleteThunk(action: ActionCreatorWithPayload<string>, type: ItemType) {
+	return createAsyncThunk<void, string, { state: RootState }>(deletePrefix + type, (id, thunk) => {
+		thunk.dispatch(uiActions.closeTabs([id, ...getDescendents(thunk.getState().active, id)]));
+		thunk.dispatch(action(id));
+		console.log({ after: thunk.getState().active.services[id] });
+	});
+}
+
 // in some cases, we want to get the new id back after creating an item,
 // so these need to be thunks.
-const prefix = 't/items/create/';
+const createPrefix = 't/items/create/';
 
 const createRequest = createAsyncThunk<string, Create<EndpointRequest>, { state: RootState }>(
-	prefix + 'request',
+	createPrefix + 'request',
 	(base, thunk) => {
 		const newRequest = ItemFactory.request(base);
 		thunk.dispatch(activeActions.insertRequest(newRequest));
@@ -56,15 +70,17 @@ const createRequest = createAsyncThunk<string, Create<EndpointRequest>, { state:
 );
 
 const createEndpoint = createAsyncThunk<string, Create<Endpoint>, { state: RootState }>(
-	prefix + 'endpoint',
+	createPrefix + 'endpoint',
 	({ requestIds, ...base } = {}, thunk) => {
 		const state = thunk.getState().active;
 		const newEndpoint = ItemFactory.endpoint(base);
+		console.log({ newEndpoint, state });
 		// re: [''], we want at least one request made for a new endpoint automatically
 		(requestIds ?? ['']).forEach((id) => {
 			// this avoids using createRequest b/c of the need to set the defaultRequest & desire to avoid awaiting all the thunks
 			const newRequest = ItemFactory.request({ ...state.requests[id], endpointId: newEndpoint.id });
-			if (newEndpoint.defaultRequest === id) newEndpoint.defaultRequest = newRequest.id;
+			if (newEndpoint.defaultRequest === id || id === '') newEndpoint.defaultRequest = newRequest.id;
+			console.log({ newRequest });
 			thunk.dispatch(activeActions.insertRequest(newRequest));
 		});
 		thunk.dispatch(activeActions.insertEndpoint(newEndpoint));
@@ -73,11 +89,12 @@ const createEndpoint = createAsyncThunk<string, Create<Endpoint>, { state: RootS
 );
 
 const createService = createAsyncThunk<string, Create<Service>, { state: RootState }>(
-	prefix + 'service',
+	createPrefix + 'service',
 	({ endpointIds, ...base } = {}, thunk) => {
 		const state = thunk.getState().active;
 		const newService = ItemFactory.service(base);
 		thunk.dispatch(activeActions.insertService(newService));
+		console.log({ newService, endpointIds });
 		endpointIds?.forEach((id) => {
 			thunk.dispatch(createEndpoint({ ...state.endpoints[id], serviceId: newService.id }));
 		});
@@ -86,7 +103,7 @@ const createService = createAsyncThunk<string, Create<Service>, { state: RootSta
 );
 
 const createScript = createAsyncThunk<string, Create<Script>, { state: RootState }>(
-	prefix + 'script',
+	createPrefix + 'script',
 	(base, thunk) => {
 		const newScript = ItemFactory.script(base);
 		thunk.dispatch(activeActions.insertScript(newScript));
@@ -95,7 +112,7 @@ const createScript = createAsyncThunk<string, Create<Script>, { state: RootState
 );
 
 const createEnvironment = createAsyncThunk<string, Create<RootEnvironment>, { state: RootState }>(
-	prefix + 'environment',
+	createPrefix + 'environment',
 	(base, thunk) => {
 		const newEnv = ItemFactory.environment(base);
 		thunk.dispatch(activeActions.insertEnvironment(newEnv));
@@ -104,7 +121,7 @@ const createEnvironment = createAsyncThunk<string, Create<RootEnvironment>, { st
 );
 
 const createWorkspace = createAsyncThunk<string, Create<WorkspaceMetadata>, { state: RootState }>(
-	prefix + 'workspace',
+	createPrefix + 'workspace',
 	(base, thunk) => {
 		const newWorkspace = ItemFactory.workspace(base);
 		thunk.dispatch(globalActions.insertWorkspace(newWorkspace));
@@ -116,7 +133,7 @@ export const itemActions = {
 	endpoint: {
 		duplicate: (base: Endpoint) => createEndpoint({ ...base, name: base.name + ' (Copy)' }),
 		update: activeActions.updateEndpoint,
-		delete: activeActions.deleteEndpoint,
+		delete: constructDeleteThunk(activeActions.deleteEndpoint, ItemType.endpoint),
 		create: createEndpoint,
 		select: selectEndpoint,
 		property: 'endpoints',
@@ -124,7 +141,7 @@ export const itemActions = {
 	service: {
 		duplicate: (base: Service) => createService({ ...base, name: base.name + ' (Copy)' }),
 		update: activeActions.updateService,
-		delete: activeActions.deleteService,
+		delete: constructDeleteThunk(activeActions.deleteService, ItemType.service),
 		create: createService,
 		select: selectService,
 		property: 'services',
@@ -132,7 +149,7 @@ export const itemActions = {
 	request: {
 		duplicate: (base: EndpointRequest) => createRequest({ ...base, name: base.name + ' (Copy)' }),
 		update: activeActions.updateRequest,
-		delete: activeActions.deleteRequest,
+		delete: constructDeleteThunk(activeActions.deleteRequest, ItemType.request),
 		create: createRequest,
 		select: selectRequest,
 		property: 'requests',
@@ -140,7 +157,7 @@ export const itemActions = {
 	script: {
 		duplicate: (base: Script) => createScript({ ...base, name: base.name + ' (Copy)' }),
 		update: activeActions.updateScript,
-		delete: activeActions.deleteScript,
+		delete: constructDeleteThunk(activeActions.deleteScript, ItemType.script),
 		create: createScript,
 		select: selectScript,
 		property: 'scripts',
@@ -148,7 +165,7 @@ export const itemActions = {
 	environment: {
 		duplicate: (base: Environment) => createEnvironment({ ...base, name: base.name + ' (Copy)' }),
 		update: activeActions.updateEnvironment,
-		delete: activeActions.deleteEnvironment,
+		delete: constructDeleteThunk(activeActions.deleteEnvironment, ItemType.script),
 		create: createEnvironment,
 		select: selectEnvironment,
 		property: 'environments',
@@ -156,9 +173,9 @@ export const itemActions = {
 	workspace: {
 		duplicate: (base: WorkspaceMetadata) => createWorkspace({ ...base, name: base.name + ' (Copy)' }),
 		update: globalActions.updateWorkspace,
-		delete: globalActions.deleteWorkspace,
+		delete: constructDeleteThunk(globalActions.deleteWorkspace, ItemType.workspace),
 		create: createWorkspace,
 		select: selectWorkspace,
 		property: 'workspaces',
 	},
-};
+} as const;

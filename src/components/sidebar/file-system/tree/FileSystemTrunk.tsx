@@ -1,9 +1,21 @@
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
+import { selectSettings } from '@/state/active/selectors';
+import { Item } from '@/types/data/item';
 import { Box, useTheme } from '@mui/joy';
-import { Virtuoso, VirtuosoProps } from 'react-virtuoso';
+import { Fragment, ReactNode } from 'react';
+import { useSelector } from 'react-redux';
+import { Virtuoso } from 'react-virtuoso';
 
-export function FileSystemTrunk<D, C>(props: VirtuosoProps<D, C>) {
+interface FileSystemTrunkProps<T> {
+	items: T[];
+	render: (item: T, index: number) => ReactNode;
+}
+
+export function FileSystemTrunk<T extends Item>({ items, render }: FileSystemTrunkProps<T>) {
 	const { average } = useScrollbarTheme();
+	const {
+		virtualization: { enabled },
+	} = useSelector(selectSettings);
 	const theme = useTheme();
 	return (
 		<Box
@@ -44,7 +56,15 @@ export function FileSystemTrunk<D, C>(props: VirtuosoProps<D, C>) {
 				m: 0,
 			}}
 		>
-			<Virtuoso style={average as any} {...props} />
+			{enabled ? (
+				<Virtuoso style={average as any} data={items} itemContent={(index, item) => render(item, index)} />
+			) : (
+				<Box sx={{ ...average, height: '100%', overflow: 'auto' }}>
+					{items.map((item, index) => (
+						<Fragment key={item.id}>{render(item, index)}</Fragment>
+					))}
+				</Box>
+			)}
 		</Box>
 	);
 }

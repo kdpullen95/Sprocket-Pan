@@ -7,6 +7,9 @@ export type InvokerFileUpdate = InvokerPath & { content: string };
 export type InvokerFileError = { path: string; error: string };
 
 export class RustInvoker {
+	/**
+	 * joins the applocaldatadir to non-absolute paths, making them absolute
+	 */
 	private static async absolutify({ path, absolute }: InvokerPath) {
 		if (absolute) return path;
 		return await join(await appLocalDataDir(), path);

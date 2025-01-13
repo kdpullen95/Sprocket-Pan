@@ -10,6 +10,9 @@ import {
 import { MS_IN_MINUTE } from './constants';
 
 export const DEFAULT_SETTINGS: Settings = {
+	virtualization: {
+		enabled: true,
+	},
 	theme: {
 		base: BASE_THEME.default,
 		list: LIST_STYLING.default,
