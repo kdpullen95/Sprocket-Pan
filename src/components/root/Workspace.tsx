@@ -30,6 +30,9 @@ export function Workspace() {
 				minHeight: '100vh',
 				maxWidth: '100vw',
 				overflow: 'hidden',
+				backgroundImage: 'url(public/logo-universal.svg)',
+				backgroundRepeat: 'no-repeat',
+				backgroundPosition: 'center',
 			}}
 		>
 			<Box sx={{ flex: 0, minWidth: '45px', maxWidth: '45px', height: '100%' }}>
