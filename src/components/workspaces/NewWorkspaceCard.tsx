@@ -49,7 +49,6 @@ export function NewWorkspaceCard({ onCreate }: NewWorkspaceCardProps) {
 								left: '43.75%',
 							}}
 						>
-							{' '}
 							<Link overlay underline="none" href="#interactive-card" onClick={onCreate}></Link>
 						</Box>
 					</Box>

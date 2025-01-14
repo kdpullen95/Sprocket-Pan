@@ -1,4 +1,3 @@
-import { DEFAULT_SETTINGS } from '@/constants/defaults';
 import {
 	WorkspaceData,
 	EndpointRequest,
@@ -39,7 +38,7 @@ export const defaultWorkspaceData: WorkspaceData = {
 	uiMetadata: {
 		idSpecific: {},
 	},
-	settings: DEFAULT_SETTINGS,
+	settings: {},
 	version: SaveUpdateManager.getCurrentVersion(),
 	syncMetadata: { items: {} },
 	selectedServiceEnvironments: {},
