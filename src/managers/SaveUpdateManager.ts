@@ -35,6 +35,7 @@ import {
 import { defaultWorkspaceData } from './data/WorkspaceDataManager';
 import { ItemFactory } from './data/ItemFactory';
 import { ItemPrefix } from '@/types/data/item';
+import { generateSlug } from 'random-word-slugs';
 
 function toTen(data: WorkspaceData) {
 	const transformedIds = new Set<string>();
@@ -183,12 +184,16 @@ export class SaveUpdateManager {
 	public static updateWorkspaces(workspaces: WorkspaceMetadata[]) {
 		const updated: string[] = [];
 		const list = workspaces.map((workspace) => {
+			let ret = workspace;
 			if (workspace.id == null) {
 				const factoryWorkspace = ItemFactory.workspace(workspace);
 				updated.push(factoryWorkspace.id);
-				return factoryWorkspace;
+				ret = factoryWorkspace;
 			}
-			return workspace;
+			if (workspace.minidenticon == null) {
+				ret.minidenticon = generateSlug(3);
+			}
+			return ret;
 		});
 		return { list, updated };
 	}

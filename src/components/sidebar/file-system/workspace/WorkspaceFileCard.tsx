@@ -1,14 +1,13 @@
 import { WorkspaceMetadata } from '@/types/data/workspace';
 import { EllipsisTypography } from '@/components/shared/EllipsisTypography';
-import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { formatShortFullDate, formatRelativeDate } from '@/utils/string';
-import { EditCalendar, OpenInNew } from '@mui/icons-material';
-import { Box, Card, Chip, Stack } from '@mui/joy';
+import { OpenInNew } from '@mui/icons-material';
+import { Box, Card, Stack, useTheme } from '@mui/joy';
 import { Minidenticon } from '@/components/shared/Minidenticon';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
 import { FileSystemDropdown, menuOptionDelete } from '../tree/FileSystemDropdown';
 import { FluentArrowSwap } from '@/assets/icons/fluent/FluentArrowSwap';
+import { RelativeTimeChip } from '@/components/shared/RelativeTimeChip';
 
 export interface WorkspaceFileCardContentProps {
 	workspace: WorkspaceMetadata;
@@ -18,15 +17,11 @@ export function WorkspaceFileCardContent({ workspace }: WorkspaceFileCardContent
 	return (
 		<>
 			<Box position="absolute" bottom={-5} right={0} width="45px">
-				<Minidenticon username={workspace.fileName} />
+				<Minidenticon username={workspace.minidenticon} />
 			</Box>
 			<Stack gap={1} pr={2}>
 				<EllipsisTypography>{workspace.name}</EllipsisTypography>
-				<SprocketTooltip text={`Last Modified on ${formatShortFullDate(workspace.lastModified)}`}>
-					<Chip variant="soft" sx={{ ml: '-6px' }} startDecorator={<EditCalendar sx={{ mr: '2px' }} />}>
-						{formatRelativeDate(workspace.lastModified)}
-					</Chip>
-				</SprocketTooltip>
+				<RelativeTimeChip date={workspace.lastModified} />
 			</Stack>
 		</>
 	);
@@ -39,8 +34,9 @@ export interface WorkspaceFileCardProps extends WorkspaceFileCardContentProps {
 
 export function WorkspaceFileCard({ workspace, onOpenTab, onSwitchTo }: WorkspaceFileCardProps) {
 	const dispatch = useAppDispatch();
+	const theme = useTheme();
 	return (
-		<Card variant="soft">
+		<Card variant="plain" sx={{ backgroundColor: theme.palette.background.level1 }}>
 			<Box position="absolute" top={10} right={5}>
 				<FileSystemDropdown
 					options={[

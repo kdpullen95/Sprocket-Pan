@@ -10,6 +10,7 @@ export interface WorkspaceMetadata extends Item {
 	description: string;
 	fileName: string;
 	lastModified: number;
+	minidenticon: string;
 }
 
 export interface EndpointResponse {

@@ -13,9 +13,10 @@ export interface InputSliderProps {
 		max: number;
 		step?: number;
 	};
+	disabled?: boolean;
 }
 
-export function InputSlider({ label, value, onChange, endDecorator, icon, range }: InputSliderProps) {
+export function InputSlider({ label, value, onChange, endDecorator, icon, range, disabled }: InputSliderProps) {
 	return (
 		<Box sx={{ width: 350 }}>
 			<FormLabel id={`input-slider-${label}`}>{label}</FormLabel>
@@ -29,6 +30,7 @@ export function InputSlider({ label, value, onChange, endDecorator, icon, range 
 						min={range.min}
 						max={range.max}
 						step={range.step}
+						disabled={disabled}
 					/>
 				</Grid>
 				<Grid>

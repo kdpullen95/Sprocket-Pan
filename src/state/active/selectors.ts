@@ -86,6 +86,8 @@ export const selectZoomLevel = createSelector(selectSettings, (state) => state.t
 
 export const selectDefaultTheme = createSelector(selectSettings, (state) => state.theme.base);
 
+export const selectTheme = createSelector(selectSettings, (state) => state.theme);
+
 export const selectSaveStateTimestamps = createSelector(selectActiveState, (state) => ({
 	modified: state.lastModified,
 	saved: state.lastSaved,

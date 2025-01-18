@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, Stack, Typography } from '@mui/joy';
+import { Button, Stack, Typography } from '@mui/joy';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import { appLogDir } from '@tauri-apps/api/path';
 import TimerIcon from '@mui/icons-material/Timer';
@@ -27,18 +27,16 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 			<Stack spacing={3}>
 				<Typography>Saving</Typography>
 				<Stack direction="row" gap={2}>
-					<FormControl sx={{ width: 250 }}>
-						<FormLabel>Autosave</FormLabel>
-						<SettingsSwitch
-							checked={autosave.enabled}
-							onChange={(enabled) => onChange({ data: { autosave: { enabled } } })}
-							endDecorator={autosaveEnabled ? 'Enabled' : 'Disabled'}
-							overlay={oversave?.enabled}
-						/>
-					</FormControl>
+					<SettingsSwitch
+						sx={{ width: 240 }}
+						label="Autosave"
+						checked={autosave.enabled}
+						onChange={(enabled) => onChange({ data: { autosave: { enabled } } })}
+						overlay={oversave?.enabled}
+					/>
 					<SettingsInput
-						sx={{ width: 250 }}
-						inputSx={{ width: 250 }}
+						sx={{ width: 240 }}
+						inputSx={{ width: 240 }}
 						disabled={!autosaveEnabled}
 						id="autosave-duration"
 						label="Autosave Interval"
@@ -50,21 +48,19 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 					/>
 				</Stack>
 				<Stack direction="row" gap={2}>
-					<FormControl sx={{ width: 250 }}>
-						<FormLabel>History Tracking</FormLabel>
-						<SettingsSwitch
-							checked={settings.history.enabled}
-							onChange={(enabled) => onChange({ history: { enabled } })}
-							endDecorator={historyEnabled ? 'Enabled' : 'Disabled'}
-							overlay={overlay?.history?.enabled}
-						/>
-					</FormControl>
+					<SettingsSwitch
+						sx={{ width: 240 }}
+						label="History Tracking"
+						checked={settings.history.enabled}
+						onChange={(enabled) => onChange({ history: { enabled } })}
+						overlay={overlay?.history?.enabled}
+					/>
 					<Stack gap={2}>
 						<SettingsInput
 							type="number"
 							disabled={!historyEnabled}
-							sx={{ width: 250 }}
-							inputSx={{ width: 250 }}
+							sx={{ width: 240 }}
+							inputSx={{ width: 240 }}
 							id="maximum-history-duration"
 							label="Maximum Records Per Request"
 							value={settings.history.maxLength}
@@ -77,8 +73,8 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 						<SettingsInput
 							type="number"
 							disabled={!historyEnabled}
-							sx={{ width: 250 }}
-							inputSx={{ width: 250 }}
+							sx={{ width: 240 }}
+							inputSx={{ width: 240 }}
 							id="maximum-history-time"
 							label="Automatically Delete Records After"
 							value={settings.history.maxDays}
@@ -93,7 +89,7 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 				<Typography>Data</Typography>
 				<Stack direction="row" gap={2}>
 					<Button
-						sx={{ width: '250px' }}
+						sx={{ width: '240px' }}
 						startDecorator={<FolderOpenIcon />}
 						onClick={() => RustInvoker.showInExplorer({ path: FileSystemWorker.DATA_FOLDER_NAME })}
 						variant="outlined"
@@ -101,7 +97,7 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 						Open Data Folder
 					</Button>
 					<Button
-						sx={{ width: '250px' }}
+						sx={{ width: '240px' }}
 						startDecorator={<FolderOpenIcon />}
 						onClick={async () => {
 							const logDir = await appLogDir();

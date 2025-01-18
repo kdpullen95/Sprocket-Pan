@@ -2,11 +2,14 @@ import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
 import { DataTab } from './DataTab';
 import { GeneralTab } from './GeneralTab';
 import { ActionsTab } from './ActionsTab';
-import { ThemeTab } from './ThemeTab';
+import { DisplayTab } from './DisplayTab';
 import { WorkspaceTab, WorkspaceTabProps } from './WorkspaceTab';
 import { SettingsTabProps } from './types';
+import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 
 export function SettingsTabs({ goToWorkspaceSelection, ...tabProps }: SettingsTabProps & Partial<WorkspaceTabProps>) {
+	const { average } = useScrollbarTheme();
+	const panelStyles = { ...average, height: '100%', overflowY: 'auto' };
 	return (
 		<Tabs aria-label="Settings Tabs" orientation="vertical" sx={{ height: 'calc(100% - 30px)' }}>
 			<TabList>
@@ -16,20 +19,20 @@ export function SettingsTabs({ goToWorkspaceSelection, ...tabProps }: SettingsTa
 				<Tab>Data</Tab>
 				<Tab>Workspace</Tab>
 			</TabList>
-			<TabPanel sx={{ height: '100%', overflowY: 'auto' }} value={0}>
+			<TabPanel sx={panelStyles} value={0}>
 				<GeneralTab {...tabProps} />
 			</TabPanel>
-			<TabPanel sx={{ height: '100%', overflowY: 'auto' }} value={1}>
+			<TabPanel sx={panelStyles} value={1}>
 				<ActionsTab {...tabProps} />
 			</TabPanel>
-			<TabPanel sx={{ height: '100%', overflowY: 'auto' }} value={2}>
-				<ThemeTab {...tabProps} />
+			<TabPanel sx={panelStyles} value={2}>
+				<DisplayTab {...tabProps} />
 			</TabPanel>
-			<TabPanel sx={{ height: '100%', overflowY: 'auto' }} value={3}>
+			<TabPanel sx={panelStyles} value={3}>
 				<DataTab {...tabProps} />
 			</TabPanel>
 			{goToWorkspaceSelection != null && (
-				<TabPanel sx={{ height: '100%', overflowY: 'auto' }} value={4}>
+				<TabPanel sx={panelStyles} value={4}>
 					<WorkspaceTab goToWorkspaceSelection={goToWorkspaceSelection} {...tabProps} />
 				</TabPanel>
 			)}

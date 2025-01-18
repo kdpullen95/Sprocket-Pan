@@ -1,8 +1,8 @@
 import { RESTfulRequestVerb } from '@/types/data/shared';
 import chroma, { Color } from 'chroma-js';
 
-const GET = chroma('#6699ff');
-const POST = chroma('#0df259');
+const GET = chroma('#4d88ff');
+const POST = chroma('#09aa3e');
 const DELETE = chroma('#cc0000');
 const PUT = chroma('#ffc800');
 const PATCH = PUT;
@@ -13,10 +13,8 @@ const OTHER = chroma('#909090');
 function getColors(base: Color) {
 	return {
 		color: base.hex(),
-		backgroundColor: base.darken(4).hex(),
 		':hover': {
 			color: base.brighten().hex(),
-			backgroundColor: base.darken(3).hex(),
 		},
 	};
 }

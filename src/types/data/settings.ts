@@ -63,6 +63,17 @@ export interface Settings {
 		decoration: {
 			opacity: number;
 		};
+		colors: {
+			primary: string;
+			neutral: string;
+			danger: string;
+			success: string;
+			warning: string;
+		};
+		filters: {
+			enabled: boolean;
+			contrast: number;
+		};
 	};
 	history: {
 		maxLength: number;

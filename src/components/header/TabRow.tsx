@@ -1,4 +1,4 @@
-import { TabList, tabClasses } from '@mui/joy';
+import { TabList, tabClasses, useTheme } from '@mui/joy';
 import { Tab } from './Tab';
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { useSingleAxisScroll } from '@/hooks/useSingleAxisScroll';
@@ -10,6 +10,7 @@ interface TabRowProps {
 export function TabRow({ list }: TabRowProps) {
 	const ref = useSingleAxisScroll();
 	const { average: scrollbarTheme } = useScrollbarTheme();
+	const theme = useTheme();
 	return (
 		<TabList
 			ref={ref}
@@ -21,6 +22,7 @@ export function TabRow({ list }: TabRowProps) {
 			id="tabScroll"
 			sx={{
 				...scrollbarTheme,
+				backgroundColor: theme.palette.background.level2,
 				zIndex: 110,
 				overflowX: 'auto',
 				overflowY: 'hidden',

@@ -17,7 +17,7 @@ export function SprocketResizeHandle({ horizontal = false, sx }: SprocketResizeH
 					m: horizontal ? 1 : 0,
 					width: horizontal ? '100%' : '2px',
 					height: horizontal ? '2px' : '100%',
-					backgroundColor: theme.palette.background.level2,
+					backgroundColor: theme.palette.background.level3,
 					':hover': { border: '1px solid ' + theme.palette.primary.outlinedBorder },
 					...sx,
 				}}

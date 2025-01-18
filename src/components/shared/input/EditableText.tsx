@@ -10,7 +10,7 @@ export interface EditableTextProps extends Partial<TypographyProps> {
 	text: string;
 	setText: (text: string) => void;
 	isValidFunc?: (text: string) => boolean;
-	narrow?: boolean;
+	large?: boolean;
 }
 
 export function EditableText({
@@ -18,7 +18,7 @@ export function EditableText({
 	setText,
 	isValidFunc = (text) => text.length >= 1,
 	sx,
-	narrow = false,
+	large,
 	...props
 }: EditableTextProps) {
 	const [isEditing, setIsEditing] = useState(false);
@@ -35,7 +35,7 @@ export function EditableText({
 
 	const toggleEditing = () => {
 		if (isEditing) {
-			commitInput();
+			setIsEditing(false);
 		} else {
 			setTypingText(text);
 			setIsEditing(true);
@@ -50,31 +50,19 @@ export function EditableText({
 	return (
 		<Stack
 			direction="row"
-			maxWidth={narrow ? '100%' : 'calc(100% - 100px)'}
+			maxWidth="calc(100% - 25px)"
 			width="fit-content"
 			alignItems="center"
 			minHeight="2.5em"
-			sx={sx}
+			sx={{ position: 'relative', ...sx }}
 		>
-			<SprocketTooltip text={isEditing ? 'Save' : 'Edit'} sx={{ flexBasis: 0 }}>
-				<IconButton onClick={toggleEditing} disabled={isEditing && !isValid} size="sm">
-					{isEditing ? <CheckIcon /> : <ModeEditIcon />}
-				</IconButton>
-			</SprocketTooltip>
-			<Box position="relative" flexGrow={1} width="100%" minWidth={0}>
-				{isEditing && (
+			{isEditing && (
+				<Box width="100%" minWidth="250px" sx={{ position: 'absolute', zIndex: 3 }}>
 					<Input
+						size={large ? 'lg' : 'md'}
 						autoFocus
-						sx={{
-							zIndex: 100,
-							position: 'absolute',
-							left: 0,
-							width: 'calc(100% + 50px)',
-							minWidth: narrow ? 0 : '200px',
-							height: '100%',
-							'--Input-minHeight': '1.5em',
-							'--Input-gap': 2,
-						}}
+						fullWidth
+						color="primary"
 						variant="soft"
 						placeholder={text}
 						value={typingText}
@@ -85,20 +73,38 @@ export function EditableText({
 							}
 						}}
 						error={!isValid}
-						endDecorator={
+						startDecorator={
 							<SprocketTooltip text="Cancel">
-								<IconButton
-									onClick={() => {
-										setIsEditing(false);
-									}}
-									size="sm"
-								>
+								<IconButton sx={{ ml: '-10px' }} onClick={toggleEditing} size="sm">
 									<CancelIcon />
 								</IconButton>
 							</SprocketTooltip>
 						}
+						endDecorator={
+							<SprocketTooltip text="Save">
+								<IconButton
+									disabled={!isValid}
+									color="success"
+									variant="solid"
+									sx={{ mr: '-10px' }}
+									onClick={commitInput}
+									size="sm"
+								>
+									<CheckIcon />
+								</IconButton>
+							</SprocketTooltip>
+						}
 					/>
-				)}
+				</Box>
+			)}
+			<Box>
+				<SprocketTooltip text="Edit" sx={{ flexBasis: 0 }}>
+					<IconButton onClick={toggleEditing} disabled={isEditing} size="sm">
+						<ModeEditIcon />
+					</IconButton>
+				</SprocketTooltip>
+			</Box>
+			<Box position="relative" flexGrow={1} width="100%" minWidth={0} sx={{ opacity: isEditing ? 0 : 1 }}>
 				<EllipsisTypography {...props}>{text}</EllipsisTypography>
 			</Box>
 		</Stack>

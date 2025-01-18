@@ -58,7 +58,6 @@ export function WorkspaceTab({ overlay, onChange, goToWorkspaceSelection }: Work
 					sx={{ alignSelf: 'start' }}
 					checked={sync?.enabled ?? false}
 					onChange={(enabled) => onChange({ data: { sync: { enabled } } })}
-					endDecorator={sync?.enabled ? 'Enabled' : 'Disabled'}
 				/>
 			</FormControl>
 			<SprocketInput
@@ -92,7 +91,6 @@ export function WorkspaceTab({ overlay, onChange, goToWorkspaceSelection }: Work
 				Delete All History
 			</Button>
 			<Typography>Workspace</Typography>
-
 			<Button
 				sx={{ width: '250px' }}
 				startDecorator={<FileUploadIcon />}

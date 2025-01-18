@@ -9,10 +9,10 @@ import { ModeEdit } from '@mui/icons-material';
 interface EditableTextAreaProps {
 	text: string;
 	setText: (text: string) => void;
-	isValidFunc: (text: string) => boolean;
+	isValidFunc?: (text: string) => boolean;
 }
 
-export function EditableTextArea({ text, setText, isValidFunc }: EditableTextAreaProps) {
+export function EditableTextArea({ text, setText, isValidFunc = () => true }: EditableTextAreaProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [typingText, setTypingText] = useState(text);
 

@@ -33,7 +33,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 				<SettingsTabs
 					overlay={unsavedSettings}
 					settings={globalSettings}
-					onChange={(settings) => setUnsavedSettings(mergeDeep(unsavedSettings, settings))}
+					onChange={(settings) => setUnsavedSettings(mergeDeep(unsavedSettings, settings, { allowUndefined: true }))}
 					goToWorkspaceSelection={goToWorkspaceSelection}
 				/>
 				<SettingsBar

@@ -1,4 +1,4 @@
-import { Stack, Button, CircularProgress, Divider, Typography, Link, FormControl, FormLabel } from '@mui/joy';
+import { Stack, Button, CircularProgress, Divider, Typography, Link } from '@mui/joy';
 import { emit } from '@tauri-apps/api/event';
 import { useEffect, useState } from 'react';
 import HelpIcon from '@mui/icons-material/Help';
@@ -30,7 +30,7 @@ export function GeneralTab({ overlay, settings, onChange }: SettingsTabProps) {
 			<SettingsSelect
 				value={settings.interface.variableNameDisplay}
 				overlay={overlay?.interface?.variableNameDisplay}
-				sx={{ width: 240 }}
+				sx={{ width: 250 }}
 				label="Display Variable Names"
 				tooltip="Controls how {environment_variables} are displayed alongside their computed values."
 				onChange={(val) => onChange({ interface: { variableNameDisplay: val } })}
@@ -41,7 +41,7 @@ export function GeneralTab({ overlay, settings, onChange }: SettingsTabProps) {
 				]}
 			/>
 			<SettingsSelect
-				sx={{ width: 240 }}
+				sx={{ width: 250 }}
 				label="Tips Section Messages"
 				value={settings.interface.tipsSection}
 				overlay={overlay?.interface?.tipsSection}
@@ -53,15 +53,13 @@ export function GeneralTab({ overlay, settings, onChange }: SettingsTabProps) {
 					{ value: TIPS_SECTION.hidden, label: 'Hidden' },
 				]}
 			/>
-			<FormControl sx={{ width: 240 }}>
-				<FormLabel>List Virtualization</FormLabel>
-				<SettingsSwitch
-					checked={settings.virtualization.enabled}
-					onChange={(enabled) => onChange({ virtualization: { enabled } })}
-					endDecorator={settings.virtualization.enabled ? 'Enabled' : 'Disabled'}
-					overlay={overlay?.virtualization?.enabled}
-				/>
-			</FormControl>
+			<SettingsSwitch
+				sx={{ width: 250 }}
+				label="List Virtualization"
+				checked={settings.virtualization.enabled}
+				onChange={(enabled) => onChange({ virtualization: { enabled } })}
+				overlay={overlay?.virtualization?.enabled}
+			/>
 			<Divider />
 			<Typography level="body-md">
 				Version {version} -{' '}

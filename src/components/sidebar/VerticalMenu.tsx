@@ -1,6 +1,6 @@
 import { FluentList } from '@/assets/icons/fluent/FluentList';
 import { Workspaces } from '@mui/icons-material';
-import { Box, Sheet, Stack } from '@mui/joy';
+import { Box, Sheet, Stack, useTheme } from '@mui/joy';
 import { SaveButton } from './buttons/SaveButton';
 import { SidebarTabs } from './types';
 import { SidebarTabButton, SidebarTabButtonProps } from './buttons/SidebarTabButton';
@@ -13,8 +13,9 @@ import { FluentCube } from '@/assets/icons/fluent/FluentCube';
 type VerticalMenuProps = Pick<SidebarTabButtonProps, 'tab' | 'setTab' | 'showActive'>;
 
 export function VerticalMenu(args: VerticalMenuProps) {
+	const theme = useTheme();
 	return (
-		<Sheet variant="soft" sx={{ width: '100%', height: '100%' }}>
+		<Sheet sx={{ width: '100%', height: '100%', backgroundColor: theme.palette.background.level2 }}>
 			<Stack alignItems="stretch" justifyContent="stretch" height="100%">
 				<Stack alignItems="center" justifyContent="center" width="100%" height="45px">
 					<SaveButton />

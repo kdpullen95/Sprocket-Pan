@@ -31,7 +31,7 @@ export function SideDrawerHeader({ content, actions, menuOptions }: SideDrawerHe
 				)}
 			</Box>
 			{actions != null && (
-				<Card sx={{ m: 1, p: 1.5 }} variant="soft">
+				<Card variant="plain" sx={{ backgroundColor: theme.palette.background.level1, m: 1, p: 1.5 }}>
 					{actions}
 				</Card>
 			)}

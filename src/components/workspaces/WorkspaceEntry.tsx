@@ -38,7 +38,7 @@ export function WorkspaceEntry({ workspace, onDelete }: WorkspaceEntryProps) {
 				<Stack direction="row" gap={2} alignItems="center">
 					<GradientBorderBoundingBox>
 						<TextAvatar
-							username={workspace.name}
+							username={workspace.minidenticon}
 							size="md"
 							sx={{ p: 0.5, border: '2px solid', borderColor: 'background.body' }}
 						/>

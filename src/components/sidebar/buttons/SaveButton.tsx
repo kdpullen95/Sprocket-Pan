@@ -31,7 +31,7 @@ export function SaveButton() {
 				}}
 				badgeInset="14%"
 			>
-				<IconButton variant="soft" color="neutral" onClick={save} disabled={!isModified || loading}>
+				<IconButton variant="plain" color="neutral" onClick={save} disabled={!isModified || loading}>
 					{loading ? <CircularProgress /> : <SaveIcon />}
 				</IconButton>
 			</Badge>

@@ -23,12 +23,12 @@ export function SideDrawer({ tab }: SideDrawerProps) {
 		>
 			<Stack height="100%">
 				<Sheet
-					variant="soft"
 					sx={{
 						flex: 0,
 						height: '45px',
 						minHeight: '45px',
 						boxShadow: '0px 5px 20px 0px ' + theme.palette.background.surface,
+						backgroundColor: theme.palette.background.level2,
 					}}
 				>
 					<Stack height="100%" px={1} direction="row" alignItems="center" justifyContent="space-between">

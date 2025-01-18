@@ -5,20 +5,16 @@ interface VerbDivProps {
 }
 
 export function VerbDiv({ verb = 'N/A' }: VerbDivProps) {
-	const { color, backgroundColor } = verbColors[verb];
+	const { color } = verbColors[verb];
 	return (
 		<div
 			style={{
-				padding: '3px',
 				color,
-				borderRadius: '10px',
-				border: '1px solid ' + color,
-				backgroundColor,
-				fontSize: '0.75em',
+				fontSize: '1em',
 				fontWeight: 600,
 			}}
 		>
-			{verb}
+			<code>{verb}</code>
 		</div>
 	);
 }
