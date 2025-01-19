@@ -10,15 +10,21 @@ export interface EditableTextProps extends Partial<TypographyProps> {
 	text: string;
 	setText: (text: string) => void;
 	isValidFunc?: (text: string) => boolean;
-	large?: boolean;
+	size?: 'lg' | 'md' | 'sm';
 }
+
+const widths = {
+	lg: '340px',
+	md: '240px',
+	sm: '140px',
+} as const;
 
 export function EditableText({
 	text,
 	setText,
 	isValidFunc = (text) => text.length >= 1,
 	sx,
-	large,
+	size = 'md',
 	...props
 }: EditableTextProps) {
 	const [isEditing, setIsEditing] = useState(false);
@@ -57,9 +63,9 @@ export function EditableText({
 			sx={{ position: 'relative', ...sx }}
 		>
 			{isEditing && (
-				<Box width="100%" minWidth="250px" sx={{ position: 'absolute', zIndex: 3 }}>
+				<Box width="100%" minWidth={widths[size]} sx={{ position: 'absolute', zIndex: 3 }}>
 					<Input
-						size={large ? 'lg' : 'md'}
+						size={size}
 						autoFocus
 						fullWidth
 						color="primary"

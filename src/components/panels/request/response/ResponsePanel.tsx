@@ -1,4 +1,4 @@
-import { Typography, Stack } from '@mui/joy';
+import { Typography, Stack, IconButton } from '@mui/joy';
 import { HistoryControl } from './HistoryControl';
 import { ResponseInfo } from './ResponseInfo';
 import { OpenDiffToolButton } from './OpenDiffToolButton';
@@ -9,6 +9,8 @@ import { formatFullDate } from '@/utils/string';
 import { useSelector } from 'react-redux';
 import { selectHistoryById } from '@/state/active/selectors';
 import { useEffect, useState } from 'react';
+import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import { DeleteForever } from '@mui/icons-material';
 
 interface ResponsePanelProps {
 	request: EndpointRequest;
@@ -36,19 +38,25 @@ export function ResponsePanel({ request }: ResponsePanelProps) {
 	return (
 		<>
 			<Stack direction="row" justifyContent="space-between" alignItems="center">
-				<Typography level="title-md" textAlign="center">
-					{data.response?.dateTime == null ? 'N/A' : formatFullDate(data.response.dateTime)}
-				</Typography>
-				<Stack direction="row" spacing={0}>
+				<Stack direction="row" gap={0} alignItems="center">
+					<SprocketTooltip text="Delete Response">
+						<IconButton
+							disabled={history.length === 0}
+							aria-label="Delete Response"
+							onClick={() => {
+								dispatch(activeActions.deleteResponseFromHistory({ requestId: request.id, historyIndex: index }));
+							}}
+						>
+							<DeleteForever />
+						</IconButton>
+					</SprocketTooltip>
+					<Typography level="title-md" textAlign="center">
+						{data.response?.dateTime == null ? 'N/A' : formatFullDate(data.response.dateTime)}
+					</Typography>
+				</Stack>
+				<Stack direction="row" gap={0}>
+					<HistoryControl value={index} onChange={setIndex} historyLength={history.length} />
 					<OpenDiffToolButton historyIndex={index} id={request.id} />
-					<HistoryControl
-						value={index}
-						onChange={setIndex}
-						historyLength={history.length}
-						onDelete={(index) =>
-							dispatch(activeActions.deleteResponseFromHistory({ requestId: request.id, historyIndex: index }))
-						}
-					/>
 				</Stack>
 			</Stack>
 			<ResponseInfo data={data} requestId={request.id} />

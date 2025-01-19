@@ -32,7 +32,7 @@ export function OrphanResolutionDropdown({
 	value,
 }: OrphanResolutionDropdownProps) {
 	const options: SelectOption<string>[] = [{ value: OrphanResolution.delete, label: `Discard ${name}` }];
-	if (parent == null) {
+	if (parentName == null) {
 		options.push({ value: OrphanResolution.create, label: `Assign to New ${parentType}` });
 		options.push(...adoptors.map((adoptor) => ({ value: adoptor.id, label: `Assign to ${adoptor.name}` })));
 	} else {

@@ -1,7 +1,6 @@
 import { Typography, Stack, IconButton } from '@mui/joy';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import DeleteForever from '@mui/icons-material/DeleteForever';
 import { EditableText } from '@/components/shared/input/EditableText';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { clamp } from '@/utils/math';
@@ -10,10 +9,9 @@ interface HistoryControlProps {
 	value: number;
 	onChange: (state: number) => void;
 	historyLength: number;
-	onDelete?: (index: number) => void;
 }
 
-export function HistoryControl({ value, onChange, historyLength, onDelete }: HistoryControlProps) {
+export function HistoryControl({ value, onChange, historyLength }: HistoryControlProps) {
 	return (
 		<Stack direction="row">
 			<SprocketTooltip text="Previous Response">
@@ -37,9 +35,9 @@ export function HistoryControl({ value, onChange, historyLength, onDelete }: His
 							const num = Number.parseInt(text);
 							return !isNaN(num) && num >= 1 && num <= historyLength;
 						}}
-						narrow
+						size="sm"
 					/>
-					/{historyLength}
+					<span style={{ marginLeft: '5px' }}>/{historyLength}</span>
 				</>
 			</Typography>
 			<SprocketTooltip text="Next Response">
@@ -51,22 +49,6 @@ export function HistoryControl({ value, onChange, historyLength, onDelete }: His
 					<ArrowRightIcon />
 				</IconButton>
 			</SprocketTooltip>
-			{onDelete && (
-				<SprocketTooltip text="Delete Response">
-					<IconButton
-						disabled={historyLength === 0}
-						aria-label="Delete Response"
-						onClick={() => {
-							onDelete(value);
-							if (value >= historyLength - 1) {
-								onChange(historyLength - 2);
-							}
-						}}
-					>
-						<DeleteForever />
-					</IconButton>
-				</SprocketTooltip>
-			)}
 		</Stack>
 	);
 }
