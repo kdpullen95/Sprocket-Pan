@@ -11,6 +11,7 @@ import { selectHistoryById } from '@/state/active/selectors';
 import { useEffect, useState } from 'react';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { DeleteForever } from '@mui/icons-material';
+import { clamp } from '@/utils/math';
 
 interface ResponsePanelProps {
 	request: EndpointRequest;
@@ -20,7 +21,8 @@ export function ResponsePanel({ request }: ResponsePanelProps) {
 	const dispatch = useAppDispatch();
 	const history = useSelector((state) => selectHistoryById(state, request.id));
 	const [index, setIndex] = useState(history.length - 1);
-	const data = history[index];
+	const boundedIndex = clamp(index, 0, history.length - 1);
+	const data = history[boundedIndex];
 
 	useEffect(() => {
 		if (index === history.length - 2) setIndex(history.length - 1);
@@ -44,7 +46,9 @@ export function ResponsePanel({ request }: ResponsePanelProps) {
 							disabled={history.length === 0}
 							aria-label="Delete Response"
 							onClick={() => {
-								dispatch(activeActions.deleteResponseFromHistory({ requestId: request.id, historyIndex: index }));
+								dispatch(
+									activeActions.deleteResponseFromHistory({ requestId: request.id, historyIndex: boundedIndex }),
+								);
 							}}
 						>
 							<DeleteForever />
@@ -55,8 +59,8 @@ export function ResponsePanel({ request }: ResponsePanelProps) {
 					</Typography>
 				</Stack>
 				<Stack direction="row" gap={0}>
-					<HistoryControl value={index} onChange={setIndex} historyLength={history.length} />
-					<OpenDiffToolButton historyIndex={index} id={request.id} />
+					<HistoryControl value={boundedIndex} onChange={setIndex} historyLength={history.length} />
+					<OpenDiffToolButton historyIndex={boundedIndex} id={request.id} />
 				</Stack>
 			</Stack>
 			<ResponseInfo data={data} requestId={request.id} />
