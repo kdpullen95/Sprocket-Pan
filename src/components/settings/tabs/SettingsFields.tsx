@@ -71,9 +71,7 @@ export function SettingsPaletteSelect({
 	onChange,
 	...props
 }: PaletteSelectProps & SettingsFieldProps<string>) {
-	console.log({ value, overlay });
 	const override = overlay !== undefined;
-	console.log({ override });
 	return (
 		<Stack direction="row" gap={1} alignItems="start">
 			<PaletteSelect value={override ? overlay : value} onChange={onChange} {...props} />
