@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { globalActions } from '@/state/global/slice';
 import { WorkspaceMetadata } from '@/types/data/workspace';
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
+import { InlineItemName } from '@/components/shared/InlineItemName';
 
 export function WorkspacesFileSystem() {
 	const [switchingTo, setSwitchingTo] = useState<WorkspaceMetadata | undefined>(undefined);
@@ -45,7 +46,11 @@ export function WorkspacesFileSystem() {
 			<AreYouSureModal
 				open={switchingTo != null}
 				closeFunc={() => setSwitchingTo(undefined)}
-				action={`switch to workspace ${switchingTo?.name} without saving`}
+				action={
+					<>
+						switch to workspace <InlineItemName item={switchingTo} /> without saving
+					</>
+				}
 				actionFunc={() => dispatch(globalActions.setSelectedWorkspace(switchingTo))}
 			/>
 		</>

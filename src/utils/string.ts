@@ -113,3 +113,15 @@ export function formatRelativeDate(date: Date | string | number) {
 	value = value < 0 ? Math.ceil(value) : Math.floor(value);
 	return dateTimeFormatters.relative.format(value, units);
 }
+
+export function truncate(
+	str = '',
+	{ ellipses = true, length = 20 }: { ellipses: boolean; length: number } = {} as any,
+) {
+	if (str.length < length + 1) return str;
+	let truncated = str.substring(0, length).trim();
+	if (ellipses) {
+		truncated += '...';
+	}
+	return truncated;
+}
