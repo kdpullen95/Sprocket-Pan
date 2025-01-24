@@ -23,6 +23,7 @@ interface ResponseInfoProps {
 export function ResponseInfo({ data, requestId }: ResponseInfoProps) {
 	const { response, request, auditLog, error } = autofillDefaults(data);
 	const timeDifference = (response.dateTime - request.dateTime) / 1000;
+	console.log(request);
 	return (
 		<SprocketTabs
 			tabs={[
@@ -55,25 +56,23 @@ export function ResponseInfo({ data, requestId }: ResponseInfoProps) {
 								<UriTypography>{request.url}</UriTypography>.
 							</Typography>
 							<HeadersDisplayTable headers={request.headers} label="request" />
-							{Object.keys(request.body).length > 0 && (
-								<>
-									<AccordionGroup>
-										<Accordion defaultExpanded>
-											<AccordionSummary>Request Body</AccordionSummary>
-											<AccordionDetails>
-												<SprocketEditor
-													// https://github.com/itaifish/Sprocket-Pan/issues/138
-													height="calc(100vh - 350px)"
-													value={response.body}
-													language={getEditorLanguage(response.bodyType)}
-													options={{ readOnly: true, domReadOnly: true }}
-													formatOnChange
-												/>
-											</AccordionDetails>
-										</Accordion>
-									</AccordionGroup>
-								</>
-							)}
+							<>
+								<AccordionGroup>
+									<Accordion defaultExpanded>
+										<AccordionSummary>Request Body</AccordionSummary>
+										<AccordionDetails>
+											<SprocketEditor
+												// https://github.com/itaifish/Sprocket-Pan/issues/138
+												height="calc(100vh - 350px)"
+												value={typeof request.body == 'string' ? request.body : JSON.stringify(request.body)}
+												language={getEditorLanguage(request.bodyType ?? 'JSON')}
+												options={{ readOnly: true, domReadOnly: true }}
+												formatOnChange
+											/>
+										</AccordionDetails>
+									</Accordion>
+								</AccordionGroup>
+							</>
 						</>
 					),
 				},
