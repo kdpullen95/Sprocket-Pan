@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, Typography } from '@mui/joy';
+import { Typography } from '@mui/joy';
 import { getEditorLanguage, ResponseBody } from './ResponseBody';
 import { HeadersDisplayTable } from './HeadersDisplayTable';
 import { VisualEventLog } from './VisualEventLog';
@@ -56,23 +56,15 @@ export function ResponseInfo({ data, requestId }: ResponseInfoProps) {
 								<UriTypography>{request.url}</UriTypography>.
 							</Typography>
 							<HeadersDisplayTable headers={request.headers} label="request" />
-							<>
-								<AccordionGroup>
-									<Accordion defaultExpanded>
-										<AccordionSummary>Request Body</AccordionSummary>
-										<AccordionDetails>
-											<SprocketEditor
-												// https://github.com/itaifish/Sprocket-Pan/issues/138
-												height="calc(100vh - 350px)"
-												value={typeof request.body == 'string' ? request.body : JSON.stringify(request.body)}
-												language={getEditorLanguage(request.bodyType ?? 'JSON')}
-												options={{ readOnly: true, domReadOnly: true }}
-												formatOnChange
-											/>
-										</AccordionDetails>
-									</Accordion>
-								</AccordionGroup>
-							</>
+							<Typography level="title-md">Body</Typography>
+							<SprocketEditor
+								// https://github.com/itaifish/Sprocket-Pan/issues/138
+								height="calc(100vh - 350px)"
+								value={request.body}
+								language={getEditorLanguage(request.bodyType ?? 'JSON')}
+								options={{ readOnly: true, domReadOnly: true }}
+								formatOnChange
+							/>
 						</>
 					),
 				},
