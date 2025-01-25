@@ -2,19 +2,23 @@ import { useSelector } from 'react-redux';
 import { selectActiveWorkspace, selectWorkspacesList } from '@/state/global/selectors';
 import { ActiveWorkspaceFileCard } from './ActiveWorkspaceFileCard';
 import { WorkspaceFileCard } from './WorkspaceFileCard';
-import { Box, Stack } from '@mui/joy';
+import { Box, Button, Stack, Typography } from '@mui/joy';
 import { SideDrawerHeader } from '../../SideDrawerHeader';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
-import { AreYouSureModal } from '@/components/shared/modals/AreYouSureModal';
-import { useState } from 'react';
-import { globalActions } from '@/state/global/slice';
+import { useEffect, useState } from 'react';
 import { WorkspaceMetadata } from '@/types/data/workspace';
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { InlineItemName } from '@/components/shared/InlineItemName';
+import { SprocketModal } from '@/components/shared/modals/SprocketModal';
+import { RemoveCircle, Save } from '@mui/icons-material';
+import { globalActions } from '@/state/global/slice';
+import { saveActiveData } from '@/state/active/thunks';
+import { selectHasBeenModifiedSinceLastSave } from '@/state/active/selectors';
 
 export function WorkspacesFileSystem() {
 	const [switchingTo, setSwitchingTo] = useState<WorkspaceMetadata | undefined>(undefined);
+	const isModified = useSelector(selectHasBeenModifiedSinceLastSave);
 	const { average } = useScrollbarTheme();
 	const workspaces = useSelector(selectWorkspacesList);
 	const activeWorkspace = useSelector(selectActiveWorkspace);
@@ -24,6 +28,17 @@ export function WorkspacesFileSystem() {
 		dispatch(uiActions.addTab(id));
 		dispatch(uiActions.setSelectedTab(id));
 	};
+	const switchWorkspace = async (save = false) => {
+		setSwitchingTo(undefined);
+		if (save) await dispatch(saveActiveData());
+		dispatch(globalActions.setSelectedWorkspace(switchingTo));
+	};
+	useEffect(() => {
+		if (switchingTo != null && !isModified) {
+			switchWorkspace();
+		}
+	}, [switchingTo, isModified]);
+	console.log({ isModified, switchingTo, actual: isModified && switchingTo != null });
 	return (
 		<>
 			<SideDrawerHeader content="Workspaces" />
@@ -43,16 +58,27 @@ export function WorkspacesFileSystem() {
 					</div>
 				))}
 			</Stack>
-			<AreYouSureModal
-				open={switchingTo != null}
-				closeFunc={() => setSwitchingTo(undefined)}
-				action={
+			<SprocketModal
+				size="sm"
+				open={isModified && switchingTo != null}
+				onClose={() => setSwitchingTo(undefined)}
+				title="Switch Active Workspace"
+				actions={
 					<>
-						switch to workspace <InlineItemName item={switchingTo} /> without saving
+						<Button color="warning" startDecorator={<RemoveCircle />} onClick={() => switchWorkspace()}>
+							Switch
+						</Button>
+						<Button sx={{ width: '70%' }} startDecorator={<Save />} onClick={() => switchWorkspace(true)}>
+							Save and Switch
+						</Button>
 					</>
 				}
-				actionFunc={() => dispatch(globalActions.setSelectedWorkspace(switchingTo))}
-			/>
+			>
+				<Typography>
+					Would you like to save workspace <InlineItemName item={activeWorkspace} /> before switching to workspace{' '}
+					<InlineItemName item={switchingTo} />?
+				</Typography>
+			</SprocketModal>
 		</>
 	);
 }
