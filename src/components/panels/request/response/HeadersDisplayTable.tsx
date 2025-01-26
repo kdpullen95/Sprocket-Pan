@@ -9,15 +9,16 @@ import { Box, Typography } from '@mui/joy';
 interface HeadersDisplayTableProps {
 	headers?: KeyValuePair[] | null | Record<string, string>;
 	label: 'request' | 'response';
+	title?: string | null;
 }
 
-export function HeadersDisplayTable({ headers, label }: HeadersDisplayTableProps) {
+export function HeadersDisplayTable({ headers, label, title = 'Headers' }: HeadersDisplayTableProps) {
 	if (headers == null) return <></>;
 	headers = Array.isArray(headers) ? headers : toKeyValuePairs(headers);
 	if (headers.length === 0) return <></>;
 	return (
 		<>
-			<Typography level="title-md">Headers</Typography>
+			{title != null && <Typography level="title-md">{title}</Typography>}
 			<SprocketTable
 				aria-label={`${label} Headers Table`}
 				sx={{ overflowWrap: 'break-word' }}
