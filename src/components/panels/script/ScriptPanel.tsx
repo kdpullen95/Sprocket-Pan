@@ -44,6 +44,7 @@ export function ScriptPanel({ id }: PanelProps) {
 
 	const run = async () => {
 		try {
+			update({ content: localDataState });
 			setIsRunning(true);
 			const interruptible = ScriptRunnerManager.runTypescriptWithFullContext<unknown>({
 				script,
