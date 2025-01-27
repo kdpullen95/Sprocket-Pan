@@ -50,11 +50,11 @@ const dateTimeFormatters = {
 		fractionalSecondDigits: 3,
 	}),
 	shortDateFull: new Intl.DateTimeFormat('en-US', {
-		year: '2-digit',
-		month: '2-digit',
+		year: 'numeric',
+		month: 'short',
 		day: 'numeric',
 		hour12: true,
-		hour: '2-digit',
+		hour: 'numeric',
 		minute: '2-digit',
 		second: '2-digit',
 		fractionalSecondDigits: 2,
@@ -67,8 +67,25 @@ const dateTimeFormatters = {
 	relative: new Intl.RelativeTimeFormat('en'),
 };
 
+function getNumericDateSuffix(x: number) {
+	if (x > 3 && x < 21) {
+		return 'th';
+	}
+	switch (x % 10) {
+		case 1:
+			return 'st';
+		case 2:
+			return 'nd';
+		case 3:
+			return 'rd';
+		default:
+			return 'th';
+	}
+}
+
 export function formatShortFullDate(date: Date | string | number) {
-	return dateTimeFormatters.shortDateFull.format(new Date(date));
+	const parts = dateTimeFormatters.shortDateFull.formatToParts(new Date(date)).map((part) => part.value);
+	return `${parts[0]} ${parts[2]}${getNumericDateSuffix(+parts[2])} ${parts[4]} at ${parts.slice(6).join('')}`;
 }
 
 export function formatFullDate(date: Date | string | number) {
