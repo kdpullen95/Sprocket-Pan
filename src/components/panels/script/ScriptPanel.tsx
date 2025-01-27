@@ -57,7 +57,7 @@ export function ScriptPanel({ id }: PanelProps) {
 				setScriptOutput(output.toString());
 			} else {
 				setScriptOutputLang('json');
-				setScriptOutput(JSON.stringify(output));
+				setScriptOutput(output == undefined ? '' : JSON.stringify(output));
 			}
 		} catch (e) {
 			setScriptOutputLang('json');
