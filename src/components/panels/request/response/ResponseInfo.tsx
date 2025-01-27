@@ -24,7 +24,6 @@ interface ResponseInfoProps {
 export function ResponseInfo({ data, requestId }: ResponseInfoProps) {
 	const { response, request, auditLog, error } = autofillDefaults(data);
 	const timeDifference = (response.dateTime - request.dateTime) / 1000;
-	console.log(request);
 	return (
 		<SprocketTabs
 			tabs={[
@@ -59,10 +58,6 @@ export function ResponseInfo({ data, requestId }: ResponseInfoProps) {
 							<ButtonTabs
 								tabs={[
 									{
-										title: 'Headers',
-										content: <HeadersDisplayTable headers={request.headers} label="request" title={null} />,
-									},
-									{
 										title: 'Body',
 										content: (
 											<Box mt="-36px">
@@ -76,6 +71,10 @@ export function ResponseInfo({ data, requestId }: ResponseInfoProps) {
 												/>
 											</Box>
 										),
+									},
+									{
+										title: 'Headers',
+										content: <HeadersDisplayTable headers={request.headers} label="request" title={null} />,
 									},
 								]}
 							/>
