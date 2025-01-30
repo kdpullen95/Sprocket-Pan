@@ -1,7 +1,7 @@
 [package]
 name = "sprocket_pan"
 version = "1.3.1"
-description = "Sprocket Pan"
+description = "SprocketPan"
 authors = ["Itai Fish", "KateLynn Pullen"]
 license = ""
 repository = ""
