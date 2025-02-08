@@ -196,8 +196,17 @@ class NetworkRequestManager {
 	}
 
 	public runScript(args: Partial<RunTypescriptWithFullContextArgs>) {
-		if (args.script == null) throw new Error("cannot run script that doesn't exist");
-		return ScriptRunnerManager.runTypescriptWithFullContext(args as RunTypescriptWithFullContextArgs);
+		if (args.script == null) {
+			throw new Error("cannot run script that doesn't exist");
+		}
+		if (args.auditLog != undefined) {
+			AuditLogManager.addToAuditLog(args.auditLog, 'before', 'standaloneScript', args.associatedId);
+		}
+		const result = ScriptRunnerManager.runTypescriptWithFullContext(args as RunTypescriptWithFullContextArgs);
+		if (args.auditLog != undefined) {
+			AuditLogManager.addToAuditLog(args.auditLog, 'after', 'standaloneScript', args.associatedId);
+		}
+		return result;
 	}
 
 	private headersContentTypeToBodyType(contentType: string | null): RawBodyType {
