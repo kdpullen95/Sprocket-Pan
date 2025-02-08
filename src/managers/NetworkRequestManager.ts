@@ -28,18 +28,10 @@ class NetworkRequestManager {
 		this.xmlBuilder = new xmlParse.Builder();
 	}
 
-	private buildPreScripts(state: RootState, scriptObjs: ScriptObjs) {
-		return getSettingsFromState(state).script.strategy.pre.map((strat) => ({
-			script: scriptObjs[strat]?.preRequestScript,
-			name: `pre${capitalizeWord(strat)}Script` as const,
-			id: scriptObjs[strat]?.id,
-		}));
-	}
-
-	private buildPostScripts(state: RootState, scriptObjs: ScriptObjs) {
-		return getSettingsFromState(state).script.strategy.post.map((strat) => ({
-			script: scriptObjs[strat]?.postRequestScript,
-			name: `post${capitalizeWord(strat)}Script` as const,
+	private buildScripts(state: RootState, scriptObjs: ScriptObjs, type: 'pre' | 'post') {
+		return getSettingsFromState(state).script.strategy[type].map((strat) => ({
+			script: scriptObjs[strat] ? scriptObjs[strat][`${type}RequestScript`]?.trim() || undefined : undefined,
+			name: `${type}${capitalizeWord(strat)}Script` as const,
 			id: scriptObjs[strat]?.id,
 		}));
 	}
@@ -66,10 +58,9 @@ class NetworkRequestManager {
 		const endpoint = data.endpoints[endpointId];
 		const service = data.services[endpoint.serviceId];
 		const scriptObjs = { service, endpoint, request };
-		const scripts =
-			response == null ? this.buildPreScripts(state, scriptObjs) : this.buildPostScripts(state, scriptObjs);
+		const scripts = this.buildScripts(state, scriptObjs, response == null ? 'pre' : 'post');
 		for (const script of scripts) {
-			if (script.script != null) {
+			if (script.script != undefined) {
 				const interruptible = this.runScript({
 					script: script.script,
 					requestId,
