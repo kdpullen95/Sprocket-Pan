@@ -40,8 +40,8 @@ class NetworkRequestManager {
 		let ret;
 		const timestamp = new Date().getTime();
 		try {
-			const state = StateAccessManager.getState();
 			await this.runScripts(requestId, auditLog);
+			const state = StateAccessManager.getState();
 			ret = await this.sendRequest(requestId, state, auditLog);
 			await this.runScripts(requestId, auditLog, ret.response);
 			return { ...ret, timestamp, auditLog };
