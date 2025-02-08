@@ -113,7 +113,9 @@ export class WorkspaceDataManager {
 		for (const key in history) {
 			history[key] = history[key].filter((res) => !res.discard);
 			// cleanliness
-			if (history[key].length === 0) delete history[key];
+			if (history[key].length === 0) {
+				delete history[key];
+			}
 		}
 		return history;
 	}
