@@ -12,7 +12,7 @@ import { VARIABLE_NAME_DISPLAY, TIPS_SECTION } from '@/types/data/settings';
 import { log } from '@/utils/logging';
 import { sleep } from '@/utils/misc';
 
-export function GeneralTab({ overlay, settings, onChange }: SettingsTabProps) {
+export function GeneralTab({ overlay, settings, onChange, searchText }: SettingsTabProps) {
 	const [checkingForUpdate, setCheckingForUpdate] = useState(false);
 	const [hasCheckedForUpdate, setHasCheckedForUpdate] = useState(false);
 	const [version, setVersion] = useState('Loading Version...');
@@ -28,6 +28,7 @@ export function GeneralTab({ overlay, settings, onChange }: SettingsTabProps) {
 	return (
 		<Stack spacing={3}>
 			<SettingsSelect
+				searchText={searchText}
 				value={settings.interface.variableNameDisplay}
 				overlay={overlay?.interface?.variableNameDisplay}
 				sx={{ width: 250 }}
@@ -43,6 +44,7 @@ export function GeneralTab({ overlay, settings, onChange }: SettingsTabProps) {
 			<SettingsSelect
 				sx={{ width: 250 }}
 				label="Tips Section Messages"
+				searchText={searchText}
 				value={settings.interface.tipsSection}
 				overlay={overlay?.interface?.tipsSection}
 				onChange={(val) => onChange({ interface: { tipsSection: val } })}
@@ -55,6 +57,7 @@ export function GeneralTab({ overlay, settings, onChange }: SettingsTabProps) {
 			/>
 			<SettingsSwitch
 				sx={{ width: 250 }}
+				searchText={searchText}
 				label="List Virtualization"
 				checked={settings.virtualization.enabled}
 				onChange={(enabled) => onChange({ virtualization: { enabled } })}

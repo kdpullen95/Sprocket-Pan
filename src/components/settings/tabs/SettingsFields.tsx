@@ -8,6 +8,7 @@ import { SprocketSelectProps, SprocketSelect } from '@/components/shared/input/S
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { PaletteSelect, PaletteSelectProps } from '@/components/shared/input/PaletteSelect';
 import { SxProps } from '@mui/joy/styles/types';
+import { useShouldDisplayFromSearch } from './hooks';
 
 interface ResetButtonProps {
 	override: boolean;
@@ -32,6 +33,7 @@ export function ResetButton({ override, onChange, sx }: ResetButtonProps) {
 
 interface SettingsFieldProps<T> {
 	overlay: T | undefined;
+	searchText?: string;
 	onChange: (arg: T | undefined) => void;
 }
 
@@ -39,8 +41,13 @@ export function SettingsSelect<T>({
 	value,
 	overlay,
 	onChange,
+	searchText,
 	...props
 }: SprocketSelectProps<T> & SettingsFieldProps<T>) {
+	const shouldDisplay = useShouldDisplayFromSearch(props.label, searchText);
+	if (!shouldDisplay) {
+		return <></>;
+	}
 	const override = overlay !== undefined;
 	return (
 		<Stack direction="row" gap={1} alignItems="start">
@@ -54,9 +61,14 @@ export function SettingsInput({
 	value,
 	overlay,
 	onChange,
+	searchText,
 	...props
 }: SprocketInputProps & SettingsFieldProps<SprocketInputProps['value']>) {
 	const override = overlay !== undefined;
+	const shouldDisplay = useShouldDisplayFromSearch(props.label, searchText);
+	if (!shouldDisplay) {
+		return <></>;
+	}
 	return (
 		<Stack direction="row" gap={1} alignItems="start">
 			<SprocketInput onChange={onChange} value={override ? overlay : value} {...props} />
@@ -83,12 +95,18 @@ export function SettingsPaletteSelect({
 export function SettingsStrategyInput({
 	value,
 	overlay,
+	searchText,
 	onChange,
 }: StrategyInputProps & SettingsFieldProps<StrategyInputProps['value']>) {
 	const override = overlay !== undefined;
+	const label = 'Script Execution Order';
+	const shouldDisplay = useShouldDisplayFromSearch(label, searchText);
+	if (!shouldDisplay) {
+		return <></>;
+	}
 	return (
 		<FormControl sx={{ width: 'fit-content' }}>
-			<FormLabel>Script Execution Order</FormLabel>
+			<FormLabel>{label}</FormLabel>
 			<Stack direction="row" gap={1} alignItems="start">
 				<StrategyInput value={override ? overlay : value} onChange={onChange} />
 				<ResetButton onChange={onChange} override={override} />
@@ -97,8 +115,18 @@ export function SettingsStrategyInput({
 	);
 }
 
-export function SettingsSlider({ value, overlay, onChange, ...props }: InputSliderProps & SettingsFieldProps<number>) {
+export function SettingsSlider({
+	value,
+	overlay,
+	onChange,
+	searchText,
+	...props
+}: InputSliderProps & SettingsFieldProps<number>) {
 	const override = overlay !== undefined;
+	const shouldDisplay = useShouldDisplayFromSearch(props.label, searchText);
+	if (!shouldDisplay) {
+		return <></>;
+	}
 	return (
 		<Stack direction="row" alignItems="start" gap={1}>
 			<InputSlider value={override ? overlay : value} onChange={onChange} {...props} />
@@ -111,9 +139,14 @@ export function SettingsSwitch({
 	checked,
 	overlay,
 	onChange,
+	searchText,
 	...props
 }: SprocketSwitchProps & SettingsFieldProps<boolean>) {
 	const override = overlay !== undefined;
+	const shouldDisplay = useShouldDisplayFromSearch(props.label, searchText);
+	if (!shouldDisplay) {
+		return <></>;
+	}
 	return (
 		<Stack direction="row" alignItems="start" gap={1} minHeight="2em">
 			<SprocketSwitch checked={override ? overlay : checked} onChange={onChange} {...props} />

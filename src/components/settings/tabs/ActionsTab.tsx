@@ -10,11 +10,12 @@ function toMSOrUndefined(num: unknown) {
 	return ret == null ? undefined : ret * 1000;
 }
 
-export function ActionsTab({ overlay, settings, onChange }: SettingsTabProps) {
+export function ActionsTab({ overlay, settings, searchText, onChange }: SettingsTabProps) {
 	return (
 		<Stack spacing={3}>
 			<Typography level="title-md">Requests</Typography>
 			<SettingsInput
+				searchText={searchText}
 				sx={{ width: 250 }}
 				inputSx={{ width: 250 }}
 				id="network-timeout"
@@ -28,6 +29,7 @@ export function ActionsTab({ overlay, settings, onChange }: SettingsTabProps) {
 			<Divider></Divider>
 			<Typography level="title-md">Scripts</Typography>
 			<SettingsInput
+				searchText={searchText}
 				type="number"
 				sx={{ width: 250 }}
 				inputSx={{ width: 250 }}
@@ -40,6 +42,7 @@ export function ActionsTab({ overlay, settings, onChange }: SettingsTabProps) {
 				endDecorator="Seconds"
 			/>
 			<SettingsStrategyInput
+				searchText={searchText}
 				value={settings.script.strategy}
 				overlay={overlay?.script?.strategy as any}
 				onChange={(strategy) => onChange({ script: { strategy } })}

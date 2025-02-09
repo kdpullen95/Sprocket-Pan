@@ -17,7 +17,7 @@ function toMSMinuteOrUndefined(num: unknown) {
 	return ret == null ? undefined : ret * MS_IN_MINUTE;
 }
 
-export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
+export function DataTab({ overlay, onChange, searchText, settings }: SettingsTabProps) {
 	const autosave = settings.data.autosave;
 	const oversave = overlay?.data?.autosave;
 	const autosaveEnabled = oversave?.enabled ?? autosave.enabled;
@@ -28,6 +28,7 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 				<Typography>Saving</Typography>
 				<Stack direction="row" gap={2}>
 					<SettingsSwitch
+						searchText={searchText}
 						sx={{ width: 240 }}
 						label="Autosave"
 						checked={autosave.enabled}
@@ -36,6 +37,7 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 					/>
 					<SettingsInput
 						sx={{ width: 240 }}
+						searchText={searchText}
 						inputSx={{ width: 240 }}
 						disabled={!autosaveEnabled}
 						id="autosave-duration"
@@ -50,6 +52,7 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 				<Stack direction="row" gap={2}>
 					<SettingsSwitch
 						sx={{ width: 240 }}
+						searchText={searchText}
 						label="History Tracking"
 						checked={settings.history.enabled}
 						onChange={(enabled) => onChange({ history: { enabled } })}
@@ -58,6 +61,7 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 					<Stack gap={2}>
 						<SettingsInput
 							type="number"
+							searchText={searchText}
 							disabled={!historyEnabled}
 							sx={{ width: 240 }}
 							inputSx={{ width: 240 }}
@@ -72,6 +76,7 @@ export function DataTab({ overlay, onChange, settings }: SettingsTabProps) {
 						/>
 						<SettingsInput
 							type="number"
+							searchText={searchText}
 							disabled={!historyEnabled}
 							sx={{ width: 240 }}
 							inputSx={{ width: 240 }}
