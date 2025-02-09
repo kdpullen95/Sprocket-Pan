@@ -1,4 +1,4 @@
-import { Box, Sheet, Typography } from '@mui/joy';
+import { Box, Typography } from '@mui/joy';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SettingsTabs } from './tabs/SettingsTabs';
@@ -27,9 +27,9 @@ export function GlobalSettingsPanel({ onClose }: SettingsPanelProps) {
 					<Typography level="h1">Settings</Typography>
 				</Box>
 				<Box display="flex" justifyContent="end" alignItems="end" minWidth="100%">
-					<Sheet sx={{ maxWidth: '600px', p: 2 }} variant="outlined" color="neutral">
+					<Box sx={{ maxWidth: '600px' }} color="neutral">
 						<SearchField onChange={setSearch} />
-					</Sheet>
+					</Box>
 				</Box>
 			</Box>
 			<Box height={`calc(100% - ${titleAndSearchHeight}px)`}>
