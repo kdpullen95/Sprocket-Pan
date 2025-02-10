@@ -64,12 +64,12 @@ const MESSAGES = {
 	[TipsSection.tips]: TIPS,
 } as const;
 
-interface TipsSection {
+interface TipsSectionProps {
 	variant: TipsSection;
 	timestamp: number;
 }
 
-export function TipsSection({ variant, timestamp }: TipsSection) {
+export function TipsSectionComponent({ variant, timestamp }: TipsSectionProps) {
 	if (variant === TipsSection.hidden) {
 		return <Box />;
 	}
