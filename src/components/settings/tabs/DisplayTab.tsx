@@ -2,7 +2,7 @@ import { Stack } from '@mui/joy';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import { SettingsTabProps } from './types';
 import { SettingsSelect, SettingsSlider, SettingsSwitch } from './SettingsFields';
-import { BASE_THEME, LIST_STYLING, SCROLLBAR_VISIBILITY } from '@/types/data/settings';
+import { BaseTheme, ListStyling, ScrollbarVisibility } from '@/types/data/settings';
 import { Contrast, Opacity } from '@mui/icons-material';
 import { SettingsGroup } from '../SettingsGroup';
 import { SettingsPaletteSelectGroup } from './SettingsPaletteSelectGroup';
@@ -29,9 +29,9 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 					overlay={overlay?.theme?.list}
 					onChange={(val) => onChange({ theme: { list: val } })}
 					options={[
-						{ value: LIST_STYLING.compact, label: 'Compact' },
-						{ value: LIST_STYLING.default, label: 'Default' },
-						{ value: LIST_STYLING.cozy, label: 'Cozy' },
+						{ value: ListStyling.compact, label: 'Compact' },
+						{ value: ListStyling.default, label: 'Default' },
+						{ value: ListStyling.cozy, label: 'Cozy' },
 					]}
 				/>
 				<SettingsSelect
@@ -42,9 +42,9 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 					overlay={overlay?.theme?.scrollbarVisibility}
 					onChange={(val) => onChange({ theme: { scrollbarVisibility: val } })}
 					options={[
-						{ value: SCROLLBAR_VISIBILITY.compact, label: 'Compact' },
-						{ value: SCROLLBAR_VISIBILITY.hidden, label: 'Invisible' },
-						{ value: SCROLLBAR_VISIBILITY.visible, label: 'Visible' },
+						{ value: ScrollbarVisibility.compact, label: 'Compact' },
+						{ value: ScrollbarVisibility.hidden, label: 'Invisible' },
+						{ value: ScrollbarVisibility.visible, label: 'Visible' },
 					]}
 				/>
 			</SettingsGroup>
@@ -57,9 +57,9 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 					overlay={overlay?.theme?.base}
 					onChange={(base) => onChange({ theme: { base } })}
 					options={[
-						{ value: BASE_THEME.light, label: 'Light Mode' },
-						{ value: BASE_THEME.dark, label: 'Dark Mode' },
-						{ value: BASE_THEME.default, label: 'System Default' },
+						{ value: BaseTheme.light, label: 'Light Mode' },
+						{ value: BaseTheme.dark, label: 'Dark Mode' },
+						{ value: BaseTheme.default, label: 'System Default' },
 					]}
 				/>
 				<SettingsSlider

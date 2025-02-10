@@ -8,7 +8,7 @@ import { SettingsTabProps } from './types';
 import { SettingsSelect, SettingsSwitch } from './SettingsFields';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { Constants } from '@/constants/constants';
-import { VARIABLE_NAME_DISPLAY, TIPS_SECTION } from '@/types/data/settings';
+import { VariableNameDisplay, TipsSection } from '@/types/data/settings';
 import { log } from '@/utils/logging';
 import { sleep } from '@/utils/misc';
 
@@ -36,9 +36,9 @@ export function GeneralTab({ overlay, settings, onChange, searchText }: Settings
 				tooltip="Controls how {environment_variables} are displayed alongside their computed values."
 				onChange={(val) => onChange({ interface: { variableNameDisplay: val } })}
 				options={[
-					{ value: VARIABLE_NAME_DISPLAY.before, label: 'Key and Value' },
-					{ value: VARIABLE_NAME_DISPLAY.none, label: 'Value Only' },
-					{ value: VARIABLE_NAME_DISPLAY.hover, label: 'Key on Hover' },
+					{ value: VariableNameDisplay.before, label: 'Key and Value' },
+					{ value: VariableNameDisplay.none, label: 'Value Only' },
+					{ value: VariableNameDisplay.hover, label: 'Key on Hover' },
 				]}
 			/>
 			<SettingsSelect
@@ -49,10 +49,10 @@ export function GeneralTab({ overlay, settings, onChange, searchText }: Settings
 				overlay={overlay?.interface?.tipsSection}
 				onChange={(val) => onChange({ interface: { tipsSection: val } })}
 				options={[
-					{ value: TIPS_SECTION.tips, label: 'Sprocket Tips Only' },
-					{ value: TIPS_SECTION.all, label: 'All Messages' },
-					{ value: TIPS_SECTION.dyk, label: 'Did You Know Only' },
-					{ value: TIPS_SECTION.hidden, label: 'Hidden' },
+					{ value: TipsSection.tips, label: 'Sprocket Tips Only' },
+					{ value: TipsSection.all, label: 'All Messages' },
+					{ value: TipsSection.dyk, label: 'Did You Know Only' },
+					{ value: TipsSection.hidden, label: 'Hidden' },
 				]}
 			/>
 			<SettingsSwitch
