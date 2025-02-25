@@ -7,7 +7,7 @@ import { Contrast, Opacity } from '@mui/icons-material';
 import { SettingsGroup } from '../SettingsGroup';
 import { SettingsPaletteSelectGroup } from './SettingsPaletteSelectGroup';
 
-export function DisplayTab({ overlay, settings, searchText, onChange }: SettingsTabProps) {
+export function DisplayTab({ overlay, settings, searchText, onChange, onUpdateGlobal }: SettingsTabProps) {
 	return (
 		<Stack spacing={3}>
 			<SettingsGroup title="Spacing">
@@ -17,6 +17,7 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 					searchText={searchText}
 					label="Zoom"
 					onChange={(zoom) => onChange({ theme: { zoom } })}
+					onUpdateGlobal={(zoom) => onUpdateGlobal({ theme: { zoom } })}
 					endDecorator="%"
 					icon={<ZoomInIcon />}
 					range={{ min: 25, max: 175 }}
@@ -28,6 +29,7 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 					value={settings.theme.list}
 					overlay={overlay?.theme?.list}
 					onChange={(val) => onChange({ theme: { list: val } })}
+					onUpdateGlobal={(val) => onUpdateGlobal({ theme: { list: val } })}
 					options={[
 						{ value: ListStyling.compact, label: 'Compact' },
 						{ value: ListStyling.default, label: 'Default' },
@@ -41,6 +43,7 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 					value={settings.theme.scrollbarVisibility}
 					overlay={overlay?.theme?.scrollbarVisibility}
 					onChange={(val) => onChange({ theme: { scrollbarVisibility: val } })}
+					onUpdateGlobal={(val) => onUpdateGlobal({ theme: { scrollbarVisibility: val } })}
 					options={[
 						{ value: ScrollbarVisibility.compact, label: 'Compact' },
 						{ value: ScrollbarVisibility.hidden, label: 'Invisible' },
@@ -56,6 +59,7 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 					value={settings.theme.base}
 					overlay={overlay?.theme?.base}
 					onChange={(base) => onChange({ theme: { base } })}
+					onUpdateGlobal={(base) => onUpdateGlobal({ theme: { base } })}
 					options={[
 						{ value: BaseTheme.light, label: 'Light Mode' },
 						{ value: BaseTheme.dark, label: 'Dark Mode' },
@@ -68,10 +72,11 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 					searchText={searchText}
 					label="Decoration Opacity"
 					onChange={(opacity) => onChange({ theme: { decoration: { opacity } } })}
+					onUpdateGlobal={(opacity) => onUpdateGlobal({ theme: { decoration: { opacity } } })}
 					icon={<Opacity />}
 					range={{ min: 0, max: 1, step: 0.05 }}
 				/>
-				<SettingsPaletteSelectGroup {...{ overlay, settings, searchText, onChange }} />
+				<SettingsPaletteSelectGroup {...{ overlay, settings, searchText, onChange, onUpdateGlobal }} />
 				<SettingsGroup title="Color Adjustment">
 					<SettingsSwitch
 						sx={{ width: 240 }}
@@ -79,6 +84,7 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 						label="Filters"
 						checked={settings.theme.filters.enabled}
 						onChange={(enabled) => onChange({ theme: { filters: { enabled } } })}
+						onUpdateGlobal={(enabled) => onUpdateGlobal({ theme: { filters: { enabled } } })}
 						overlay={overlay?.theme?.filters?.enabled}
 					/>
 					<SettingsSlider
@@ -86,6 +92,7 @@ export function DisplayTab({ overlay, settings, searchText, onChange }: Settings
 						searchText={searchText}
 						value={settings.theme.filters.contrast}
 						onChange={(contrast) => onChange({ theme: { filters: { contrast } } })}
+						onUpdateGlobal={(contrast) => onUpdateGlobal({ theme: { filters: { contrast } } })}
 						icon={<Contrast />}
 						range={{
 							min: 0.8,

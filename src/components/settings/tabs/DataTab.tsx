@@ -17,7 +17,7 @@ function toMSMinuteOrUndefined(num: unknown) {
 	return ret == null ? undefined : ret * MS_IN_MINUTE;
 }
 
-export function DataTab({ overlay, onChange, searchText, settings }: SettingsTabProps) {
+export function DataTab({ overlay, onChange, onUpdateGlobal, searchText, settings }: SettingsTabProps) {
 	const autosave = settings.data.autosave;
 	const oversave = overlay?.data?.autosave;
 	const autosaveEnabled = oversave?.enabled ?? autosave.enabled;
@@ -33,6 +33,7 @@ export function DataTab({ overlay, onChange, searchText, settings }: SettingsTab
 						label="Autosave"
 						checked={autosave.enabled}
 						onChange={(enabled) => onChange({ data: { autosave: { enabled } } })}
+						onUpdateGlobal={(enabled) => onUpdateGlobal({ data: { autosave: { enabled } } })}
 						overlay={oversave?.enabled}
 					/>
 					<SettingsInput
@@ -45,6 +46,7 @@ export function DataTab({ overlay, onChange, searchText, settings }: SettingsTab
 						value={autosave.intervalMS / MS_IN_MINUTE}
 						overlay={oversave?.intervalMS == null ? undefined : oversave.intervalMS / MS_IN_MINUTE}
 						onChange={(val) => onChange({ data: { autosave: { intervalMS: toMSMinuteOrUndefined(val) } } })}
+						onUpdateGlobal={(val) => onUpdateGlobal({ data: { autosave: { intervalMS: toMSMinuteOrUndefined(val) } } })}
 						startDecorator={<TimerIcon />}
 						endDecorator="Minutes"
 					/>
@@ -56,6 +58,7 @@ export function DataTab({ overlay, onChange, searchText, settings }: SettingsTab
 						label="History Tracking"
 						checked={settings.history.enabled}
 						onChange={(enabled) => onChange({ history: { enabled } })}
+						onUpdateGlobal={(enabled) => onUpdateGlobal({ history: { enabled } })}
 						overlay={overlay?.history?.enabled}
 					/>
 					<Stack gap={2}>
@@ -70,6 +73,7 @@ export function DataTab({ overlay, onChange, searchText, settings }: SettingsTab
 							value={settings.history.maxLength}
 							overlay={overlay?.history?.maxLength}
 							onChange={(val) => onChange({ history: { maxLength: toNumberOrUndefined(val) } })}
+							onUpdateGlobal={(val) => onUpdateGlobal({ history: { maxLength: toNumberOrUndefined(val) } })}
 							startDecorator={<ManageHistoryIcon />}
 							endDecorator="Records"
 							hint="Set this value to -1 for no maximum."
@@ -85,6 +89,7 @@ export function DataTab({ overlay, onChange, searchText, settings }: SettingsTab
 							value={settings.history.maxDays}
 							overlay={overlay?.history?.maxDays}
 							onChange={(val) => onChange({ history: { maxDays: toNumberOrUndefined(val) } })}
+							onUpdateGlobal={(val) => onUpdateGlobal({ history: { maxDays: toNumberOrUndefined(val) } })}
 							startDecorator={<History />}
 							endDecorator="Days"
 							hint="Set this value to -1 for no maximum."

@@ -6,4 +6,5 @@ export interface SettingsTabProps {
 	settings: Settings;
 	searchText?: string;
 	onChange: (settings: WorkspaceSettings) => void;
+	onUpdateGlobal: (settings: WorkspaceSettings) => void;
 }

@@ -37,6 +37,7 @@ export function GlobalSettingsPanel({ onClose }: SettingsPanelProps) {
 					searchText={search}
 					settings={unsavedSettings}
 					onChange={(settings) => setUnsavedSettings(mergeDeep(unsavedSettings, settings))}
+					onUpdateGlobal={() => undefined}
 				/>
 				<SettingsBar
 					onSave={() => dispatch(globalActions.insertSettings(unsavedSettings))}

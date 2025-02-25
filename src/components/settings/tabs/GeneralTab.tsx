@@ -12,7 +12,7 @@ import { VariableNameDisplay, TipsSection } from '@/types/data/settings';
 import { log } from '@/utils/logging';
 import { sleep } from '@/utils/misc';
 
-export function GeneralTab({ overlay, settings, onChange, searchText }: SettingsTabProps) {
+export function GeneralTab({ overlay, settings, onChange, onUpdateGlobal, searchText }: SettingsTabProps) {
 	const [checkingForUpdate, setCheckingForUpdate] = useState(false);
 	const [hasCheckedForUpdate, setHasCheckedForUpdate] = useState(false);
 	const [version, setVersion] = useState('Loading Version...');
@@ -35,6 +35,7 @@ export function GeneralTab({ overlay, settings, onChange, searchText }: Settings
 				label="Display Variable Names"
 				tooltip="Controls how {environment_variables} are displayed alongside their computed values."
 				onChange={(val) => onChange({ interface: { variableNameDisplay: val } })}
+				onUpdateGlobal={(val) => onUpdateGlobal({ interface: { variableNameDisplay: val } })}
 				options={[
 					{ value: VariableNameDisplay.before, label: 'Key and Value' },
 					{ value: VariableNameDisplay.none, label: 'Value Only' },
@@ -48,6 +49,7 @@ export function GeneralTab({ overlay, settings, onChange, searchText }: Settings
 				value={settings.interface.tipsSection}
 				overlay={overlay?.interface?.tipsSection}
 				onChange={(val) => onChange({ interface: { tipsSection: val } })}
+				onUpdateGlobal={(val) => onUpdateGlobal({ interface: { tipsSection: val } })}
 				options={[
 					{ value: TipsSection.tips, label: 'Sprocket Tips Only' },
 					{ value: TipsSection.all, label: 'All Messages' },
@@ -61,6 +63,7 @@ export function GeneralTab({ overlay, settings, onChange, searchText }: Settings
 				label="List Virtualization"
 				checked={settings.virtualization.enabled}
 				onChange={(enabled) => onChange({ virtualization: { enabled } })}
+				onUpdateGlobal={(enabled) => onUpdateGlobal({ virtualization: { enabled } })}
 				overlay={overlay?.virtualization?.enabled}
 			/>
 			<Divider />

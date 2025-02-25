@@ -20,9 +20,13 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 	const workspaceSettings = useSelector(selectWorkspaceSettings);
 	const globalSettings = useSelector(selectGlobalSettings);
 	const [unsavedSettings, setUnsavedSettings] = useState(workspaceSettings);
+	const [unsavedGlobalSettings, setUnsavedGlobalSettings] = useState(globalSettings);
 	const hasChanged = useMemo(() => {
-		return JSON.stringify(workspaceSettings) !== JSON.stringify(unsavedSettings);
-	}, [workspaceSettings, unsavedSettings]);
+		return (
+			JSON.stringify(workspaceSettings) !== JSON.stringify(unsavedSettings) ||
+			JSON.stringify(globalSettings) != JSON.stringify(unsavedGlobalSettings)
+		);
+	}, [workspaceSettings, unsavedSettings, globalSettings, unsavedGlobalSettings]);
 	const dispatch = useAppDispatch();
 	function goToWorkspaceSelection() {
 		dispatch(globalActions.setSelectedWorkspace(undefined));
@@ -48,10 +52,16 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 						overlay={unsavedSettings}
 						settings={globalSettings}
 						onChange={(settings) => setUnsavedSettings(mergeDeep(unsavedSettings, settings, { allowUndefined: true }))}
+						onUpdateGlobal={(settings) =>
+							setUnsavedGlobalSettings(mergeDeep(unsavedGlobalSettings, settings, { allowUndefined: true }))
+						}
 						goToWorkspaceSelection={goToWorkspaceSelection}
 					/>
 					<SettingsBar
-						onSave={() => dispatch(activeActions.insertSettings(unsavedSettings))}
+						onSave={() => {
+							dispatch(activeActions.insertSettings(unsavedSettings));
+							dispatch(globalActions.insertSettings(unsavedGlobalSettings));
+						}}
 						onClose={onClose}
 						overlay={unsavedSettings}
 						settings={globalSettings}
