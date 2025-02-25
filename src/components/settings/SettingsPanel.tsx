@@ -10,6 +10,7 @@ import { globalActions } from '@/state/global/slice';
 import { useAppDispatch } from '@/state/store';
 import { mergeDeep } from '@/utils/variables';
 import { SearchField } from '../shared/input/SearchField';
+import { clearLeafProperties } from '@/utils/functions';
 
 export interface SettingsPanelProps {
 	onClose: () => void;
@@ -24,7 +25,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 	const hasChanged = useMemo(() => {
 		return (
 			JSON.stringify(workspaceSettings) !== JSON.stringify(unsavedSettings) ||
-			JSON.stringify(globalSettings) != JSON.stringify(unsavedGlobalSettings)
+			JSON.stringify(globalSettings) !== JSON.stringify(unsavedGlobalSettings)
 		);
 	}, [workspaceSettings, unsavedSettings, globalSettings, unsavedGlobalSettings]);
 	const dispatch = useAppDispatch();
@@ -50,11 +51,14 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 					<SettingsTabs
 						searchText={search}
 						overlay={unsavedSettings}
-						settings={globalSettings}
+						settings={unsavedGlobalSettings}
 						onChange={(settings) => setUnsavedSettings(mergeDeep(unsavedSettings, settings, { allowUndefined: true }))}
-						onUpdateGlobal={(settings) =>
-							setUnsavedGlobalSettings(mergeDeep(unsavedGlobalSettings, settings, { allowUndefined: true }))
-						}
+						onUpdateGlobal={(settings) => {
+							setUnsavedGlobalSettings(mergeDeep(unsavedGlobalSettings, settings));
+							const nullOverride = structuredClone(settings);
+							clearLeafProperties(nullOverride, undefined);
+							setUnsavedSettings(mergeDeep(unsavedSettings, nullOverride, { allowUndefined: true }));
+						}}
 						goToWorkspaceSelection={goToWorkspaceSelection}
 					/>
 					<SettingsBar
@@ -64,7 +68,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 						}}
 						onClose={onClose}
 						overlay={unsavedSettings}
-						settings={globalSettings}
+						settings={unsavedGlobalSettings}
 						hasChanged={hasChanged}
 						lastSaved={lastSaved}
 					/>

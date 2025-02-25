@@ -67,7 +67,7 @@ export function SettingsSelect<T>({
 			<SprocketSelect onChange={onChange} value={override ? overlay : value} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
+				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(overlay ?? value) : undefined}
 				override={override}
 				sx={{ mt: '1.6em' }}
 			/>
@@ -93,7 +93,7 @@ export function SettingsInput({
 			<SprocketInput onChange={onChange} value={override ? overlay : value} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
+				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(overlay ?? value) : undefined}
 				override={override}
 				sx={{ mt: '1.6em' }}
 			/>
@@ -114,7 +114,7 @@ export function SettingsPaletteSelect({
 			<PaletteSelect value={override ? overlay : value} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
+				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(overlay ?? value) : undefined}
 				override={override}
 				sx={{ mt: '1.65em' }}
 			/>
@@ -142,7 +142,7 @@ export function SettingsStrategyInput({
 				<StrategyInput value={override ? overlay : value} onChange={onChange} />
 				<ResetButton
 					onReset={() => onChange(undefined)}
-					onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
+					onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(overlay ?? value) : undefined}
 					override={override}
 				/>
 			</Stack>
@@ -168,7 +168,7 @@ export function SettingsSlider({
 			<InputSlider value={override ? overlay : value} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
+				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(overlay ?? value) : undefined}
 				override={override}
 				sx={{ mt: '1.6em' }}
 			/>
@@ -194,7 +194,7 @@ export function SettingsSwitch({
 			<SprocketSwitch checked={override ? overlay : checked} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={() => onUpdateGlobal(checked!)}
+				onUpdateGlobal={() => onUpdateGlobal(overlay ?? checked!)}
 				override={override}
 				sx={{ mt: '1.5em' }}
 			/>
