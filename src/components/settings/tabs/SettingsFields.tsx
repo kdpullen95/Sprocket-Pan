@@ -69,7 +69,7 @@ export function SettingsSelect<T>({
 				onReset={() => onChange(undefined)}
 				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
 				override={override}
-				sx={{ mt: '2em' }}
+				sx={{ mt: '1.6em' }}
 			/>
 		</Stack>
 	);
@@ -95,7 +95,7 @@ export function SettingsInput({
 				onReset={() => onChange(undefined)}
 				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
 				override={override}
-				sx={{ mt: '2em' }}
+				sx={{ mt: '1.6em' }}
 			/>
 		</Stack>
 	);
@@ -170,7 +170,7 @@ export function SettingsSlider({
 				onReset={() => onChange(undefined)}
 				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
 				override={override}
-				sx={{ mt: '2em' }}
+				sx={{ mt: '1.6em' }}
 			/>
 		</Stack>
 	);
@@ -190,7 +190,7 @@ export function SettingsSwitch({
 		return <></>;
 	}
 	return (
-		<Stack direction="row" alignItems="start" gap={1} minHeight="2em">
+		<Stack direction="row" alignItems="start" gap={1} minHeight="1.6em">
 			<SprocketSwitch checked={override ? overlay : checked} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
