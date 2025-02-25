@@ -14,7 +14,7 @@ import { FluentGlobeReset } from '@/assets/icons/fluent/FluentGlobeReset';
 interface ResetButtonProps {
 	override: boolean;
 	onReset: () => void;
-	onUpdateGlobal: () => void;
+	onUpdateGlobal?: () => void;
 	sx?: SxProps;
 }
 
@@ -29,11 +29,13 @@ export function ResetButton({ override, onReset, onUpdateGlobal, sx }: ResetButt
 					<FluentGlobeReset />
 				</IconButton>
 			</SprocketTooltip>
-			<SprocketTooltip text="Update Global Setting to Selected Value" sx={sx}>
-				<IconButton onClick={onUpdateGlobal}>
-					<FluentGlobeArrowUp />
-				</IconButton>
-			</SprocketTooltip>
+			{onUpdateGlobal && (
+				<SprocketTooltip text="Update Global Setting to Selected Value" sx={sx}>
+					<IconButton onClick={onUpdateGlobal}>
+						<FluentGlobeArrowUp />
+					</IconButton>
+				</SprocketTooltip>
+			)}
 		</Stack>
 	);
 }
@@ -65,7 +67,7 @@ export function SettingsSelect<T>({
 			<SprocketSelect onChange={onChange} value={override ? overlay : value} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={() => onUpdateGlobal(value)}
+				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
 				override={override}
 				sx={{ mt: '2em' }}
 			/>
@@ -91,7 +93,7 @@ export function SettingsInput({
 			<SprocketInput onChange={onChange} value={override ? overlay : value} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={() => onUpdateGlobal(value)}
+				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
 				override={override}
 				sx={{ mt: '2em' }}
 			/>
@@ -112,7 +114,7 @@ export function SettingsPaletteSelect({
 			<PaletteSelect value={override ? overlay : value} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={() => onUpdateGlobal(value)}
+				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
 				override={override}
 				sx={{ mt: '1.65em' }}
 			/>
@@ -140,7 +142,7 @@ export function SettingsStrategyInput({
 				<StrategyInput value={override ? overlay : value} onChange={onChange} />
 				<ResetButton
 					onReset={() => onChange(undefined)}
-					onUpdateGlobal={() => onUpdateGlobal(value)}
+					onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
 					override={override}
 				/>
 			</Stack>
@@ -166,7 +168,7 @@ export function SettingsSlider({
 			<InputSlider value={override ? overlay : value} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={() => onUpdateGlobal(value)}
+				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(value) : undefined}
 				override={override}
 				sx={{ mt: '2em' }}
 			/>
