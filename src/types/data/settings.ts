@@ -101,6 +101,9 @@ export interface Settings {
 			enabled: boolean;
 			location: string | null;
 		};
+		validation: {
+			enabled: boolean;
+		};
 	};
 	script: {
 		strategy: {

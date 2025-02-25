@@ -97,6 +97,15 @@ export function DataTab({ overlay, onChange, onUpdateGlobal, searchText, setting
 					</Stack>
 				</Stack>
 				<Typography>Data</Typography>
+				<SettingsSwitch
+					searchText={searchText}
+					sx={{ width: 240 }}
+					label="Workspace Data Validation"
+					checked={settings.data.validation.enabled}
+					onChange={(enabled) => onChange({ data: { validation: { enabled } } })}
+					onUpdateGlobal={(enabled) => onUpdateGlobal({ data: { validation: { enabled } } })}
+					overlay={overlay?.data?.validation?.enabled}
+				/>
 				<Stack direction="row" gap={2}>
 					<Button
 						sx={{ width: '240px' }}

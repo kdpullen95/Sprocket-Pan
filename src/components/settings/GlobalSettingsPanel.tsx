@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/joy';
+import { Box, Stack } from '@mui/joy';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SettingsTabs } from './tabs/SettingsTabs';
@@ -8,7 +8,7 @@ import { selectGlobalLastSaved, selectGlobalSettings } from '@/state/global/sele
 import { globalActions } from '@/state/global/slice';
 import { useAppDispatch } from '@/state/store';
 import { mergeDeep } from '@/utils/variables';
-import { SearchField } from '../shared/input/SearchField';
+import { SettingsTitle } from './SettingsTitle';
 
 export function GlobalSettingsPanel({ onClose }: SettingsPanelProps) {
 	const lastSaved = useSelector(selectGlobalLastSaved);
@@ -19,34 +19,24 @@ export function GlobalSettingsPanel({ onClose }: SettingsPanelProps) {
 	}, [previousSettings, unsavedSettings]);
 	const dispatch = useAppDispatch();
 	const [search, setSearch] = useState('');
-	const titleAndSearchHeight = 120;
 	return (
-		<Box height="75vh">
-			<Box height={`${titleAndSearchHeight}px`}>
-				<Box display="flex" justifyContent="center" alignItems="center" minWidth="100%">
-					<Typography level="h1">Settings</Typography>
-				</Box>
-				<Box display="flex" justifyContent="end" alignItems="end" minWidth="100%">
-					<Box sx={{ maxWidth: '600px' }} color="neutral">
-						<SearchField onChange={setSearch} />
-					</Box>
-				</Box>
-			</Box>
-			<Box height={`calc(100% - ${titleAndSearchHeight}px)`}>
+		<Stack height="75vh" justifyContent="stretch" alignItems="stretch" gap={1}>
+			<SettingsTitle onChange={setSearch} />
+			<Box sx={{ flex: 1, overflow: 'auto' }}>
 				<SettingsTabs
 					searchText={search}
 					settings={unsavedSettings}
 					onChange={(settings) => setUnsavedSettings(mergeDeep(unsavedSettings, settings))}
 					onUpdateGlobal={() => undefined}
 				/>
-				<SettingsBar
-					onSave={() => dispatch(globalActions.insertSettings(unsavedSettings))}
-					onClose={onClose}
-					settings={unsavedSettings}
-					hasChanged={hasChanged}
-					lastSaved={lastSaved}
-				/>
 			</Box>
-		</Box>
+			<SettingsBar
+				onSave={() => dispatch(globalActions.insertSettings(unsavedSettings))}
+				onClose={onClose}
+				settings={unsavedSettings}
+				hasChanged={hasChanged}
+				lastSaved={lastSaved}
+			/>
+		</Stack>
 	);
 }

@@ -20,22 +20,25 @@ interface ResetButtonProps {
 
 export function ResetButton({ override, onReset, onUpdateGlobal, sx }: ResetButtonProps) {
 	if (!override) {
-		return <Box width={32} />;
+		return <Box width="72px" />;
 	}
 	return (
-		<Stack direction={'row'} justifyContent={'center'} justifyItems={'center'} sx={{ mb: '10px' }}>
+		<Stack
+			direction={'row'}
+			justifyContent={'center'}
+			justifyItems={'center'}
+			sx={{ maxHeight: '30px', overflow: 'visible' }}
+		>
 			<SprocketTooltip text="Reset to Global Setting" sx={sx}>
-				<IconButton onClick={() => onReset()}>
+				<IconButton onClick={onReset}>
 					<FluentGlobeReset />
 				</IconButton>
 			</SprocketTooltip>
-			{onUpdateGlobal && (
-				<SprocketTooltip text="Update Global Setting to Selected Value" sx={sx}>
-					<IconButton onClick={onUpdateGlobal}>
-						<FluentGlobeArrowUp />
-					</IconButton>
-				</SprocketTooltip>
-			)}
+			<SprocketTooltip text="Update Global Setting to Selected Value" sx={sx}>
+				<IconButton onClick={onUpdateGlobal}>
+					<FluentGlobeArrowUp />
+				</IconButton>
+			</SprocketTooltip>
 		</Stack>
 	);
 }
@@ -190,13 +193,13 @@ export function SettingsSwitch({
 		return <></>;
 	}
 	return (
-		<Stack direction="row" alignItems="start" gap={1} minHeight="1.6em">
+		<Stack direction="row" alignItems="start" gap={1} minHeight="3em">
 			<SprocketSwitch checked={override ? overlay : checked} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
 				onUpdateGlobal={() => onUpdateGlobal(overlay ?? checked!)}
 				override={override}
-				sx={{ mt: '1.5em' }}
+				sx={{ mt: '1em' }}
 			/>
 		</Stack>
 	);

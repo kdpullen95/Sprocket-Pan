@@ -47,6 +47,9 @@ export const DEFAULT_SETTINGS: Settings = {
 			enabled: false,
 			location: null,
 		},
+		validation: {
+			enabled: true,
+		},
 	},
 	script: {
 		strategy: {

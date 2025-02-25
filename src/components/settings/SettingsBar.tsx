@@ -16,8 +16,9 @@ interface SettingsBarProps {
 }
 
 export function SettingsBar({ onClose, onSave, lastSaved, hasChanged, settings, overlay }: SettingsBarProps) {
+	// height 0px is to get around some weird mat-dialog spacing and make the bottom more compact
 	return (
-		<Stack gap={3} direction="row" justifyContent="space-between" alignItems="center" mt={1}>
+		<Stack gap={3} direction="row" justifyContent="space-between" alignItems="center" height="0px">
 			<TipsSectionComponent
 				variant={overlay?.interface?.tipsSection ?? settings.interface.tipsSection}
 				timestamp={lastSaved}
