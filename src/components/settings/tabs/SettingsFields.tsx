@@ -116,14 +116,12 @@ export function SettingsPaletteSelect({
 	...props
 }: PaletteSelectProps & SettingsFieldProps<string>) {
 	const override = overlay !== undefined;
-	const updatable = value !== overlay;
-	console.log({ updatable, value, overlay });
 	return (
 		<Stack direction="row" gap={1} alignItems="start">
 			<PaletteSelect value={override ? overlay : value} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={updatable ? () => onUpdateGlobal(overlay ?? value) : undefined}
+				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(overlay ?? value) : undefined}
 				override={override}
 				sx={{ mt: '1.65em' }}
 			/>
@@ -203,7 +201,7 @@ export function SettingsSwitch({
 			<SprocketSwitch checked={override ? overlay : checked} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={() => onUpdateGlobal(overlay ?? checked!)}
+				onUpdateGlobal={checked === overlay ? undefined : () => onUpdateGlobal(overlay ?? checked!)}
 				override={override}
 				sx={{ mt: '1em' }}
 			/>
