@@ -28,18 +28,20 @@ export function ResetButton({ override, onReset, onUpdateGlobal, sx }: ResetButt
 			sx={{ maxHeight: '30px', width: '72px', overflow: 'visible' }}
 		>
 			{override && (
-				<SprocketTooltip text="Reset to Global Setting" sx={sx}>
-					<IconButton onClick={onReset}>
-						<FluentGlobeReset />
-					</IconButton>
-				</SprocketTooltip>
-			)}
-			{onUpdateGlobal != null && (
-				<SprocketTooltip text="Update Global Setting to Selected Value" sx={sx}>
-					<IconButton onClick={onUpdateGlobal}>
-						<FluentGlobeArrowUp />
-					</IconButton>
-				</SprocketTooltip>
+				<>
+					<SprocketTooltip text="Reset to Global Setting" sx={sx}>
+						<IconButton onClick={onReset}>
+							<FluentGlobeReset />
+						</IconButton>
+					</SprocketTooltip>
+					{onUpdateGlobal && (
+						<SprocketTooltip text="Update Global Setting to Selected Value" sx={sx}>
+							<IconButton onClick={onUpdateGlobal}>
+								<FluentGlobeArrowUp />
+							</IconButton>
+						</SprocketTooltip>
+					)}
+				</>
 			)}
 		</Stack>
 	);
@@ -115,6 +117,7 @@ export function SettingsPaletteSelect({
 }: PaletteSelectProps & SettingsFieldProps<string>) {
 	const override = overlay !== undefined;
 	const updatable = value !== overlay;
+	console.log({ updatable, value, overlay });
 	return (
 		<Stack direction="row" gap={1} alignItems="start">
 			<PaletteSelect value={override ? overlay : value} onChange={onChange} {...props} />
