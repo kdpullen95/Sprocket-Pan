@@ -1,4 +1,4 @@
-import { Box, FormControl, FormLabel, IconButton, Stack } from '@mui/joy';
+import { FormControl, FormLabel, IconButton, Stack } from '@mui/joy';
 import { StrategyInput, StrategyInputProps } from './StrategyInput';
 import { InputSliderProps, InputSlider } from '@/components/shared/input/InputSlider';
 import { SprocketInputProps, SprocketInput } from '@/components/shared/input/SprocketInput';
@@ -19,26 +19,28 @@ interface ResetButtonProps {
 }
 
 export function ResetButton({ override, onReset, onUpdateGlobal, sx }: ResetButtonProps) {
-	if (!override) {
-		return <Box width="72px" />;
-	}
+	console.log({ onUpdateGlobal });
 	return (
 		<Stack
-			direction={'row'}
-			justifyContent={'center'}
-			justifyItems={'center'}
-			sx={{ maxHeight: '30px', overflow: 'visible' }}
+			direction="row"
+			justifyContent="center"
+			justifyItems="end"
+			sx={{ maxHeight: '30px', width: '72px', overflow: 'visible' }}
 		>
-			<SprocketTooltip text="Reset to Global Setting" sx={sx}>
-				<IconButton onClick={onReset}>
-					<FluentGlobeReset />
-				</IconButton>
-			</SprocketTooltip>
-			<SprocketTooltip text="Update Global Setting to Selected Value" sx={sx}>
-				<IconButton onClick={onUpdateGlobal}>
-					<FluentGlobeArrowUp />
-				</IconButton>
-			</SprocketTooltip>
+			{override && (
+				<SprocketTooltip text="Reset to Global Setting" sx={sx}>
+					<IconButton onClick={onReset}>
+						<FluentGlobeReset />
+					</IconButton>
+				</SprocketTooltip>
+			)}
+			{onUpdateGlobal != null && (
+				<SprocketTooltip text="Update Global Setting to Selected Value" sx={sx}>
+					<IconButton onClick={onUpdateGlobal}>
+						<FluentGlobeArrowUp />
+					</IconButton>
+				</SprocketTooltip>
+			)}
 		</Stack>
 	);
 }
@@ -112,12 +114,13 @@ export function SettingsPaletteSelect({
 	...props
 }: PaletteSelectProps & SettingsFieldProps<string>) {
 	const override = overlay !== undefined;
+	const updatable = value !== overlay;
 	return (
 		<Stack direction="row" gap={1} alignItems="start">
 			<PaletteSelect value={override ? overlay : value} onChange={onChange} {...props} />
 			<ResetButton
 				onReset={() => onChange(undefined)}
-				onUpdateGlobal={value !== overlay ? () => onUpdateGlobal(overlay ?? value) : undefined}
+				onUpdateGlobal={updatable ? () => onUpdateGlobal(overlay ?? value) : undefined}
 				override={override}
 				sx={{ mt: '1.65em' }}
 			/>
