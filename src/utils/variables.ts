@@ -51,7 +51,7 @@ export function mergeDeep<T, J extends RecursivePartial<T>>(
 		}
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		obj1Copy[key] = mergeDeep(obj1Copy[key], obj2Copy[key], settings, depth--);
+		obj1Copy[key] = mergeDeep(obj1Copy[key], obj2Copy[key], settings, depth - 1);
 	}
 
 	return obj1Copy as T & J;
@@ -68,12 +68,12 @@ export function assignDeep<T extends object, J>(obj1: T, obj2: J, depth = 5) {
 	for (const key in obj2) {
 		const tskey = key as unknown as keyof T;
 		if (key === '__proto__') {
-			throw new Error('‽‽‽‽‽∀∀∀∀∀∀∀ɐɐɐɐɐ');
+			throw new Error('Prototype Pollution‽‽‽‽‽∀∀∀∀∀∀∀ɐɐɐɐɐ');
 		}
 		if (obj1[tskey] === undefined) {
 			assignObj[key] = obj2[key];
 		} else {
-			assignDeep(obj1[tskey] as object, obj2[key], depth--);
+			assignDeep(obj1[tskey] as object, obj2[key], depth - 1);
 		}
 	}
 	assignDeep(obj1, assignObj);
