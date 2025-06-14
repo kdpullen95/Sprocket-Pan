@@ -34,6 +34,7 @@ export function ImportSelector(props: Pick<SprocketModalProps, 'open' | 'onClose
 	const [data, setData] = useState<Partial<WorkspaceData> | null>(null);
 	const selectedWorkspace = useSelector(selectActiveWorkspace);
 	const dispatch = useAppDispatch();
+
 	const infoStr =
 		data != null &&
 		joinList(
@@ -42,12 +43,21 @@ export function ImportSelector(props: Pick<SprocketModalProps, 'open' | 'onClose
 				.filter(({ length }) => length > 0)
 				.map(({ key, length }) => `${length} ${key}`),
 		);
+
+	const apply = () => {
+		if (data != null) {
+			dispatch(activeActions.injectState(data));
+			props.onClose?.();
+			setData(null);
+		}
+	};
+
 	return (
 		<SprocketModal
 			{...props}
 			title="Import From File"
 			actions={
-				<Button disabled={data == null} onClick={() => data != null && dispatch(activeActions.injectState(data))}>
+				<Button disabled={data == null} onClick={apply}>
 					Apply
 				</Button>
 			}

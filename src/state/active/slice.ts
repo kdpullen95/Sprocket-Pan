@@ -51,6 +51,9 @@ interface SetSelectedServiceEnvironment {
 function deleteRequest(state: State, id: string) {
 	const { endpointId } = state.requests[id];
 	state.endpoints[endpointId].requestIds = state.endpoints[endpointId].requestIds.filter((reqId) => reqId !== id);
+	if (state.endpoints[endpointId].defaultRequest === id) {
+		state.endpoints[endpointId].defaultRequest = state.endpoints[endpointId].requestIds[0];
+	}
 	delete state.requests[id];
 }
 
