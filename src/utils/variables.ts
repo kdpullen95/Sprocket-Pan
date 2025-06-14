@@ -57,28 +57,6 @@ export function mergeDeep<T, J extends RecursivePartial<T>>(
 	return obj1Copy as T & J;
 }
 
-export function assignDeep<T extends object, J>(obj1: T, obj2: J, depth = 5) {
-	if (!isRecord(obj1) || !isRecord(obj2)) {
-		return;
-	}
-	if (depth <= 0) {
-		Object.assign(obj1, obj2);
-	}
-	const assignObj = {} as J;
-	for (const key in obj2) {
-		const tskey = key as unknown as keyof T;
-		if (key === '__proto__') {
-			throw new Error('Prototype Pollution‽‽‽‽‽∀∀∀∀∀∀∀ɐɐɐɐɐ');
-		}
-		if (obj1[tskey] === undefined) {
-			assignObj[key] = obj2[key];
-		} else {
-			assignDeep(obj1[tskey] as object, obj2[key], depth - 1);
-		}
-	}
-	assignDeep(obj1, assignObj);
-}
-
 // Object.groupBy exists, but is not supported here yet (12/17/24)
 export function groupBy<T>(items: T[], func: (item: T) => string) {
 	const retObj: Record<string, T[]> = {};

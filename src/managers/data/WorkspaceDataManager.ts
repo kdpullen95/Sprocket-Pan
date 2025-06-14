@@ -21,6 +21,7 @@ import { extractProperty } from '@/utils/getters';
 import { Parser } from '../parsers/types';
 import { SwaggerParseManager } from '../parsers/SwaggerParseManager';
 import { PostmanParseManager } from '../parsers/postman/PostmanParseManager';
+import { InsomniaParseManager } from '../parsers/InsomniaParseManager';
 
 export const defaultWorkspaceSyncedData: WorkspaceSyncedData = {
 	services: {},
@@ -59,19 +60,19 @@ export class WorkspaceDataManager {
 	}
 
 	public static loadSprocketFile(url: string) {
-		return this.parseFile(url, (content) => JSON.parse(content));
+		return WorkspaceDataManager.parseFile(url, (content) => JSON.parse(content));
 	}
 
 	public static loadSwaggerFile(url: string) {
-		return this.parseFile(url, SwaggerParseManager.parse);
+		return WorkspaceDataManager.parseFile(url, SwaggerParseManager.parse);
 	}
 
 	public static loadPostmanFile(url: string) {
-		return this.parseFile(url, PostmanParseManager.parse);
+		return WorkspaceDataManager.parseFile(url, PostmanParseManager.parse);
 	}
 
 	public static loadInsomniaFile(url: string) {
-		return this.parseFile(url, InsomniaParseManager.parse);
+		return WorkspaceDataManager.parseFile(url, InsomniaParseManager.parse);
 	}
 
 	public static async exportData(data: WorkspaceData, metadata: WorkspaceMetadata) {

@@ -11,7 +11,7 @@ const sizeStyling = {
 	full: undefined,
 } as const;
 
-interface SprocketModalProps extends Omit<ModalProps, 'onClose' | 'title'> {
+export interface SprocketModalProps extends Omit<ModalProps, 'onClose' | 'title'> {
 	actions?: ReactNode;
 	onClose?: () => void;
 	closeOn?: ('backdropClick' | 'escapeKeyDown' | 'closeClick')[];

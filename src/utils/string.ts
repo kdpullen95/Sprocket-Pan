@@ -144,3 +144,12 @@ export function truncate(
 	}
 	return truncated;
 }
+
+export function joinList(arr: string[]) {
+	if (arr.length < 3) {
+		return arr.join(' and ');
+	}
+	arr = [...arr];
+	arr[arr.length - 1] = 'and ' + arr[arr.length - 1];
+	return arr.join(', ');
+}

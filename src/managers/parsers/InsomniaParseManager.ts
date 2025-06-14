@@ -1,10 +1,10 @@
 import { v4 } from 'uuid';
 import { Request as RequestV2, Url as UrlV2 } from './parseTypes/postman2.0Types';
-import { Url as UrlV21, Request as RequestV21 } from './parseTypes/postman2.1Types';
-import { Body, Header, Item, postmanParseManager } from './postman/PostmanParseManager';
+import { Url as UrlV21, Request as RequestV21, Header } from './parseTypes/postman2.1Types';
 import yaml from 'js-yaml';
-import { readTextFile } from '@tauri-apps/api/fs';
 import { log } from '@/utils/logging';
+import { PostmanParseManager } from './postman/PostmanParseManager';
+import { WorkspaceData } from '@/types/data/workspace';
 
 type InsomniaCollection = any;
 type Url = UrlV2 | UrlV21;
@@ -12,29 +12,21 @@ type Request = RequestV2 | RequestV21;
 
 // Lots of this code borrowed from https://github.com/Vyoam/InsomniaToPostmanFormat/blob/main/convertJsonFile.js
 
-class InsomniaParseManager {
+export class InsomniaParseManager {
 	public static readonly INSTANCE = new InsomniaParseManager();
 
 	private constructor() {}
 
-	public async parseInsomniaFile(inputType: 'fileContents' | 'filePath', inputValue: string) {
-		const loadedFile = await this.loadInsomniaFile(inputType, inputValue);
-		const input = this.importInsomniaCollection(this.parseInsomniaInput(loadedFile));
-		return input;
+	public static async parse(content: string) {
+		return {} as WorkspaceData;
+		// return this.importInsomniaCollection(this.parseInsomniaInput(content));
 	}
 
-	private parseInsomniaInput(input: string) {
+	private static parseInsomniaInput(input: string) {
 		return yaml.load(input);
 	}
 
-	private async loadInsomniaFile(inputType: 'fileContents' | 'filePath', inputValue: string): Promise<string> {
-		if (inputType === 'fileContents') {
-			return inputValue;
-		}
-		return await readTextFile(inputValue);
-	}
-
-	private importInsomniaCollection(collection: InsomniaCollection) {
+	private static importInsomniaCollection(collection: InsomniaCollection) {
 		if (collection.__export_format !== 4) {
 			throw new Error(
 				`Insomnia Error: Version (__export_format ${collection.__export_format}) not supported. Only version 4 is supported.`,
@@ -54,10 +46,10 @@ class InsomniaParseManager {
 		const parentChildrenMap = maps[0];
 		const subItems = this.getSubItemTrees(parentChildrenMap, rootId);
 		outputData.item.push(...subItems);
-		return postmanParseManager.importPostmanCollection(outputData, 'Insomnia');
+		return PostmanParseManager.importPostmanCollection(outputData, 'Insomnia');
 	}
 
-	private transformUrlToPostman(insomniaUrl: string) {
+	private static transformUrlToPostman(insomniaUrl: string) {
 		if (insomniaUrl === '') {
 			return {};
 		}
@@ -80,7 +72,7 @@ class InsomniaParseManager {
 		return postmanUrl;
 	}
 
-	private transformHeadersToPostman(insomniaHeaders: { name: string; value: string }[]) {
+	private static transformHeadersToPostman(insomniaHeaders: { name: string; value: string }[]) {
 		const outputHeaders: Header[] = [];
 		insomniaHeaders.forEach((element) => {
 			outputHeaders.push({ key: element.name, value: element.value });
@@ -88,8 +80,8 @@ class InsomniaParseManager {
 		return outputHeaders;
 	}
 
-	private transformBodyToPostman(insomniaBody: any) {
-		const body: Body = {};
+	private static transformBodyToPostman(insomniaBody: any) {
+		const body: any = {};
 		switch (insomniaBody.mimeType) {
 			case '':
 			case 'application/json':
@@ -135,8 +127,8 @@ class InsomniaParseManager {
 		return body;
 	}
 
-	private transformItemToPostman(insomniaItem: any) {
-		const postmanItem: Item = {} as Item;
+	private static transformItemToPostman(insomniaItem: any) {
+		const postmanItem: any = {};
 		postmanItem.name = insomniaItem.name;
 		const request: Request = {};
 		request.description = insomniaItem.description as string;
@@ -166,7 +158,7 @@ class InsomniaParseManager {
 		return postmanItem;
 	}
 
-	private generateMapsForPostman(insomniaParentChildList: any, rootId: string) {
+	private static generateMapsForPostman(insomniaParentChildList: any, rootId: string) {
 		const parentChildrenMap = new Map();
 		const flatMap = new Map();
 		insomniaParentChildList.forEach((element: any) => {
@@ -203,7 +195,7 @@ class InsomniaParseManager {
 		return maps;
 	}
 
-	private generateTreeRecursivelyForPostman(element: any, parentChildrenMap: any) {
+	private static generateTreeRecursivelyForPostman(element: any, parentChildrenMap: any) {
 		let postmanItem = {} as any;
 		switch (element._type) {
 			case 'request_group':
@@ -222,7 +214,7 @@ class InsomniaParseManager {
 		return postmanItem;
 	}
 
-	private getSubItemTrees(parentChildrenMap: any, rootId: string) {
+	private static getSubItemTrees(parentChildrenMap: any, rootId: string) {
 		const subItemTrees: any[] = [];
 		const roots = parentChildrenMap.get(rootId);
 		parentChildrenMap.get(roots[0]._id).forEach((element: any) => {
@@ -231,5 +223,3 @@ class InsomniaParseManager {
 		return subItemTrees;
 	}
 }
-
-export const insomniaParseManager = InsomniaParseManager.INSTANCE;

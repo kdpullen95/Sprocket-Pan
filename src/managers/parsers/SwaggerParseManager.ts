@@ -32,7 +32,9 @@ export class SwaggerParseManager {
 
 	private static determineVersion(api: SupportedAPIs) {
 		// here is where we should check to see if it's some other weird version other than 2, 3, or 3.1 and throw an unsupported error.
-		if ('swagger' in api) return '2';
+		if ('swagger' in api) {
+			return '2';
+		}
 		return api.openapi.charAt(3) === '0' ? '3' : '3.1';
 	}
 
@@ -93,7 +95,9 @@ export class SwaggerParseManager {
 				service.endpointIds.push(endpoint.id);
 				endpoints[endpoint.id] = endpoint;
 				pathData.parameters?.forEach((param) => {
-					if (!('in' in param) || param.name == null) return;
+					if (!('in' in param) || param.name == null) {
+						return;
+					}
 					const schema = param.schema as OpenAPIV3.SchemaObject | undefined;
 					const type = schema?.type ?? 'string';
 					switch (param.in) {
@@ -175,7 +179,9 @@ export class SwaggerParseManager {
 		Object.entries(pathsObj).forEach(([pathsUri, paths]) => {
 			Object.entries(paths).forEach(([pathVerb, pathData]) => {
 				const method = pathVerb.toUpperCase() as RESTfulRequestVerb;
-				if (!RESTfulRequestVerbs.includes(method)) return;
+				if (!RESTfulRequestVerbs.includes(method)) {
+					return;
+				}
 				const endpoint = ItemFactory.endpoint({
 					serviceId: service.id,
 					verb: method,
@@ -184,7 +190,9 @@ export class SwaggerParseManager {
 				});
 				endpoints[endpoint.id] = endpoint;
 				service.endpointIds.push(endpoint.id);
-				if (pathData === null || typeof pathData === 'string') return;
+				if (pathData === null || typeof pathData === 'string') {
+					return;
+				}
 
 				if ('description' in pathData && pathData.description != null) {
 					endpoint.description = pathData.description;
@@ -193,7 +201,9 @@ export class SwaggerParseManager {
 				const parameters =
 					'parameters' in pathData ? pathData.parameters : (pathData as OpenAPIV2.Parameters | undefined);
 
-				if (parameters == null) return;
+				if (parameters == null) {
+					return;
+				}
 
 				const baseRequestProperties: Partial<EndpointRequest> = {
 					endpointId: endpoint.id,
@@ -205,7 +215,9 @@ export class SwaggerParseManager {
 				let firstReqId = null;
 
 				parameters.forEach((param) => {
-					if (!('in' in param)) return;
+					if (!('in' in param)) {
+						return;
+					}
 					switch (param.in) {
 						case 'body':
 							body = this.getExampleSwaggerBodyObject(param.schema) ?? body;
