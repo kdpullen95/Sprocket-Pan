@@ -36,9 +36,7 @@ export function SideDrawer({ tab }: SideDrawerProps) {
 						<UndoRedoTabsButton />
 					</Stack>
 				</Sheet>
-				<Stack component={Sheet} sx={{ flex: 1, minHeight: '1px' }}>
-					<SideDrawerContent tab={tab} />
-				</Stack>
+				<SideDrawerContent tab={tab} />
 			</Stack>
 		</Sheet>
 	);

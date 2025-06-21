@@ -11,13 +11,15 @@ import { WorkspaceMetadata } from '@/types/data/workspace';
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { InlineItemName } from '@/components/shared/InlineItemName';
 import { SprocketModal } from '@/components/shared/modals/SprocketModal';
-import { RemoveCircle, Save } from '@mui/icons-material';
+import { ImportExport, RemoveCircle, Save } from '@mui/icons-material';
 import { globalActions } from '@/state/global/slice';
 import { saveActiveData } from '@/state/active/thunks';
 import { selectHasBeenModifiedSinceLastSave } from '@/state/active/selectors';
+import { ImportSelector } from './ImportSelector';
 
 export function WorkspacesFileSystem() {
 	const [switchingTo, setSwitchingTo] = useState<WorkspaceMetadata | undefined>(undefined);
+	const [isImportOpen, setIsImportOpen] = useState(false);
 	const isModified = useSelector(selectHasBeenModifiedSinceLastSave);
 	const { average } = useScrollbarTheme();
 	const workspaces = useSelector(selectWorkspacesList);
@@ -42,7 +44,16 @@ export function WorkspacesFileSystem() {
 	}, [switchingTo, isModified]);
 	return (
 		<>
-			<SideDrawerHeader content="Workspaces" />
+			<SideDrawerHeader
+				content="Workspaces"
+				menuOptions={[
+					{
+						label: 'Import From File',
+						onClick: () => setIsImportOpen(true),
+						Icon: ImportExport,
+					},
+				]}
+			/>
 			<Stack gap={1} sx={{ ...average, p: 1, flex: 1, minHeight: '1px', overflow: 'auto' }}>
 				{activeWorkspace != null && (
 					<Box mb={1}>
@@ -80,6 +91,7 @@ export function WorkspacesFileSystem() {
 					<InlineItemName item={switchingTo} />?
 				</Typography>
 			</SprocketModal>
+			<ImportSelector open={isImportOpen} onClose={() => setIsImportOpen(false)} />
 		</>
 	);
 }

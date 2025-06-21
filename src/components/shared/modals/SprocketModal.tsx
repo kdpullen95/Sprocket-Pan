@@ -11,7 +11,7 @@ const sizeStyling = {
 	full: undefined,
 } as const;
 
-interface SprocketModalProps extends Omit<ModalProps, 'onClose' | 'title'> {
+export interface SprocketModalProps extends Omit<ModalProps, 'onClose' | 'title'> {
 	actions?: ReactNode;
 	onClose?: () => void;
 	closeOn?: ('backdropClick' | 'escapeKeyDown' | 'closeClick')[];
@@ -47,7 +47,13 @@ export function SprocketModal({
 				{title != null && <Typography level="title-lg">{title}</Typography>}
 				{children}
 				{actions && (
-					<Stack sx={{ position: 'absolute', bottom: '10px', width: 'calc(100% - 40px)' }} direction="row" gap={2}>
+					<Stack
+						sx={{ position: 'absolute', bottom: '10px', width: 'calc(100% - 40px)' }}
+						alignItems="center"
+						justifyContent="end"
+						direction="row"
+						gap={2}
+					>
 						{actions}
 					</Stack>
 				)}

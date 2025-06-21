@@ -13,7 +13,7 @@ import {
 } from '@/types/data/workspace';
 import { KeyValuePair } from '@/types/shared/keyValues';
 import { RecursivePartial } from '@/types/utils/utils';
-import { assignDeep, mergeDeep } from '@/utils/variables';
+import { mergeDeep } from '@/utils/variables';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Create, PayloadUpdate, Update } from '../types';
 import { Item } from '@/types/data/item';
@@ -50,21 +50,24 @@ interface SetSelectedServiceEnvironment {
 
 function deleteRequest(state: State, id: string) {
 	const { endpointId } = state.requests[id];
-	delete state.requests[id];
 	state.endpoints[endpointId].requestIds = state.endpoints[endpointId].requestIds.filter((reqId) => reqId !== id);
+	if (state.endpoints[endpointId].defaultRequest === id) {
+		state.endpoints[endpointId].defaultRequest = state.endpoints[endpointId].requestIds[0];
+	}
+	delete state.requests[id];
 }
 
 function deleteEndpoint(state: State, id: string) {
 	const { serviceId, requestIds } = state.endpoints[id];
-	delete state.endpoints[id];
 	state.services[serviceId].endpointIds = state.services[serviceId].endpointIds.filter((endId) => endId !== id);
 	requestIds.forEach((reqId) => deleteRequest(state, reqId));
+	delete state.endpoints[id];
 }
 
 function deleteService(state: State, id: string) {
 	const { endpointIds } = state.services[id];
-	delete state.services[id];
 	endpointIds.forEach((endId) => deleteEndpoint(state, endId));
+	delete state.services[id];
 }
 
 function update<T extends Item>(state: { [key: string]: T }, item: Update<T>) {
@@ -73,6 +76,17 @@ function update<T extends Item>(state: { [key: string]: T }, item: Update<T>) {
 	}
 	state[item.id] = { ...state[item.id], ...item };
 }
+
+const injectableKeys: (keyof WorkspaceData)[] = [
+	'endpoints',
+	'environments',
+	'requests',
+	'scripts',
+	'secrets',
+	'services',
+	'settings',
+	'syncMetadata',
+];
 
 export const activeSlice = createSlice({
 	name: 'active',
@@ -83,7 +97,15 @@ export const activeSlice = createSlice({
 			Object.assign(state, { ...initialState, ...payload, lastModified: time, lastSaved: time });
 		},
 		injectState: (state, { payload }: PayloadAction<Create<WorkspaceData>>) => {
-			assignDeep(state, payload, 1);
+			if (payload == null) {
+				return;
+			}
+			injectableKeys.forEach((key) => {
+				if (key in payload && payload[key] != null) {
+					// I can't get typescript to shut up without putting never here.
+					state[key] = mergeDeep(state[key], payload[key], undefined, 5) as never;
+				}
+			});
 		},
 		setSavedNow: (state) => {
 			state.lastSaved = new Date().getTime();
