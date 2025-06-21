@@ -17,13 +17,9 @@ interface SideDrawerContentProps {
 }
 
 export function SideDrawerContent({ tab }: SideDrawerContentProps) {
-	return (
-		<>
-			{tabs.map(({ value, content }) => (
-				<Stack key={value} component={Sheet} display={tab === value ? 'inherit' : 'none'} minHeight="1px" flex={1}>
-					{content}
-				</Stack>
-			))}
-		</>
-	);
+	return tabs.map(({ value, content }) => (
+		<Stack key={value} component={Sheet} display={tab === value ? 'inherit' : 'none'} minHeight="1px" flex={1}>
+			{content}
+		</Stack>
+	));
 }
