@@ -1,12 +1,12 @@
+import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
+import { MS_IN_DAY } from '@/constants/constants';
+import { BuildEnvironmentVariablesArgs, EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
+import { GlobalData } from '@/types/data/global';
+import { Settings } from '@/types/data/settings';
 import { QueryParams } from '@/types/data/shared';
 import { WorkspaceData } from '@/types/data/workspace';
-import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
-import { BuildEnvironmentVariablesArgs, EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
-import { mergeDeep } from './variables';
-import { Settings } from '@/types/data/settings';
-import { MS_IN_DAY } from '@/constants/constants';
-import { GlobalData } from '@/types/data/global';
 import { KeyValueValues } from '@/types/shared/keyValues';
+import { mergeDeep } from './variables';
 
 export function queryParamsToString(
 	queryParams: QueryParams,
@@ -24,10 +24,16 @@ export function queryParamsToString(
 	return encoded ? searchParams.toString() : decodeURIComponent(searchParams.toString());
 }
 
+export function iterToKeyValuePairs<T>(iter: Iterable<[string, T]>) {
+	const ret = [];
+	for (const pair of iter) {
+		ret.push({ key: pair[0], value: pair[1] });
+	}
+	return ret;
+}
+
 export function toKeyValuePairs<T>(object: Record<string, T>) {
-	return Object.entries(object)
-		.map(([key, value]) => ({ key, value }))
-		.filter((x) => typeof x.value != 'object');
+	return Object.entries(object).map(([key, value]) => ({ key, value }));
 }
 
 export function envParse(value: KeyValueValues | undefined, envValues: OrderedKeyValuePairs<string>) {

@@ -1,5 +1,5 @@
 import { SprocketPan } from '@/assets/icons/brands/SprocketPan';
-import { open } from '@tauri-apps/api/dialog';
+import { open } from '@tauri-apps/plugin-dialog';
 import { WorkspaceDataManager } from '@/managers/data/WorkspaceDataManager';
 import { activeActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';

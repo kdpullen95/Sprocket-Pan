@@ -1,5 +1,5 @@
-import { EndpointRequest, EndpointResponse, HistoricalEndpointResponse, WorkspaceData } from '@/types/data/workspace';
 import { AuditLog, RequestEvent } from '@/types/data/audit';
+import { EndpointRequest, EndpointResponse, HistoricalEndpointResponse, WorkspaceData } from '@/types/data/workspace';
 import { Interrupt } from '@/utils/types';
 
 export interface RunTypeScriptReturn<T> {
@@ -12,8 +12,8 @@ type HttpVerb = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 
 export type HttpOptions = {
 	method: HttpVerb;
-	headers?: Record<string, unknown>;
-	query?: Record<string, unknown>;
+	headers?: Record<string, string>;
+	query?: Record<string, string>;
 	body?: Record<string, unknown>;
 	timeout?: number;
 };
@@ -54,8 +54,8 @@ export interface SprocketInjectedScripts {
 		url: string,
 		request: {
 			method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS' | 'CONNECT' | 'TRACE';
-			headers?: Record<string, unknown> | undefined;
-			query?: Record<string, unknown> | undefined;
+			headers?: Record<string, string> | undefined;
+			query?: Record<string, string> | undefined;
 			body?: Record<string, unknown> | undefined;
 			timeout?: number | undefined;
 		},
