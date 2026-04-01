@@ -1,6 +1,6 @@
 import { Divider, useTheme } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
-import { PanelResizeHandle } from 'react-resizable-panels';
+import { Separator } from 'react-resizable-panels';
 
 interface SprocketResizeHandleProps {
 	horizontal?: boolean;
@@ -10,7 +10,7 @@ interface SprocketResizeHandleProps {
 export function SprocketResizeHandle({ horizontal = false, sx }: SprocketResizeHandleProps) {
 	const theme = useTheme();
 	return (
-		<PanelResizeHandle>
+		<Separator>
 			<Divider
 				sx={{
 					boxSizing: 'border-box',
@@ -23,6 +23,6 @@ export function SprocketResizeHandle({ horizontal = false, sx }: SprocketResizeH
 				}}
 				orientation={horizontal ? 'horizontal' : 'vertical'}
 			/>
-		</PanelResizeHandle>
+		</Separator>
 	);
 }

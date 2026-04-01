@@ -1,5 +1,5 @@
 import { log } from '@/utils/logging';
-import { BaseDirectory, createDir, exists, readDir, readTextFile, removeDir } from '@tauri-apps/api/fs';
+import { BaseDirectory, exists, mkdir, readDir, readTextFile, remove } from '@tauri-apps/plugin-fs';
 import { InvokerFileUpdate, RustInvoker } from '../RustInvoker';
 
 export class FileSystemWorker {
@@ -8,7 +8,7 @@ export class FileSystemWorker {
 	public static readonly DATA_FILE_NAME = 'data' as const;
 
 	public static exists(path: string) {
-		return exists(path, { dir: this.DEFAULT_DIRECTORY });
+		return exists(path, { baseDir: this.DEFAULT_DIRECTORY });
 	}
 
 	public static writeFiles(files: InvokerFileUpdate[]) {
@@ -45,24 +45,24 @@ export class FileSystemWorker {
 	}
 
 	public static async readTextFile(path: string) {
-		return readTextFile(path, { dir: this.DEFAULT_DIRECTORY });
+		return readTextFile(path, { baseDir: this.DEFAULT_DIRECTORY });
 	}
 
 	public static async createDir(path: string) {
-		return createDir(path, {
-			dir: this.DEFAULT_DIRECTORY,
+		return mkdir(path, {
+			baseDir: this.DEFAULT_DIRECTORY,
 			recursive: true,
 		});
 	}
 
 	public static async removeDir(path: string) {
-		return removeDir(path, {
-			dir: this.DEFAULT_DIRECTORY,
+		return remove(path, {
+			baseDir: this.DEFAULT_DIRECTORY,
 			recursive: true,
 		});
 	}
 
 	public static async readDir(path: string) {
-		return readDir(path, { dir: this.DEFAULT_DIRECTORY });
+		return readDir(path, { baseDir: this.DEFAULT_DIRECTORY });
 	}
 }

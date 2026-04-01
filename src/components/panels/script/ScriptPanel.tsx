@@ -1,24 +1,26 @@
-import { useSelector } from 'react-redux';
-import { Stack, Typography } from '@mui/joy';
-import { useState, useRef } from 'react';
+import { SyncButton } from '@/components/shared/buttons/SyncButton';
+import { SprocketEditor } from '@/components/shared/input/monaco/SprocketEditor';
+import { SprocketResizeHandle } from '@/components/shared/SprocketResizeHandle';
 import { Constants } from '@/constants/constants';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useEditorTheme } from '@/hooks/useEditorTheme';
+import { ScriptRunnerManager } from '@/managers/scripts/ScriptRunnerManager';
 import { selectScripts } from '@/state/active/selectors';
 import { activeActions } from '@/state/active/slice';
+import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { Script } from '@/types/data/workspace';
 import { sleep } from '@/utils/misc';
 import { toValidFunctionName } from '@/utils/string';
+import { Stack, Typography } from '@mui/joy';
+import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Group, Panel } from 'react-resizable-panels';
 import { PanelProps } from '../panels.interface';
 import { EditableHeader } from '../shared/EditableHeader';
-import { SyncButton } from '@/components/shared/buttons/SyncButton';
 import { ScriptActions } from './ScriptActions';
-import { ScriptRunnerManager } from '@/managers/scripts/ScriptRunnerManager';
-import { SprocketEditor } from '@/components/shared/input/monaco/SprocketEditor';
-import { Panel, PanelGroup } from 'react-resizable-panels';
-import { SprocketResizeHandle } from '@/components/shared/SprocketResizeHandle';
-import { useDebounce } from '@/hooks/useDebounce';
-import { itemActions } from '@/state/items';
+
+// TODO: https://react-resizable-panels.vercel.app/examples/persistent-layout
 
 export function ScriptPanel({ id }: PanelProps) {
 	const interruptTrigger = useRef<null | ((message?: string) => void)>(null);
@@ -82,7 +84,7 @@ export function ScriptPanel({ id }: PanelProps) {
 				isValidFunc={(text) => text.length >= 1 && (!scriptNames.has(text) || text == script.name)}
 				right={<SyncButton id={id} />}
 			/>
-			<PanelGroup autoSaveId={id} direction="vertical" style={{ height: 'calc(100vh - 140px)' }}>
+			<Group orientation="vertical" style={{ height: 'calc(100vh - 140px)' }}>
 				<Panel defaultSize={66} minSize={20}>
 					<SprocketEditor
 						ActionBarItems={
@@ -116,7 +118,7 @@ export function ScriptPanel({ id }: PanelProps) {
 						formatOnChange
 					/>
 				</Panel>
-			</PanelGroup>
+			</Group>
 		</Stack>
 	);
 }

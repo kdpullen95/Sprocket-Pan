@@ -3,7 +3,7 @@ use tauri::{Manager, Window};
 #[tauri::command]
 pub fn zoom(window: Window, amount: f64) -> bool {
     let res: Result<(), tauri::Error> = window
-        .get_window("main")
+        .get_webview_window("main")
         .expect("no window labeled 'main' found")
         .with_webview(move |webview| {
             #[cfg(target_os = "linux")]

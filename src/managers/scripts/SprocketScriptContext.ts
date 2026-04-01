@@ -1,18 +1,17 @@
-import { HttpOptions, OptionalScriptContext, SprocketInjectedScripts } from './types';
-import { Token } from '@/types/shared/misc';
-import { checkInterrupt } from '@/utils/functions';
-import { EndpointRequest, HistoricalEndpointResponse } from '@/types/data/workspace';
 import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
 import { activeActions, Update } from '@/state/active/slice';
+import { EndpointRequest, HistoricalEndpointResponse } from '@/types/data/workspace';
 import { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
-import { Body } from '@tauri-apps/api/http';
-import { http } from '@tauri-apps/api';
+import { Token } from '@/types/shared/misc';
 import { getEnvValuesFromData, getSettingsFromState } from '@/utils/application';
-import { EnvironmentContextResolver } from '../EnvironmentContextResolver';
-import { sleep } from '@/utils/misc';
+import { checkInterrupt } from '@/utils/functions';
 import { log } from '@/utils/logging';
+import { sleep } from '@/utils/misc';
+import * as http from '@tauri-apps/plugin-http';
 import { StateAccessManager } from '../data/StateAccessManager';
-import { networkRequestManager } from '../NetworkRequestManager';
+import { EnvironmentContextResolver } from '../EnvironmentContextResolver';
+import { NetworkRequestManager } from '../NetworkRequestManager';
+import { HttpOptions, OptionalScriptContext, SprocketInjectedScripts } from './types';
 
 export class SprocketScriptContext implements SprocketInjectedScripts {
 	private token: Token<boolean> = { current: false };
@@ -153,16 +152,19 @@ export class SprocketScriptContext implements SprocketInjectedScripts {
 		this.dispatch(activeActions.updateRequest(update));
 	};
 
-	fetch = <T>(url: string, request: HttpOptions) => {
-		const modifiedRequest = {
-			...request,
-			body: request.body != undefined ? Body.json(request.body) : undefined,
+	fetch = async <T>(url: string, request: HttpOptions) => {
+		const fullUrl = url + '?=' + new URLSearchParams(request.query);
+		const req: RequestInit & http.ClientOptions = {
+			method: request.method,
+			headers: new Headers(request.headers),
+			body: JSON.stringify(request.body),
+			connectTimeout: request.timeout,
 		};
-		return http.fetch<T>(url, modifiedRequest);
+		return (await http.fetch(fullUrl, req)).json() as T;
 	};
 
 	sendRequest = async (requestId: string) => {
-		const res = await networkRequestManager.makeRequestWithScripts(requestId);
+		const res = await NetworkRequestManager.makeRequestWithScripts(requestId);
 		const settings = getSettingsFromState(this.getState());
 		this.dispatch(
 			activeActions.addResponseToHistory({

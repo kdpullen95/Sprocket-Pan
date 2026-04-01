@@ -4,17 +4,13 @@ import { SprocketError } from '@/types/state/state';
 import mime from 'mime';
 
 export function getRequestBodyCategory(requestBodyType: RequestBodyType) {
-	let _exhaustive: never;
 	switch (requestBodyType) {
-		case 'none':
-			return 'none';
 		case 'raw':
 			return 'raw';
 		case 'form-data':
 		case 'x-www-form-urlencoded':
 			return 'table';
 		default:
-			_exhaustive = requestBodyType;
 			return 'none';
 	}
 }

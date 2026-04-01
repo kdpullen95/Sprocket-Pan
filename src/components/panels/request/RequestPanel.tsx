@@ -1,20 +1,20 @@
-import { Stack, CircularProgress, Button, Box } from '@mui/joy';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RequestEditTabs } from './RequestEditTabs';
-import { ResponsePanel } from './response/ResponsePanel';
+import { SprocketResizeHandle } from '@/components/shared/SprocketResizeHandle';
+import { TrapezoidalHeader } from '@/components/shared/flair/TrapezoidalHeader';
+import { EditableText } from '@/components/shared/input/EditableText';
+import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
+import { NetworkRequestManager } from '@/managers/NetworkRequestManager';
 import { selectFullRequestInfoById, selectSettings } from '@/state/active/selectors';
 import { activeActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 import { EndpointRequest } from '@/types/data/workspace';
-import { PanelProps } from '../panels.interface';
-import { networkRequestManager } from '@/managers/NetworkRequestManager';
 import { Send } from '@mui/icons-material';
-import { EditableText } from '@/components/shared/input/EditableText';
-import { Panel, PanelGroup } from 'react-resizable-panels';
-import { SprocketResizeHandle } from '@/components/shared/SprocketResizeHandle';
-import { TrapezoidalHeader } from '@/components/shared/flair/TrapezoidalHeader';
-import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
+import { Box, Button, CircularProgress, Stack } from '@mui/joy';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Group, Panel } from 'react-resizable-panels';
+import { PanelProps } from '../panels.interface';
+import { RequestEditTabs } from './RequestEditTabs';
+import { ResponsePanel } from './response/ResponsePanel';
 
 export function RequestPanel({ id }: PanelProps) {
 	const { request, endpoint, service } = useSelector((state) => selectFullRequestInfoById(state, id));
@@ -33,7 +33,7 @@ export function RequestPanel({ id }: PanelProps) {
 			return;
 		}
 		setLoading(true);
-		const result = await networkRequestManager.makeRequestWithScripts(request.id);
+		const result = await NetworkRequestManager.makeRequestWithScripts(request.id);
 		dispatch(
 			activeActions.addResponseToHistory({
 				requestId: request.id,
@@ -50,7 +50,7 @@ export function RequestPanel({ id }: PanelProps) {
 	}
 
 	return (
-		<PanelGroup direction="horizontal">
+		<Group orientation="horizontal">
 			<Panel defaultSize={50} minSize={33}>
 				<Box height="100%" sx={{ overflow: 'auto', ...scrollbarTheme }}>
 					<TrapezoidalHeader>Request</TrapezoidalHeader>
@@ -79,6 +79,6 @@ export function RequestPanel({ id }: PanelProps) {
 					</Stack>
 				</Box>
 			</Panel>
-		</PanelGroup>
+		</Group>
 	);
 }

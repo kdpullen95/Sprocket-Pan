@@ -1,18 +1,20 @@
-import { Stack, Box, useTheme } from '@mui/joy';
-import { useAutosave } from './hooks/useAutosave';
+import { Box, Stack, useTheme } from '@mui/joy';
+import { useState } from 'react';
+import { Group, Panel, usePanelRef } from 'react-resizable-panels';
 import { TabHeader } from '../header/TabHeader';
-import { SideDrawer } from '../sidebar/SideDrawer';
-import { VerticalMenu } from '../sidebar/VerticalMenu';
-import { ImperativePanelHandle, Panel, PanelGroup } from 'react-resizable-panels';
 import { SprocketResizeHandle } from '../shared/SprocketResizeHandle';
+import { SideDrawer } from '../sidebar/SideDrawer';
 import { SidebarTabs } from '../sidebar/types';
-import { useRef, useState } from 'react';
+import { VerticalMenu } from '../sidebar/VerticalMenu';
+import { useAutosave } from './hooks/useAutosave';
+
+const MIN_SIDEBAR_WIDTH = 5;
 
 export function Workspace() {
 	const [tab, setTab] = useState<SidebarTabs>(SidebarTabs.Workspaces);
 	const theme = useTheme();
 	const [expanded, setIsExpanded] = useState(false);
-	const ref = useRef<ImperativePanelHandle>(null);
+	const ref = usePanelRef();
 	const setPanelTab = (newTab: SidebarTabs) => {
 		if (ref.current?.isCollapsed()) {
 			ref.current?.expand();
@@ -37,14 +39,13 @@ export function Workspace() {
 			<Box sx={{ flex: 0, minWidth: '45px', maxWidth: '45px', height: '100%' }}>
 				<VerticalMenu tab={tab} setTab={setPanelTab} showActive={expanded} />
 			</Box>
-			<PanelGroup direction="horizontal">
+			<Group orientation="horizontal">
 				<Panel
 					defaultSize={25}
 					minSize={10}
-					ref={ref}
+					panelRef={ref}
 					collapsible
-					onCollapse={() => setIsExpanded(false)}
-					onExpand={() => setIsExpanded(true)}
+					onResize={(size) => setIsExpanded(size.inPixels >= MIN_SIDEBAR_WIDTH)}
 				>
 					<SideDrawer tab={tab} />
 				</Panel>
@@ -52,7 +53,7 @@ export function Workspace() {
 				<Panel defaultSize={75} minSize={50}>
 					<TabHeader />
 				</Panel>
-			</PanelGroup>
+			</Group>
 		</Stack>
 	);
 }
