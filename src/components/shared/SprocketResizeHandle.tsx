@@ -1,4 +1,5 @@
-import { Divider, useTheme } from '@mui/joy';
+import { Divider } from '@mui/joy';
+import { useTheme } from '@mui/joy/styles';
 import { SxProps } from '@mui/joy/styles/types';
 import { Separator } from 'react-resizable-panels';
 

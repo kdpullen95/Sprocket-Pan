@@ -1,7 +1,7 @@
-import { Tooltip, TooltipProps } from '@mui/joy';
+import { Tooltip } from '@mui/joy';
+import { TooltipProps } from '@mui/joy/Tooltip/TooltipProps';
 
 interface SprocketTooltipProps extends Partial<TooltipProps> {
-	children: JSX.Element;
 	text: string;
 	disabled?: boolean;
 }

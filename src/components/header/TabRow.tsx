@@ -1,7 +1,8 @@
-import { TabList, tabClasses, useTheme } from '@mui/joy';
-import { Tab } from './Tab';
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { useSingleAxisScroll } from '@/hooks/useSingleAxisScroll';
+import { tabClasses, TabList } from '@mui/joy';
+import { useTheme } from '@mui/joy/styles';
+import { Tab } from './Tab';
 
 interface TabRowProps {
 	list: string[];

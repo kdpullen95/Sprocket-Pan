@@ -1,7 +1,8 @@
+import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import { Box, IconButton } from '@mui/joy';
+import { useTheme } from '@mui/joy/styles';
 import { PropsWithChildren } from 'react';
 import { SidebarTabs } from '../types';
-import { Box, IconButton, useTheme } from '@mui/joy';
-import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 
 export interface SidebarTabButtonProps extends PropsWithChildren {
 	tab: SidebarTabs;

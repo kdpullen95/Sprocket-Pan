@@ -1,17 +1,17 @@
-import { useSelector } from 'react-redux';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import { FluentCubeSvg } from '@/assets/icons/fluent/FluentCube';
+import { FluentCubeLinkSvg } from '@/assets/icons/fluent/FluentCubeLink';
+import { useShowSync } from '@/hooks/useShowSync';
 import { selectSelectedEnvironment } from '@/state/active/selectors';
 import { activeActions } from '@/state/active/slice';
+import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
-import { menuOptionDuplicate, menuOptionDelete } from '../tree/FileSystemDropdown';
-import { FileSystemLeaf } from '../tree/FileSystemLeaf';
-import { useShowSync } from '@/hooks/useShowSync';
-import { FluentCubeLinkSvg } from '@/assets/icons/fluent/FluentCubeLink';
-import { FluentCubeSvg } from '@/assets/icons/fluent/FluentCube';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import { useTheme } from '@mui/joy/styles';
+import { useSelector } from 'react-redux';
 import { EllipsesP } from '../components/EllipsesP';
-import { itemActions } from '@/state/items';
-import { useTheme } from '@mui/joy';
+import { menuOptionDelete, menuOptionDuplicate } from '../tree/FileSystemDropdown';
+import { FileSystemLeaf } from '../tree/FileSystemLeaf';
 
 interface EnvironmentFileSystemProps {
 	environmentId: string;

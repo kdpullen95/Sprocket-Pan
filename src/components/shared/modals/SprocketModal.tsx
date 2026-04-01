@@ -1,5 +1,5 @@
 import { Modal, ModalClose, ModalDialog, ModalProps, Stack, Typography } from '@mui/joy';
-import { SxProps } from '@mui/material';
+import { SxProps } from '@mui/joy/styles/types';
 import { ReactNode } from 'react';
 
 const allCloseOn = ['backdropClick', 'escapeKeyDown', 'closeClick'] as const;

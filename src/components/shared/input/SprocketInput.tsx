@@ -1,4 +1,5 @@
-import { FormControl, FormHelperText, FormLabel, Input, InputProps, Stack } from '@mui/joy';
+import { FormControl, FormHelperText, FormLabel, Input, Stack } from '@mui/joy';
+import { InputProps } from '@mui/joy/Input/InputProps';
 import { SxProps } from '@mui/joy/styles/types';
 
 export interface SprocketInputProps extends Omit<InputProps, 'onChange'> {

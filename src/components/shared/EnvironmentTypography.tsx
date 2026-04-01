@@ -1,9 +1,10 @@
-import { Typography, TypographyProps } from '@mui/joy';
-import { useSelector } from 'react-redux';
-import { SprocketTooltip } from './SprocketTooltip';
 import { Snippet } from '@/managers/EnvironmentContextResolver';
 import { selectSettings } from '@/state/active/selectors';
 import { VariableNameDisplay } from '@/types/data/settings';
+import { Typography } from '@mui/joy';
+import { TypographyProps } from '@mui/joy/Typography/TypographyProps';
+import { useSelector } from 'react-redux';
+import { SprocketTooltip } from './SprocketTooltip';
 
 interface EnvironmentTypographyProps {
 	snippets: Snippet[];

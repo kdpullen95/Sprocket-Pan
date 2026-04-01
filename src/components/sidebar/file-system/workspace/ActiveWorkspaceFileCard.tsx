@@ -1,7 +1,8 @@
-import { Card, Chip, IconButton, Stack, Typography, useTheme } from '@mui/joy';
-import { WorkspaceFileCardContent, WorkspaceFileCardContentProps } from './WorkspaceFileCard';
-import { Folder, OpenInNew } from '@mui/icons-material';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import { Folder, OpenInNew } from '@mui/icons-material';
+import { Card, Chip, IconButton, Stack, Typography } from '@mui/joy';
+import { useTheme } from '@mui/joy/styles';
+import { WorkspaceFileCardContent, WorkspaceFileCardContentProps } from './WorkspaceFileCard';
 
 interface ActiveWorkspaceFileCardProps extends WorkspaceFileCardContentProps {
 	onOpenTab: (id: string) => void;

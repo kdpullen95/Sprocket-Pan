@@ -1,21 +1,21 @@
-import { Button, Stack, Input } from '@mui/joy';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { useSelector } from 'react-redux';
+import { SyncButton } from '@/components/shared/buttons/SyncButton';
 import { EnvironmentTypography } from '@/components/shared/EnvironmentTypography';
 import { Constants } from '@/constants/constants';
 import { useComputedServiceEnvironment } from '@/hooks/useComputedEnvironment';
 import { useDebounce } from '@/hooks/useDebounce';
 import { EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
 import { activeActions } from '@/state/active/slice';
+import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
 import { Endpoint } from '@/types/data/workspace';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { Button, Input, Stack } from '@mui/joy';
+import { useSelector } from 'react-redux';
 import { PanelProps } from '../panels.interface';
-import { EndpointEditTabs } from './EndpointEditTabs';
 import { EditableHeader } from '../shared/EditableHeader';
-import { SyncButton } from '@/components/shared/buttons/SyncButton';
 import { VerbSelect } from '../shared/VerbSelect';
-import { itemActions } from '@/state/items';
+import { EndpointEditTabs } from './EndpointEditTabs';
 
 export function EndpointPanel({ id }: PanelProps) {
 	const dispatch = useAppDispatch();

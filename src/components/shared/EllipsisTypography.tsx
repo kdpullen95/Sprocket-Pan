@@ -1,4 +1,5 @@
-import { Box, Typography, TypographyProps } from '@mui/joy';
+import { Box, Typography } from '@mui/joy';
+import { TypographyProps } from '@mui/joy/Typography/TypographyProps';
 import { PropsWithChildren } from 'react';
 
 export function EllipsisSpan({ children }: PropsWithChildren) {

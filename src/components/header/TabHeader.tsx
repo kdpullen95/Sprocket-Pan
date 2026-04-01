@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
-import { Box, Stack, TabPanel, Tabs, useTheme } from '@mui/joy';
-import { useSelector } from 'react-redux';
-import { TabRow } from './TabRow';
-import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { TabContent } from '../panels/TabContent';
-import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
-import { selectUiState } from '@/state/ui/selectors';
 import { SprocketPanSvg } from '@/assets/icons/brands/SprocketPan';
+import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { selectSettings } from '@/state/active/selectors';
+import { useAppDispatch } from '@/state/store';
+import { selectUiState } from '@/state/ui/selectors';
+import { uiActions } from '@/state/ui/slice';
+import { Box, Stack, TabPanel, Tabs } from '@mui/joy';
+import { useTheme } from '@mui/joy/styles';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { TabContent } from '../panels/TabContent';
+import { TabRow } from './TabRow';
 
 export function TabHeader() {
 	const { tabs, selectedTab } = useSelector(selectUiState);
@@ -44,11 +45,7 @@ export function TabHeader() {
 					/>
 				</Stack>
 			</Box>
-			<Tabs
-				size="lg"
-				value={selectedTab}
-				onChange={(_, newValue) => dispatch(uiActions.setSelectedTab(newValue as string))}
-			>
+			<Tabs size="lg" value={selectedTab} onChange={(_, val) => dispatch(uiActions.setSelectedTab(val))}>
 				<TabRow list={tabs} />
 				{tabs.map((id, index) => (
 					<TabPanel

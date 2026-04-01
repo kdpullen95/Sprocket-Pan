@@ -63,8 +63,8 @@ export class FileSystemManager {
 	static async getDirectories(): Promise<string[]> {
 		const directoryNames = await FileSystemWorker.readDir(FileSystemWorker.DATA_FOLDER_NAME);
 		return directoryNames
-			.filter((dirent) => dirent.children != undefined)
-			.map((dirent) => dirent.name as string) // for type inference
+			.filter((dirent) => dirent.isDirectory)
+			.map((dirent) => dirent.name)
 			.filter((x) => x != undefined);
 	}
 

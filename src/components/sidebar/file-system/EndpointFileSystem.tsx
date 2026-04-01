@@ -1,14 +1,14 @@
-import { RequestFileSystem } from './RequestFileSystem';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import { useSelector } from 'react-redux';
-import { menuOptionDelete, menuOptionDuplicate } from './tree/FileSystemDropdown';
-import { FileSystemBranch } from './tree/FileSystemBranch';
+import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { selectFilteredNestedIds } from '@/state/ui/selectors';
 import { uiActions } from '@/state/ui/slice';
-import { VerbDiv } from './components/VerbDiv';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import { useSelector } from 'react-redux';
 import { EllipsesP } from './components/EllipsesP';
-import { itemActions } from '@/state/items';
+import { VerbDiv } from './components/VerbDiv';
+import { RequestFileSystem } from './RequestFileSystem';
+import { FileSystemBranch } from './tree/FileSystemBranch';
+import { menuOptionDelete, menuOptionDuplicate } from './tree/FileSystemDropdown';
 
 interface EndpointFileSystemProps {
 	endpointId: string;
@@ -26,7 +26,6 @@ export function EndpointFileSystem({ endpointId }: EndpointFileSystemProps) {
 	return (
 		<FileSystemBranch
 			id={endpointId}
-			tabType="endpoint"
 			menuOptions={[
 				menuOptionDuplicate(() => dispatch(itemActions.endpoint.create(endpoint))),
 				{

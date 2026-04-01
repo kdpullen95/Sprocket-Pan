@@ -1,16 +1,16 @@
-import { useSelector } from 'react-redux';
-import { menuOptionDuplicate, menuOptionDelete } from './tree/FileSystemDropdown';
-import { FileSystemLeaf } from './tree/FileSystemLeaf';
-import { Add, Close } from '@mui/icons-material';
-import { activeActions } from '@/state/active/slice';
-import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { EllipsesP } from './components/EllipsesP';
 import { FluentSnippetSvg } from '@/assets/icons/fluent/FluentSnippet';
 import { FluentSnippetLinkSvg } from '@/assets/icons/fluent/FluentSnippetLink';
 import { useShowSync } from '@/hooks/useShowSync';
+import { activeActions } from '@/state/active/slice';
 import { itemActions } from '@/state/items';
-import { useTheme } from '@mui/joy';
+import { useAppDispatch } from '@/state/store';
+import { uiActions } from '@/state/ui/slice';
+import { Add, Close } from '@mui/icons-material';
+import { useTheme } from '@mui/joy/styles';
+import { useSelector } from 'react-redux';
+import { EllipsesP } from './components/EllipsesP';
+import { menuOptionDelete, menuOptionDuplicate } from './tree/FileSystemDropdown';
+import { FileSystemLeaf } from './tree/FileSystemLeaf';
 
 interface RequestFileSystemProps {
 	requestId: string;

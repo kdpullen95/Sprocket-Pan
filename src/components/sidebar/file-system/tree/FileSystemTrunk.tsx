@@ -1,6 +1,7 @@
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { selectSettings } from '@/state/active/selectors';
-import { Box, useTheme } from '@mui/joy';
+import { Box } from '@mui/joy';
+import { useTheme } from '@mui/joy/styles';
 import { Fragment, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
 import { Virtuoso } from 'react-virtuoso';

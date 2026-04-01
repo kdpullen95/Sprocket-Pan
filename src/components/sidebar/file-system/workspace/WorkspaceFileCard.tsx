@@ -1,13 +1,14 @@
-import { WorkspaceMetadata } from '@/types/data/workspace';
+import { FluentArrowSwap } from '@/assets/icons/fluent/FluentArrowSwap';
 import { EllipsisTypography } from '@/components/shared/EllipsisTypography';
-import { OpenInNew } from '@mui/icons-material';
-import { Box, Card, Stack, useTheme } from '@mui/joy';
 import { Minidenticon } from '@/components/shared/Minidenticon';
+import { RelativeTimeChip } from '@/components/shared/RelativeTimeChip';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
+import { WorkspaceMetadata } from '@/types/data/workspace';
+import { OpenInNew } from '@mui/icons-material';
+import { Box, Card, Stack } from '@mui/joy';
+import { useTheme } from '@mui/joy/styles';
 import { FileSystemDropdown, menuOptionDelete } from '../tree/FileSystemDropdown';
-import { FluentArrowSwap } from '@/assets/icons/fluent/FluentArrowSwap';
-import { RelativeTimeChip } from '@/components/shared/RelativeTimeChip';
 
 export interface WorkspaceFileCardContentProps {
 	workspace: WorkspaceMetadata;

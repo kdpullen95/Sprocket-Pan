@@ -1,4 +1,5 @@
-import { Box, BoxProps } from '@mui/joy';
+import { Box } from '@mui/joy';
+import { BoxProps } from '@mui/joy/Box/BoxProps';
 import { PropsWithChildren } from 'react';
 
 interface HoverDecoratorProps extends PropsWithChildren, BoxProps {

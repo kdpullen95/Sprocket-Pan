@@ -1,10 +1,11 @@
-import { Box, IconButton, Input, Stack, TypographyProps } from '@mui/joy';
-import { useEffect, useState } from 'react';
-import CheckIcon from '@mui/icons-material/Check';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CheckIcon from '@mui/icons-material/Check';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { SprocketTooltip } from '../SprocketTooltip';
+import { Box, IconButton, Input, Stack } from '@mui/joy';
+import { TypographyProps } from '@mui/joy/Typography/TypographyProps';
+import { useEffect, useState } from 'react';
 import { EllipsisTypography } from '../EllipsisTypography';
+import { SprocketTooltip } from '../SprocketTooltip';
 
 export interface EditableTextProps extends Partial<TypographyProps> {
 	text?: string;

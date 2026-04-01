@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 interface UseClickOutsideAlerterArgs {
-	ref: React.MutableRefObject<HTMLInputElement | null>;
+	ref: React.RefObject<HTMLInputElement | null>;
 	onOutsideClick: () => void;
 }
 
