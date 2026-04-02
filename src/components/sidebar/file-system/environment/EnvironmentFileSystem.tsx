@@ -6,7 +6,7 @@ import { activeActions } from '@/state/active/slice';
 import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import { CheckCircleOutlined } from '@mui/icons-material';
 import { useTheme } from '@mui/joy/styles';
 import { useSelector } from 'react-redux';
 import { EllipsesP } from '../components/EllipsesP';
@@ -32,7 +32,7 @@ export function EnvironmentFileSystem({ environmentId }: EnvironmentFileSystemPr
 			menuOptions={[
 				{
 					onClick: () => dispatch(activeActions.selectEnvironment(envSelected ? undefined : environment.id)),
-					Icon: CheckCircleOutlinedIcon,
+					Icon: CheckCircleOutlined,
 					label: envSelected ? 'Deselect' : 'Select',
 				},
 				menuOptionDuplicate(() => dispatch(itemActions.environment.duplicate(environment))),

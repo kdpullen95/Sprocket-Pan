@@ -1,22 +1,19 @@
-import { Stack, FormControl, FormLabel, IconButton, Alert, Button, Typography } from '@mui/joy';
-import { SettingsTabProps } from './types';
-import { open } from '@tauri-apps/plugin-dialog';
-import { SprocketSwitch } from '@/components/shared/input/SprocketSwitch';
-import { SprocketInput } from '@/components/shared/input/SprocketInput';
-import { Folder, Warning } from '@mui/icons-material';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import DeleteForever from '@mui/icons-material/DeleteForever';
-import SaveIcon from '@mui/icons-material/Save';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { SprocketInput } from '@/components/shared/input/SprocketInput';
+import { SprocketSwitch } from '@/components/shared/input/SprocketSwitch';
 import { AreYouSureModal } from '@/components/shared/modals/AreYouSureModal';
 import { WorkspaceDataManager } from '@/managers/data/WorkspaceDataManager';
 import { selectActiveState } from '@/state/active/selectors';
 import { activeActions } from '@/state/active/slice';
-import { useAppDispatch } from '@/state/store';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { saveActiveData } from '@/state/active/thunks';
 import { selectActiveWorkspace } from '@/state/global/selectors';
+import { useAppDispatch } from '@/state/store';
+import { DeleteForever, FileUpload, Folder, Save, Warning } from '@mui/icons-material';
+import { Alert, Button, FormControl, FormLabel, IconButton, Stack, Typography } from '@mui/joy';
+import { open } from '@tauri-apps/plugin-dialog';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { SettingsTabProps } from './types';
 
 export interface WorkspaceTabProps extends SettingsTabProps {
 	goToWorkspaceSelection: () => void;
@@ -93,7 +90,7 @@ export function WorkspaceTab({ overlay, onChange, goToWorkspaceSelection }: Work
 			<Typography>Workspace</Typography>
 			<Button
 				sx={{ width: '250px' }}
-				startDecorator={<FileUploadIcon />}
+				startDecorator={<FileUpload />}
 				color="primary"
 				variant="outlined"
 				onClick={exportData}
@@ -103,7 +100,7 @@ export function WorkspaceTab({ overlay, onChange, goToWorkspaceSelection }: Work
 			<Stack direction="row" gap={2}>
 				<Button
 					sx={{ width: '250px' }}
-					startDecorator={<SaveIcon />}
+					startDecorator={<Save />}
 					color="danger"
 					variant="outlined"
 					onClick={() => setIsQuitModalOpen(true)}
@@ -112,7 +109,7 @@ export function WorkspaceTab({ overlay, onChange, goToWorkspaceSelection }: Work
 				</Button>
 				<Button
 					sx={{ width: '250px' }}
-					startDecorator={<SaveIcon />}
+					startDecorator={<Save />}
 					color="success"
 					variant="outlined"
 					onClick={() => {
@@ -131,9 +128,7 @@ export function WorkspaceTab({ overlay, onChange, goToWorkspaceSelection }: Work
 			/>
 			<AreYouSureModal
 				open={deleteHistoryModalOpen}
-				closeFunc={function (): void {
-					setDeleteHistoryModalOpen(false);
-				}}
+				closeFunc={() => setDeleteHistoryModalOpen(false)}
 				action="Delete All History"
 				actionFunc={deleteHistory}
 			/>

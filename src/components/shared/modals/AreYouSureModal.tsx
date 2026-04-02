@@ -1,5 +1,5 @@
+import { WarningRounded } from '@mui/icons-material';
 import { Button, DialogActions, DialogContent, DialogTitle, Divider, Modal, ModalDialog, Typography } from '@mui/joy';
-import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { ReactNode } from 'react';
 
 interface AreYouSureModalProps {
@@ -14,7 +14,7 @@ export function AreYouSureModal({ open, closeFunc, actionFunc, action }: AreYouS
 		<Modal open={open} onClose={() => closeFunc()}>
 			<ModalDialog variant="outlined" role="alertdialog" sx={{ maxWidth: '900px', width: '95%' }}>
 				<DialogTitle>
-					<WarningRoundedIcon />
+					<WarningRounded />
 					Confirmation
 				</DialogTitle>
 				<Divider />

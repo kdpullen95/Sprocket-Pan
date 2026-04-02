@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { IconButton, Select, Stack, Option, Box, Divider } from '@mui/joy';
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import { SectionProps } from './sectionProps';
-import { EnvironmentEditor } from './EnvironmentEditor';
-import { Link, LinkOff, ModeEdit } from '@mui/icons-material';
-import { LinkedEnvironmentEditor } from './LinkedEnvironmentEditor';
-import { useSelector } from 'react-redux';
+import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { useComputedRootEnvironment } from '@/hooks/useComputedEnvironment';
+import { ItemFactory } from '@/managers/data/ItemFactory';
 import { selectSelectedEnvironment, selectSelectedServiceEnvironments } from '@/state/active/selectors';
 import { activeActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 import { Environment } from '@/types/data/workspace';
-import { ItemFactory } from '@/managers/data/ItemFactory';
+import { Link, LinkOff, ModeEdit, PlaylistAdd } from '@mui/icons-material';
+import { Box, Divider, IconButton, Stack } from '@mui/joy';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { EnvironmentEditor } from './EnvironmentEditor';
+import { LinkedEnvironmentEditor } from './LinkedEnvironmentEditor';
+import { SectionProps } from './sectionProps';
 
 export function EnvironmentsSection({ service, onChange }: SectionProps) {
 	const selectedEnvironment = useSelector(selectSelectedServiceEnvironments)[service.id];
@@ -76,21 +76,16 @@ export function EnvironmentsSection({ service, onChange }: SectionProps) {
 				<Divider sx={{ margin: '30px' }} />
 			</Box>
 			<Stack direction="row" gap={1} alignItems="center">
-				<Select
+				<SprocketSelect
 					startDecorator={<ModeEdit />}
 					placeholder="Choose Environment"
-					value={visibleEnvId}
-					onChange={(_, value) => setVisibleEnvId(value)}
-				>
-					{envList.map((env) => (
-						<Option value={env.id} key={env.id}>
-							{env.name}
-						</Option>
-					))}
-				</Select>
+					value={visibleEnvId ?? ''}
+					onChange={setVisibleEnvId}
+					options={envList.map((env) => ({ value: env.id, label: env.name }))}
+				/>
 				<SprocketTooltip text="Add New Service-Scoped Environment">
 					<IconButton onClick={() => addEnv()}>
-						<PlaylistAddIcon />
+						<PlaylistAdd />
 					</IconButton>
 				</SprocketTooltip>
 			</Stack>

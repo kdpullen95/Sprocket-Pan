@@ -1,11 +1,10 @@
-import { Stack } from '@mui/joy';
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import { SettingsTabProps } from './types';
-import { SettingsSelect, SettingsSlider, SettingsSwitch } from './SettingsFields';
 import { BaseTheme, ListStyling, ScrollbarVisibility } from '@/types/data/settings';
-import { Contrast, Opacity } from '@mui/icons-material';
+import { Contrast, Opacity, ZoomIn } from '@mui/icons-material';
+import { Stack } from '@mui/joy';
 import { SettingsGroup } from '../SettingsGroup';
+import { SettingsSelect, SettingsSlider, SettingsSwitch } from './SettingsFields';
 import { SettingsPaletteSelectGroup } from './SettingsPaletteSelectGroup';
+import { SettingsTabProps } from './types';
 
 export function DisplayTab({ overlay, settings, searchText, onChange, onUpdateGlobal }: SettingsTabProps) {
 	return (
@@ -19,7 +18,7 @@ export function DisplayTab({ overlay, settings, searchText, onChange, onUpdateGl
 					onChange={(zoom) => onChange({ theme: { zoom } })}
 					onUpdateGlobal={(zoom) => onUpdateGlobal({ theme: { zoom } })}
 					endDecorator="%"
-					icon={<ZoomInIcon />}
+					icon={<ZoomIn />}
 					range={{ min: 25, max: 175 }}
 				/>
 				<SettingsSelect

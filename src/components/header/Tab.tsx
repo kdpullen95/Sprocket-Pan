@@ -1,11 +1,11 @@
-import { ListItemDecorator, IconButton, Tab as MuiTab, Stack } from '@mui/joy';
-import { useSelector } from 'react-redux';
-import { Close } from '@mui/icons-material';
 import { tabTypeIcon } from '@/constants/components';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
-import { EllipsisTypography } from '../shared/EllipsisTypography';
 import { extractActions } from '@/state/util';
+import { Close } from '@mui/icons-material';
+import { IconButton, ListItemDecorator, Tab as MuiTab, Stack } from '@mui/joy';
+import { useSelector } from 'react-redux';
+import { EllipsisTypography } from '../shared/EllipsisTypography';
 
 function useTabInfo(id: string) {
 	const actions = extractActions(id);

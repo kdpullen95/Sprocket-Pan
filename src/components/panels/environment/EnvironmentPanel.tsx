@@ -1,18 +1,18 @@
-import { useSelector } from 'react-redux';
-import { IconButton, Option, Select, Stack, Typography } from '@mui/joy';
-import { Box } from '@mui/joy';
-import { useMemo } from 'react';
-import { AccountTree, RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
+import { SyncButton } from '@/components/shared/buttons/SyncButton';
+import { EditableData, parseEditorJSON, toEditorJSON } from '@/components/shared/input/monaco/EditableData';
+import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
+import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
-import { selectSelectedEnvironment, selectEnvironments, selectSecrets } from '@/state/active/selectors';
+import { selectEnvironments, selectSecrets, selectSelectedEnvironment } from '@/state/active/selectors';
 import { activeActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 import { toKeyValuePairs } from '@/utils/application';
+import { AccountTree, RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
+import { Box, IconButton, Stack, Typography } from '@mui/joy';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { PanelProps } from '../panels.interface';
 import { EditableHeader } from '../shared/EditableHeader';
-import { SyncButton } from '@/components/shared/buttons/SyncButton';
-import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { parseEditorJSON, toEditorJSON, EditableData } from '@/components/shared/input/monaco/EditableData';
 
 export function EnvironmentPanel({ id }: PanelProps) {
 	const selectedEnvironment = useSelector(selectSelectedEnvironment);
@@ -60,22 +60,16 @@ export function EnvironmentPanel({ id }: PanelProps) {
 				<EditableData
 					actions={{
 						start: (
-							<SprocketTooltip text="Parent Environments">
-								<Select
-									startDecorator={<AccountTree />}
-									sx={{ minWidth: '250px' }}
-									placeholder="None"
-									multiple
-									value={environment.parents ?? []}
-									onChange={(_, parents) => dispatch(activeActions.updateEnvironment({ parents, id }))}
-								>
-									{envList.map((env) => (
-										<Option key={env.id} value={env.id}>
-											{env.name}
-										</Option>
-									))}
-								</Select>
-							</SprocketTooltip>
+							<SprocketSelect
+								tooltip="Parent Environments"
+								startDecorator={<AccountTree />}
+								sx={{ minWidth: '250px' }}
+								placeholder="None"
+								multiple
+								value={environment.parents ?? []}
+								options={envList.map((env) => ({ value: env.id, label: env.name }))}
+								onChange={(parents) => dispatch(activeActions.updateEnvironment({ parents, id }))}
+							/>
 						),
 					}}
 					initialValues={environment.pairs}

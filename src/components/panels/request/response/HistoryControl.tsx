@@ -1,9 +1,8 @@
-import { Typography, Stack, IconButton } from '@mui/joy';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { EditableText } from '@/components/shared/input/EditableText';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { clamp } from '@/utils/math';
+import { ArrowLeft, ArrowRight } from '@mui/icons-material';
+import { IconButton, Stack, Typography } from '@mui/joy';
 
 interface HistoryControlProps {
 	value: number;
@@ -20,7 +19,7 @@ export function HistoryControl({ value, onChange, historyLength }: HistoryContro
 					disabled={value === 0 || historyLength === 0}
 					onClick={() => onChange(clamp(value - 1, 0, historyLength - 1))}
 				>
-					<ArrowLeftIcon />
+					<ArrowLeft />
 				</IconButton>
 			</SprocketTooltip>
 			<Typography sx={{ display: 'flex', alignItems: 'center' }} component="div">
@@ -46,7 +45,7 @@ export function HistoryControl({ value, onChange, historyLength }: HistoryContro
 					disabled={value >= historyLength - 1}
 					onClick={() => onChange(clamp(value + 1, 0, historyLength - 1))}
 				>
-					<ArrowRightIcon />
+					<ArrowRight />
 				</IconButton>
 			</SprocketTooltip>
 		</Stack>

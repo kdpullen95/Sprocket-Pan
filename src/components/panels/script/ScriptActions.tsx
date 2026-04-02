@@ -1,9 +1,7 @@
-import { Button, CircularProgress, FormControl, FormLabel, Input, Stack } from '@mui/joy';
-import Code from '@mui/icons-material/Code';
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { useDebounce } from '@/hooks/useDebounce';
 import { Script } from '@/types/data/workspace';
+import { Cancel, Code, PlayCircle } from '@mui/icons-material';
+import { Button, CircularProgress, FormControl, FormLabel, Input, Stack } from '@mui/joy';
 
 interface ScriptActionsProps {
 	script: Script;
@@ -46,7 +44,7 @@ export function ScriptActions({ onChange, isRunning, run, isInterrupting, interr
 					<Button
 						sx={{ width: '200px' }}
 						color="warning"
-						startDecorator={<CancelIcon />}
+						startDecorator={<Cancel />}
 						endDecorator={<CircularProgress />}
 						disabled={isInterrupting}
 						variant="outlined"
@@ -58,7 +56,7 @@ export function ScriptActions({ onChange, isRunning, run, isInterrupting, interr
 					<Button
 						sx={{ width: '200px' }}
 						color="success"
-						startDecorator={<PlayCircleIcon />}
+						startDecorator={<PlayCircle />}
 						variant="outlined"
 						onClick={run}
 					>

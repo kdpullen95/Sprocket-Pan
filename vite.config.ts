@@ -1,8 +1,8 @@
-import { defineConfig, Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'node:path';
+import { defineConfig, Plugin } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
-import path from 'node:path';
 
 /**
  * The production build breaks without this. I have no clue why. I tried googling it, 0 results found.
@@ -32,7 +32,6 @@ export default defineConfig(async () => ({
 		nodePolyfills({
 			include: ['process'],
 		}),
-		getCustomNoNullDefaultsPlugin(),
 	],
 	// https://github.com/vitejs/vite/issues/6828
 	resolve: {

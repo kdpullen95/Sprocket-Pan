@@ -1,10 +1,8 @@
-import { Button, Stack } from '@mui/joy';
-import NotInterestedIcon from '@mui/icons-material/NotInterested';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import { TipsSectionComponent } from './TipsSection';
 import { Settings } from '@/types/data/settings';
 import { WorkspaceSettings } from '@/types/data/workspace';
+import { ExitToApp, NotInterested, ThumbUpAlt } from '@mui/icons-material';
+import { Button, Stack } from '@mui/joy';
+import { TipsSectionComponent } from './TipsSection';
 
 interface SettingsBarProps {
 	onClose: () => void;
@@ -26,12 +24,12 @@ export function SettingsBar({ onClose, onSave, lastSaved, hasChanged, settings, 
 			<Stack gap={1} direction="row">
 				<Button
 					color={hasChanged ? 'danger' : 'warning'}
-					startDecorator={hasChanged ? <NotInterestedIcon /> : <ExitToAppIcon />}
+					startDecorator={hasChanged ? <NotInterested /> : <ExitToApp />}
 					onClick={onClose}
 				>
 					{hasChanged ? 'Cancel' : 'Close'}
 				</Button>
-				<Button startDecorator={<ThumbUpAltIcon />} disabled={!hasChanged} onClick={onSave}>
+				<Button startDecorator={<ThumbUpAlt />} disabled={!hasChanged} onClick={onSave}>
 					Apply
 				</Button>
 			</Stack>

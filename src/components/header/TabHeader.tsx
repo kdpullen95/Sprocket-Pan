@@ -45,7 +45,7 @@ export function TabHeader() {
 					/>
 				</Stack>
 			</Box>
-			<Tabs size="lg" value={selectedTab} onChange={(_, val) => dispatch(uiActions.setSelectedTab(val))}>
+			<Tabs size="lg" value={selectedTab} onChange={(_, val) => dispatch(uiActions.setSelectedTab(val as string))}>
 				<TabRow list={tabs} />
 				{tabs.map((id, index) => (
 					<TabPanel

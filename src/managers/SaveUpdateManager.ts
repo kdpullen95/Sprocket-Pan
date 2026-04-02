@@ -24,16 +24,16 @@ Instead, just make sure to add the new property at src\constants\defaults
 */
 
 import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
-import {
-	WorkspaceData,
-	HistoricalEndpointResponse,
-	Environment,
-	WorkspaceMetadata,
-	WorkspaceItems,
-} from '@/types/data/workspace';
-import { ItemFactory } from './data/ItemFactory';
 import { ItemPrefix } from '@/types/data/item';
+import {
+	Environment,
+	HistoricalEndpointResponse,
+	WorkspaceData,
+	WorkspaceItems,
+	WorkspaceMetadata,
+} from '@/types/data/workspace';
 import { generateSlug } from 'random-word-slugs';
+import { ItemFactory } from './data/ItemFactory';
 
 function toTen(data: WorkspaceData) {
 	const transformedIds = new Set<string>();
@@ -166,30 +166,30 @@ function toOne(data: any) {
 
 const transformers = [toOne, toTwo, toThree, toFour, toFive, toSix, toSeven, toEight, toNine, toTen] as const;
 
-export class SaveUpdateManager {
-	public static getCurrentVersion(): number {
-		return transformers.length;
-	}
-
-	public static update(data: WorkspaceData | any) {
-		transformers.slice(data.version || 0).forEach((transform) => transform(data));
-		data.version = transformers.length;
-	}
-
-	public static updateWorkspaces(workspaces: WorkspaceMetadata[]) {
-		const updated: string[] = [];
-		const list = workspaces.map((workspace) => {
-			let ret = workspace;
-			if (workspace.id == null) {
-				const factoryWorkspace = ItemFactory.workspace(workspace);
-				updated.push(factoryWorkspace.id);
-				ret = factoryWorkspace;
-			}
-			if (workspace.minidenticon == null) {
-				ret.minidenticon = generateSlug(3);
-			}
-			return ret;
-		});
-		return { list, updated };
-	}
+function getCurrentVersion() {
+	return transformers.length;
 }
+
+function update(data: WorkspaceData | any) {
+	transformers.slice(data.version || 0).forEach((transform) => transform(data));
+	data.version = transformers.length;
+}
+
+function updateWorkspaces(workspaces: WorkspaceMetadata[]) {
+	const updated: string[] = [];
+	const list = workspaces.map((workspace) => {
+		let ret = workspace;
+		if (workspace.id == null) {
+			const factoryWorkspace = ItemFactory.workspace(workspace);
+			updated.push(factoryWorkspace.id);
+			ret = factoryWorkspace;
+		}
+		if (workspace.minidenticon == null) {
+			ret.minidenticon = generateSlug(3);
+		}
+		return ret;
+	});
+	return { list, updated };
+}
+
+export const SaveUpdateManager = { updateWorkspaces, getCurrentVersion, update };

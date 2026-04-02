@@ -1,10 +1,8 @@
-import { IconButton, ListItemDecorator, Menu, Dropdown, MenuButton } from '@mui/joy';
-import { UnfoldLess, UnfoldMore } from '@mui/icons-material';
-import FolderCopyIcon from '@mui/icons-material/FolderCopy';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useState } from 'react';
-import { DropdownMenuItem } from '@/components/shared/DropdownMenuItem';
 import { DotMenuSvg } from '@/assets/icons/DotMenu';
+import { DropdownMenuItem } from '@/components/shared/DropdownMenuItem';
+import { DeleteForever, FolderCopy, UnfoldLess, UnfoldMore } from '@mui/icons-material';
+import { Dropdown, IconButton, ListItemDecorator, Menu, MenuButton } from '@mui/joy';
+import { useState } from 'react';
 
 export interface FileSystemMenuOption {
 	label: string;
@@ -37,7 +35,7 @@ export function FileSystemMenuOption({ label, onClick, Icon, closeMenu }: FileSy
 
 export function menuOptionDuplicate(onClick: () => void) {
 	return {
-		Icon: FolderCopyIcon,
+		Icon: FolderCopy,
 		label: 'Duplicate',
 		onClick,
 	};
@@ -61,7 +59,7 @@ export function menuOptionExpandAll(onClick: () => void, targetName = 'Endpoints
 
 export function menuOptionDelete(onClick: () => void) {
 	return {
-		Icon: DeleteForeverIcon,
+		Icon: DeleteForever,
 		label: 'Delete',
 		onClick,
 	};

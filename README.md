@@ -25,18 +25,18 @@ A tool for sending HTTP(S) requests over the internet. Similar to [Postman](http
 
 ## Completed Features
 
-- Add workspaces 
+- Add workspaces
 - Import / Export
   - Imports from:
-    - SprocketPan 
-    - Postman 
-    - Insomnia 
-    - Swagger / OpenAPI 
-- Scratchpad 
-  - Scripts 
-- Inputs/outputs besides JSON 
-  - Yaml / XML / HTML / raw text 
-- Automatic Updates (No need to redownload the program) 
-- Audit trail for requests 
-- Tabs 
-  - Selection History 
+    - SprocketPan
+    - Postman
+    - Insomnia
+    - Swagger / OpenAPI
+- Scratchpad
+  - Scripts
+- Inputs/outputs besides JSON
+  - Yaml / XML / HTML / raw text
+- Automatic Updates (No need to redownload the program)
+- Audit trail for requests
+- Tabs
+  - Selection History

@@ -1,7 +1,6 @@
-import { IconButton } from '@mui/joy';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import { KeyboardArrowDownRounded, KeyboardArrowLeftRounded } from '@mui/icons-material';
+import { IconButton } from '@mui/joy';
 
 interface CollapseExpandButtonProps {
 	collapsed: boolean;
@@ -14,9 +13,9 @@ export function CollapseExpandButton({ collapsed, toggleCollapsed, variant }: Co
 		<SprocketTooltip text={collapsed ? 'Uncollapse' : 'Collapse'}>
 			<IconButton size="sm" variant={variant ?? 'plain'} color="primary" onClick={toggleCollapsed}>
 				{collapsed ? (
-					<KeyboardArrowLeftRoundedIcon fontSize="small" color="primary" />
+					<KeyboardArrowLeftRounded fontSize="small" color="primary" />
 				) : (
-					<KeyboardArrowDownRoundedIcon fontSize="small" color="primary" />
+					<KeyboardArrowDownRounded fontSize="small" color="primary" />
 				)}
 			</IconButton>
 		</SprocketTooltip>

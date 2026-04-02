@@ -1,9 +1,8 @@
+import { useDebounce } from '@/hooks/useDebounce';
+import { AddBox, Delete } from '@mui/icons-material';
 import { IconButton, Input, Sheet, Table } from '@mui/joy';
 import { useEffect, useState } from 'react';
 import { SprocketTooltip } from '../SprocketTooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import { useDebounce } from '@/hooks/useDebounce';
 
 type Table = Record<string, string>;
 
@@ -107,7 +106,7 @@ export function EditableFormTable({ data, setData }: EditableFormTableProps) {
 											});
 										}}
 									>
-										<DeleteIcon />
+										<Delete />
 									</IconButton>
 								</SprocketTooltip>
 							</td>
@@ -118,7 +117,7 @@ export function EditableFormTable({ data, setData }: EditableFormTableProps) {
 					<IconButton
 						onClick={() => setLocalDataState((localDataState) => [...localDataState, { key: '', value: '' }])}
 					>
-						<AddBoxIcon />
+						<AddBox />
 					</IconButton>
 				</SprocketTooltip>
 			</Table>

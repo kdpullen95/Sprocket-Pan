@@ -1,15 +1,12 @@
-import { Box, Dropdown, IconButton, ListItemDecorator, Menu, MenuButton } from '@mui/joy';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import { useRef, useState } from 'react';
-import CreateNewFolderSharpIcon from '@mui/icons-material/CreateNewFolderSharp';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import CodeIcon from '@mui/icons-material/Code';
 import { DropdownMenuItem } from '@/components/shared/DropdownMenuItem';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { useClickOutsideAlerter } from '@/hooks/useClickOutsideAlerter';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
 import { ItemType } from '@/types/data/item';
+import { AddBox, Code, CreateNewFolderSharp, TableChart } from '@mui/icons-material';
+import { Box, Dropdown, IconButton, ListItemDecorator, Menu, MenuButton } from '@mui/joy';
+import { useRef, useState } from 'react';
 
 export function NewButton() {
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -21,17 +18,17 @@ export function NewButton() {
 		{
 			name: 'Service',
 			createFunc: () => uiActions.addToCreateQueue(ItemType.service),
-			icon: <CreateNewFolderSharpIcon fontSize="small" />,
+			icon: <CreateNewFolderSharp fontSize="small" />,
 		},
 		{
 			name: 'Environment',
 			createFunc: () => uiActions.addToCreateQueue(ItemType.environment),
-			icon: <TableChartIcon fontSize="small" />,
+			icon: <TableChart fontSize="small" />,
 		},
 		{
 			name: 'Script',
 			createFunc: () => uiActions.addToCreateQueue(ItemType.script),
-			icon: <CodeIcon fontSize="small" />,
+			icon: <Code fontSize="small" />,
 		},
 	];
 
@@ -43,7 +40,7 @@ export function NewButton() {
 						slots={{ root: IconButton }}
 						slotProps={{ root: { variant: 'soft', color: 'neutral', size: 'sm' } }}
 					>
-						<AddBoxIcon />
+						<AddBox />
 					</MenuButton>
 					<Menu ref={ref}>
 						{newEntities.map((entity, index) => (

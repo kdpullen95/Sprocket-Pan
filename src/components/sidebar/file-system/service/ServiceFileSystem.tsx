@@ -1,19 +1,19 @@
-import { EndpointFileSystem } from '../EndpointFileSystem';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import { useSelector } from 'react-redux';
+import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { selectFilteredNestedIds } from '@/state/ui/selectors';
 import { uiActions } from '@/state/ui/slice';
 import { collapseAll, expandAll } from '@/state/ui/thunks';
+import { AddBox } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
+import { EllipsesP } from '../components/EllipsesP';
+import { EndpointFileSystem } from '../EndpointFileSystem';
 import { FileSystemBranch } from '../tree/FileSystemBranch';
 import {
-	menuOptionDuplicate,
 	menuOptionCollapseAll,
-	menuOptionExpandAll,
 	menuOptionDelete,
+	menuOptionDuplicate,
+	menuOptionExpandAll,
 } from '../tree/FileSystemDropdown';
-import { EllipsesP } from '../components/EllipsesP';
-import { itemActions } from '@/state/items';
 
 interface ServiceFileSystemProps {
 	serviceId: string;
@@ -36,7 +36,7 @@ export function ServiceFileSystem({ serviceId }: ServiceFileSystemProps) {
 				{
 					onClick: () => dispatch(itemActions.endpoint.create({ serviceId: service.id })),
 					label: 'Add Endpoint',
-					Icon: AddBoxIcon,
+					Icon: AddBox,
 				},
 				menuOptionCollapseAll(() => dispatch(collapseAll(service.endpointIds))),
 				menuOptionExpandAll(() => dispatch(expandAll([service.id, ...service.endpointIds]))),

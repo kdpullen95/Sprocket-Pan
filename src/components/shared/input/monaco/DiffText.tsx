@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEditorTheme } from '@/hooks/useEditorTheme';
+import { MonacoManager } from '@/managers/monaco/MonacoManager';
 import { DiffEditor, DiffEditorProps } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
-import { useEditorTheme } from '@/hooks/useEditorTheme';
-import { defaultEditorOptions } from '@/managers/monaco/MonacoInitManager';
+import { useEffect, useRef } from 'react';
 
-const diffOptions = { ...defaultEditorOptions, readOnly: true, domReadOnly: true, originalEditable: false };
+const diffOptions = { ...MonacoManager.defaultOptions, readOnly: true, domReadOnly: true, originalEditable: false };
 
 export function DiffText({ original, modified, options, width, height, language, ...props }: DiffEditorProps) {
 	const combinedOptions = { ...diffOptions, ...options };

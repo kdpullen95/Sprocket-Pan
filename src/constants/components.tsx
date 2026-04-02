@@ -1,19 +1,13 @@
 import { TabType } from '@/types/state/state';
-import { Workspaces } from '@mui/icons-material';
-import CodeIcon from '@mui/icons-material/Code';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import FolderOpenSharpIcon from '@mui/icons-material/FolderOpenSharp';
-import KeyIcon from '@mui/icons-material/Key';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import { Code, FolderOpen, FolderOpenSharp, Key, TableChart, TextSnippet, Workspaces } from '@mui/icons-material';
 import { ReactNode } from 'react';
 
 export const tabTypeIcon: Record<TabType, ReactNode> = {
-	endpoint: <FolderOpenIcon />,
-	environment: <TableChartIcon />,
-	request: <TextSnippetIcon />,
-	service: <FolderOpenSharpIcon />,
-	script: <CodeIcon />,
-	secrets: <KeyIcon />,
+	endpoint: <FolderOpen />,
+	environment: <TableChart />,
+	request: <TextSnippet />,
+	service: <FolderOpenSharp />,
+	script: <Code />,
+	secrets: <Key />,
 	workspace: <Workspaces />,
 };

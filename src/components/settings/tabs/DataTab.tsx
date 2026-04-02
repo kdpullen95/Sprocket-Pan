@@ -1,16 +1,13 @@
-import { Button, Stack, Typography } from '@mui/joy';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import { appLogDir } from '@tauri-apps/api/path';
-import TimerIcon from '@mui/icons-material/Timer';
-import { SettingsTabProps } from './types';
-import { SettingsInput, SettingsSwitch } from './SettingsFields';
 import { MS_IN_MINUTE } from '@/constants/constants';
 import { FileSystemWorker } from '@/managers/file-system/FileSystemWorker';
+import { RustInvoker } from '@/managers/RustInvoker';
 import { log } from '@/utils/logging';
 import { toNumberOrUndefined } from '@/utils/math';
-import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
-import { History } from '@mui/icons-material';
-import { RustInvoker } from '@/managers/RustInvoker';
+import { FolderOpen, History, ManageHistory, Timer } from '@mui/icons-material';
+import { Button, Stack, Typography } from '@mui/joy';
+import { appLogDir } from '@tauri-apps/api/path';
+import { SettingsInput, SettingsSwitch } from './SettingsFields';
+import { SettingsTabProps } from './types';
 
 function toMSMinuteOrUndefined(num: unknown) {
 	const ret = toNumberOrUndefined(num);
@@ -47,7 +44,7 @@ export function DataTab({ overlay, onChange, onUpdateGlobal, searchText, setting
 						overlay={oversave?.intervalMS == null ? undefined : oversave.intervalMS / MS_IN_MINUTE}
 						onChange={(val) => onChange({ data: { autosave: { intervalMS: toMSMinuteOrUndefined(val) } } })}
 						onUpdateGlobal={(val) => onUpdateGlobal({ data: { autosave: { intervalMS: toMSMinuteOrUndefined(val) } } })}
-						startDecorator={<TimerIcon />}
+						startDecorator={<Timer />}
 						endDecorator="Minutes"
 					/>
 				</Stack>
@@ -74,7 +71,7 @@ export function DataTab({ overlay, onChange, onUpdateGlobal, searchText, setting
 							overlay={overlay?.history?.maxLength}
 							onChange={(val) => onChange({ history: { maxLength: toNumberOrUndefined(val) } })}
 							onUpdateGlobal={(val) => onUpdateGlobal({ history: { maxLength: toNumberOrUndefined(val) } })}
-							startDecorator={<ManageHistoryIcon />}
+							startDecorator={<ManageHistory />}
 							endDecorator="Records"
 							hint="Set this value to -1 for no maximum."
 						/>
@@ -109,7 +106,7 @@ export function DataTab({ overlay, onChange, onUpdateGlobal, searchText, setting
 				<Stack direction="row" gap={2}>
 					<Button
 						sx={{ width: '240px' }}
-						startDecorator={<FolderOpenIcon />}
+						startDecorator={<FolderOpen />}
 						onClick={() => RustInvoker.showInExplorer({ path: FileSystemWorker.DATA_FOLDER_NAME })}
 						variant="outlined"
 					>
@@ -117,7 +114,7 @@ export function DataTab({ overlay, onChange, onUpdateGlobal, searchText, setting
 					</Button>
 					<Button
 						sx={{ width: '240px' }}
-						startDecorator={<FolderOpenIcon />}
+						startDecorator={<FolderOpen />}
 						onClick={async () => {
 							const logDir = await appLogDir();
 							RustInvoker.showInExplorer({ path: `${logDir}${log.LOG_FILE_NAME}`, absolute: true });

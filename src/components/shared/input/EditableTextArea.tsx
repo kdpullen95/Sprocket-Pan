@@ -1,10 +1,8 @@
+import { Cancel, Check, ModeEdit } from '@mui/icons-material';
 import { Box, IconButton, Stack, Textarea } from '@mui/joy';
 import { useEffect, useState } from 'react';
-import CheckIcon from '@mui/icons-material/Check';
-import CancelIcon from '@mui/icons-material/Cancel';
 import Markdown from 'react-markdown';
 import { SprocketTooltip } from '../SprocketTooltip';
-import { ModeEdit } from '@mui/icons-material';
 
 interface EditableTextAreaProps {
 	text: string;
@@ -40,13 +38,13 @@ export function EditableTextArea({ text, setText, isValidFunc = () => true }: Ed
 			<Stack sx={{ mt: '10px' }}>
 				<SprocketTooltip text={isEditing ? 'Save' : 'Edit'}>
 					<IconButton onClick={toggleEditing} disabled={isEditing && !isValid} size="sm">
-						{isEditing ? <CheckIcon /> : <ModeEdit />}
+						{isEditing ? <Check /> : <ModeEdit />}
 					</IconButton>
 				</SprocketTooltip>
 				{isEditing && (
 					<SprocketTooltip text="Cancel">
 						<IconButton onClick={() => setIsEditing(false)} size="sm">
-							<CancelIcon />
+							<Cancel />
 						</IconButton>
 					</SprocketTooltip>
 				)}

@@ -2,7 +2,7 @@ import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { selectFilteredNestedIds } from '@/state/ui/selectors';
 import { uiActions } from '@/state/ui/slice';
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import { AddBox } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { EllipsesP } from './components/EllipsesP';
 import { VerbDiv } from './components/VerbDiv';
@@ -31,7 +31,7 @@ export function EndpointFileSystem({ endpointId }: EndpointFileSystemProps) {
 				{
 					onClick: () => dispatch(itemActions.request.create({ endpointId: endpoint.id })),
 					label: 'Add Request',
-					Icon: AddBoxIcon,
+					Icon: AddBox,
 				},
 				menuOptionDelete(() => dispatch(uiActions.addToDeleteQueue(endpoint.id))),
 			]}

@@ -9,7 +9,7 @@ import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
 import { Endpoint } from '@/types/data/workspace';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { ExitToApp } from '@mui/icons-material';
 import { Button, Input, Stack } from '@mui/joy';
 import { useSelector } from 'react-redux';
 import { PanelProps } from '../panels.interface';
@@ -58,7 +58,7 @@ export function EndpointPanel({ id }: PanelProps) {
 				<Button
 					sx={{ minWidth: 150 }}
 					color="primary"
-					startDecorator={<ExitToAppIcon />}
+					startDecorator={<ExitToApp />}
 					disabled={!endpoint.defaultRequest}
 					onClick={() => {
 						if (endpoint.defaultRequest) {

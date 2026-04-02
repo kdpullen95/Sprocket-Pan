@@ -1,6 +1,4 @@
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckIcon from '@mui/icons-material/Check';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import { Cancel, Check, ModeEdit } from '@mui/icons-material';
 import { Box, IconButton, Input, Stack } from '@mui/joy';
 import { TypographyProps } from '@mui/joy/Typography/TypographyProps';
 import { useEffect, useState } from 'react';
@@ -83,7 +81,7 @@ export function EditableText({
 						startDecorator={
 							<SprocketTooltip text="Cancel">
 								<IconButton sx={{ ml: '-10px' }} onClick={toggleEditing} size="sm">
-									<CancelIcon />
+									<Cancel />
 								</IconButton>
 							</SprocketTooltip>
 						}
@@ -97,7 +95,7 @@ export function EditableText({
 									onClick={commitInput}
 									size="sm"
 								>
-									<CheckIcon />
+									<Check />
 								</IconButton>
 							</SprocketTooltip>
 						}
@@ -107,7 +105,7 @@ export function EditableText({
 			<Box>
 				<SprocketTooltip text="Edit" sx={{ flexBasis: 0 }}>
 					<IconButton onClick={toggleEditing} disabled={isEditing} size="sm">
-						<ModeEditIcon />
+						<ModeEdit />
 					</IconButton>
 				</SprocketTooltip>
 			</Box>

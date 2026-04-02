@@ -1,3 +1,8 @@
+import { selectWorkspacesList } from '@/state/global/selectors';
+import { itemActions } from '@/state/items';
+import { useAppDispatch } from '@/state/store';
+import { toValidFolderName } from '@/utils/string';
+import { AddCircle } from '@mui/icons-material';
 import {
 	Button,
 	CircularProgress,
@@ -14,12 +19,7 @@ import {
 	Stack,
 } from '@mui/joy';
 import { useState } from 'react';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useSelector } from 'react-redux';
-import { selectWorkspacesList } from '@/state/global/selectors';
-import { useAppDispatch } from '@/state/store';
-import { toValidFolderName } from '@/utils/string';
-import { itemActions } from '@/state/items';
 
 interface CreateNewWorkspaceModalProps {
 	open: boolean;
@@ -97,7 +97,7 @@ export function CreateNewWorkspaceModal({ open, closeFunc }: CreateNewWorkspaceM
 						variant="solid"
 						color="primary"
 						onClick={onCreate}
-						startDecorator={loading ? <CircularProgress /> : <AddCircleIcon />}
+						startDecorator={loading ? <CircularProgress /> : <AddCircle />}
 						disabled={loading || isEmpty || alreadyExists}
 					>
 						Create

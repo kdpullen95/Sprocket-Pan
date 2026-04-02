@@ -1,10 +1,10 @@
-import { ReactNode, useEffect, useRef } from 'react';
-import { Editor, EditorProps } from '@monaco-editor/react';
-import { editor } from 'monaco-editor';
-import { Box, Stack } from '@mui/joy';
-import { EditorActions } from './EditorActions';
 import { useEditorTheme } from '@/hooks/useEditorTheme';
-import { defaultEditorOptions } from '@/managers/monaco/MonacoInitManager';
+import { MonacoManager } from '@/managers/monaco/MonacoManager';
+import { Editor, EditorProps } from '@monaco-editor/react';
+import { Box, Stack } from '@mui/joy';
+import { editor } from 'monaco-editor';
+import { ReactNode, useEffect, useRef } from 'react';
+import { EditorActions } from './EditorActions';
 
 type SprocketEditorProps = Omit<EditorProps, 'onMount'> & {
 	ActionBarItems?: ReactNode;
@@ -19,7 +19,7 @@ export function SprocketEditor({
 	height = '100%',
 	...overrides
 }: SprocketEditorProps) {
-	const combinedOptions = { ...defaultEditorOptions, ...options };
+	const combinedOptions = { ...MonacoManager.defaultOptions, ...options };
 	const editorTheme = useEditorTheme();
 	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
