@@ -9,7 +9,7 @@ export interface PaletteSelectProps {
 }
 
 export function PaletteSelect({ label, value, onChange }: PaletteSelectProps) {
-	const [palette, setPalette] = useState(createPalette(value));
+	const [palette, setPalette] = useState(() => createPalette(value));
 	const onColorSelect = (newColor: string) => {
 		onChange(newColor);
 		setPalette(createPalette(newColor));
@@ -21,8 +21,8 @@ export function PaletteSelect({ label, value, onChange }: PaletteSelectProps) {
 			<Stack direction="row">
 				<Box position="relative">
 					<Stack direction="row">
-						{paletteList.map((color, index) => (
-							<Box key={index} sx={{ backgroundColor: color, height: '27px', width: '27px' }} />
+						{paletteList.map((color) => (
+							<Box key={color} sx={{ backgroundColor: color, height: '27px', width: '27px' }} />
 						))}
 					</Stack>
 				</Box>

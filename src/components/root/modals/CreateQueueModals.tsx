@@ -1,12 +1,13 @@
-import { useSelector } from 'react-redux';
-import { CreateModalsProps } from './createModals/createModalsProps';
-import { CreateServiceModal } from './createModals/CreateServiceModal';
-import { CreateEnvironmentModal } from './createModals/CreateEnvironmentModal';
-import { CreateScriptModal } from './createModals/CreateScriptModal';
 import { useAppDispatch } from '@/state/store';
 import { selectNextForCreation } from '@/state/ui/selectors';
 import { uiActions } from '@/state/ui/slice';
 import { TabType } from '@/types/state/state';
+import { JSX } from 'react';
+import { useSelector } from 'react-redux';
+import { CreateEnvironmentModal } from './createModals/CreateEnvironmentModal';
+import { CreateModalsProps } from './createModals/createModalsProps';
+import { CreateScriptModal } from './createModals/CreateScriptModal';
+import { CreateServiceModal } from './createModals/CreateServiceModal';
 
 const modalFromType: Partial<Record<TabType, (props: CreateModalsProps) => JSX.Element>> = {
 	service: CreateServiceModal,
@@ -17,7 +18,7 @@ const modalFromType: Partial<Record<TabType, (props: CreateModalsProps) => JSX.E
 export function CreateQueueModals() {
 	const nextForCreation = useSelector(selectNextForCreation);
 	const dispatch = useAppDispatch();
-	const defaultFunc = (_props: CreateModalsProps) => <></>;
+	const defaultFunc = () => <></>;
 	const CreateModal = modalFromType[nextForCreation] ?? defaultFunc;
 	return (
 		<CreateModal

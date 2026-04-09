@@ -19,7 +19,7 @@ import { ResponsePanel } from './response/ResponsePanel';
 export function RequestPanel({ id }: PanelProps) {
 	const { request, endpoint, service } = useSelector((state) => selectFullRequestInfoById(state, id));
 	const settings = useSelector(selectSettings);
-	const [isLoading, setLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const { guttered: scrollbarTheme } = useScrollbarTheme();
 
 	const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ export function RequestPanel({ id }: PanelProps) {
 		if (isLoading) {
 			return;
 		}
-		setLoading(true);
+		setIsLoading(true);
 		const result = await NetworkRequestManager.makeRequestWithScripts(request.id);
 		dispatch(
 			activeActions.addResponseToHistory({
@@ -42,7 +42,7 @@ export function RequestPanel({ id }: PanelProps) {
 				discard: !settings.history.enabled,
 			}),
 		);
-		setLoading(false);
+		setIsLoading(false);
 	}
 
 	function update(values: Partial<EndpointRequest>) {

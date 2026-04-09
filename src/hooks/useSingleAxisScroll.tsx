@@ -11,8 +11,9 @@ export function useSingleAxisScroll(axis: 'left' | 'top' = 'left') {
 		scrollRef.current.scrollBy({ [axis]: maxAmplitude(e.deltaX, e.deltaY, e.deltaZ) });
 	}
 	useEffect(() => {
-		scrollRef.current?.addEventListener('wheel', scrollHorizontally);
-		return () => scrollRef.current?.removeEventListener('wheel', scrollHorizontally);
+		const current = scrollRef.current;
+		current?.addEventListener('wheel', scrollHorizontally);
+		return () => current?.removeEventListener('wheel', scrollHorizontally);
 	});
 	return scrollRef;
 }

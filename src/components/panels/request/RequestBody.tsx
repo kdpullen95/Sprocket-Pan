@@ -37,11 +37,7 @@ export function RequestBody({ request }: RequestBodyProps) {
 			const bodyIsNullish = request.body == undefined;
 			const bodyIsTable = !bodyIsString && !bodyIsNullish;
 			if (bodyIsTable && value === 'raw') {
-				try {
-					data.body = JSON.stringify(request.body);
-				} catch (e) {
-					data.body = '';
-				}
+				data.body = JSON.stringify(request.body);
 			} else if (bodyIsString && getRequestBodyCategory(value) === 'table') {
 				data.body = '';
 			}

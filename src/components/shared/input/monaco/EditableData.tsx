@@ -57,8 +57,8 @@ export function EditableData<T extends KeyValueValues>({
 	const environments = useSelector(selectEnvironments);
 	const envValues = envPairs ?? (selectedEnvironment == null ? [] : environments[selectedEnvironment].pairs);
 
-	const [editorText, setEditorText] = useState(toEditorJSON(initialValues));
-	const [hasChanged, setChanged] = useState(false);
+	const [editorText, setEditorText] = useState(() => toEditorJSON(initialValues));
+	const [hasChanged, setHasChanged] = useState(false);
 	const [isReadOnly, setIsReadOnly] = useState(false);
 	const [isFormatting, setIsFormatting] = useState(false);
 	const [isMalformedJSON, setIsMalformedJSON] = useState(false);
@@ -80,7 +80,7 @@ export function EditableData<T extends KeyValueValues>({
 
 	const reset = () => {
 		setEditorText(toEditorJSON(initialValues));
-		setChanged(false);
+		setHasChanged(false);
 		format();
 	};
 
@@ -89,7 +89,7 @@ export function EditableData<T extends KeyValueValues>({
 			const tableData = parseEditorJSON<T>(editorText);
 			if (tableData != null) {
 				onChange(Object.entries(tableData).map(([key, value]) => ({ key, value })));
-				setChanged(false);
+				setHasChanged(false);
 				format();
 			}
 		} catch {
@@ -120,7 +120,7 @@ export function EditableData<T extends KeyValueValues>({
 		if (isFormatting) {
 			setIsFormatting(false);
 		} else {
-			setChanged(true);
+			setHasChanged(true);
 		}
 	};
 

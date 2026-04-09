@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */ // I'm almost tempted to make this a js file but I'm not jaded yet
+
 /*
 Save files are versioned by incrementing integer numbers. These numbers correspond 
 to the length of the transformers array and the version ONLY increments when a new 

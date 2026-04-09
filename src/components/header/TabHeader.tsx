@@ -47,10 +47,10 @@ export function TabHeader() {
 			</Box>
 			<Tabs size="lg" value={selectedTab} onChange={(_, val) => dispatch(uiActions.setSelectedTab(val as string))}>
 				<TabRow list={tabs} />
-				{tabs.map((id, index) => (
+				{tabs.map((id) => (
 					<TabPanel
 						value={id}
-						key={index}
+						key={id}
 						sx={{ padding: 0, height: 'calc(100vh - 45px)', overflow: 'auto', ...scrollbarTheme }}
 					>
 						<TabContent id={id} />

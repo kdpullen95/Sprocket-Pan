@@ -18,7 +18,7 @@ export function LinkedEnvironmentEditor({ service }: LinkedEnvironmentEditorProp
 	const envList = useMemo(
 		() =>
 			Object.values(environments).map((env) => ({ name: env.name, id: env.id, linkedEnv: env.linked?.[service.id] })),
-		[environments],
+		[environments, service],
 	);
 	return (
 		<Stack gap={2}>

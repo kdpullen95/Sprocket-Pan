@@ -1,7 +1,7 @@
 import { Endpoint, EndpointRequest, Environment, Script, Service, WorkspaceData } from '@/types/data/workspace';
 import { log } from './logging';
 
-function cleanText(text: string) {
+function cleanText(text?: string) {
 	return text?.toLocaleLowerCase() ?? '';
 }
 

@@ -15,7 +15,7 @@ export function ScriptChips({ prefix, strategy, setStrategy }: ScriptChipsProps)
 	return (
 		<span ref={parent}>
 			{strategy.map((strategyItem, index) => (
-				<span key={`${strategyItem}${index}`}>
+				<span key={`${strategyItem}`}>
 					{index !== 0 && (
 						<IconButton
 							sx={{ verticalAlign: 'middle' }}

@@ -15,7 +15,6 @@ export function WithDebounce<V, T extends InputOutput<V>>(
 			setState: (val) => onChange?.(val),
 			debounceMS,
 		});
-
 		return <Component {...(props as T)} onChange={setLocalDataState} value={localDataState} />;
 	};
 }

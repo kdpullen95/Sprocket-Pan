@@ -42,7 +42,7 @@ export function SearchableRequestDropdown<T extends SearchableItem>({
 						disabled={!selected}
 						color="primary"
 						onClick={() => {
-							if (!!selected) {
+							if (selected) {
 								dispatch(uiActions.addTab(selected.id));
 								dispatch(uiActions.setSelectedTab(selected.id));
 								dispatch(uiActions.popDiffQueue());

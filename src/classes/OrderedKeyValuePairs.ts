@@ -1,4 +1,4 @@
-import { KeyValueValues, KeyValuePair } from '@/types/shared/keyValues';
+import { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
 
 type KeyValueOrOrdered<T extends KeyValueValues> = KeyValuePair<T>[] | OrderedKeyValuePairs<T>;
 
@@ -7,7 +7,7 @@ export class OrderedKeyValuePairs<T extends KeyValueValues = string> implements 
 	private order: string[] = [];
 
 	constructor(...args: (KeyValueOrOrdered<T> | undefined)[]) {
-		args.forEach(this.apply.bind(this));
+		args.forEach((arg) => this.apply(arg));
 	}
 
 	public apply(pairs: KeyValueOrOrdered<T> | undefined) {

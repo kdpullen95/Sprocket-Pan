@@ -23,7 +23,7 @@ export function EnvironmentPanel({ id }: PanelProps) {
 
 	const envList = useMemo(
 		() => Object.values(environments).filter((env) => env.id !== environment?.id),
-		[environments],
+		[environments, environment],
 	);
 
 	if (environment == null) {

@@ -38,7 +38,7 @@ export function InputSlider({ label, value, onChange, endDecorator, icon, range,
 						sx={{ width: '100px' }}
 						value={value}
 						onChange={(e) => onChange(e.target.value === '' ? 0 : Number(e.target.value))}
-						onBlur={(_) => onChange(clamp(value, range.min, range.max))}
+						onBlur={() => onChange(clamp(value, range.min, range.max))}
 						endDecorator={endDecorator}
 						type="number"
 					/>

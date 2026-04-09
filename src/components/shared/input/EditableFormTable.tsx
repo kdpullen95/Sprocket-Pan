@@ -1,22 +1,23 @@
 import { useDebounce } from '@/hooks/useDebounce';
+import { getDuplicateKeys } from '@/utils/misc';
 import { AddBox, Delete } from '@mui/icons-material';
 import { IconButton, Input, Sheet, Table } from '@mui/joy';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { SprocketTooltip } from '../SprocketTooltip';
 
 type Table = Record<string, string>;
+type KVP = { key: string; value: string };
 
-const getTransformedData = (data: Table) =>
-	Object.entries(data).map(([key, value]) => ({
+function getTransformedData(data: Table) {
+	return Object.entries(data).map(([key, value]) => ({
 		key,
 		value,
 	}));
+}
 
-const getUntransformedData = (data: ReturnType<typeof getTransformedData>) => {
-	const result: Record<string, string> = {};
-	data.forEach((kvp) => (result[kvp.key] = kvp.value));
-	return result;
-};
+function getUntransformedData(data: KVP[]) {
+	return Object.fromEntries(data.map(({ key, value }) => [key, value]));
+}
 
 interface EditableFormTableProps {
 	data: Table;
@@ -24,36 +25,12 @@ interface EditableFormTableProps {
 }
 
 export function EditableFormTable({ data, setData }: EditableFormTableProps) {
-	const [transformedData, setTransformedData] = useState(getTransformedData(data));
-	const [localDataState, setLocalDataState] = useDebounce({ state: transformedData, setState: setTransformedData });
-	const dataKeysCount = new Map();
-	localDataState.forEach((kvp) => dataKeysCount.set(kvp.key, 1 + (dataKeysCount.get(kvp.key) ?? 0)));
-	useEffect(() => {
-		const newData = getTransformedData(data);
-		const saveFunc = () => {
-			setTransformedData(newData);
-		};
-		if (newData.length !== transformedData.length) {
-			saveFunc();
-			return;
-		}
-		for (let i = 0; i < newData.length; i++) {
-			if (newData[i].key !== transformedData[i].key || newData[i].value !== transformedData[i].value) {
-				saveFunc();
-				return;
-			}
-		}
-	}, [data]);
+	const [localDataState, setLocalDataState] = useDebounce({
+		state: getTransformedData(data),
+		setState: (d) => getDuplicateKeys(d).size === 0 && setData(getUntransformedData(d)),
+	});
 
-	useEffect(() => {
-		for (const kvp of transformedData) {
-			if (kvp.key.length <= 1 || dataKeysCount.get(kvp.key) > 1) {
-				return;
-			}
-		}
-		const untransformed = getUntransformedData(transformedData);
-		setData(untransformed);
-	}, [transformedData]);
+	const duplicateKeys = useMemo(() => getDuplicateKeys(localDataState), [localDataState]);
 
 	return (
 		<Sheet>
@@ -67,11 +44,13 @@ export function EditableFormTable({ data, setData }: EditableFormTableProps) {
 				</thead>
 				<tbody>
 					{localDataState.map(({ key, value }, index) => (
-						<tr key={index}>
+						// TODO: we'll need a better way to key these without indexes, given duplicates can exist
+						// eslint-disable-next-line @eslint-react/no-array-index-key
+						<tr key={`${key}-${value}-${index}`}>
 							<td>
 								<Input
 									value={key}
-									error={key === '' || dataKeysCount.get(key).length > 1}
+									error={key === '' || duplicateKeys.has(key)}
 									onChange={(e) => {
 										setLocalDataState((localDataState) => {
 											const newData = structuredClone(localDataState);

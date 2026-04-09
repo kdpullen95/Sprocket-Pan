@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */ // we're constrained by mui's choices
 import { useComponentIdentifier } from '@/hooks/useComponentIdentifier';
 import { Info } from '@mui/icons-material';
 import { FormControl, FormHelperText, FormLabel, Option, Select } from '@mui/joy';

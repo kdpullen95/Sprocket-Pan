@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-key */
+/* eslint-disable @eslint-react/no-missing-key */
 // disabling jsx-key because we don't need keys for single items picked from an array
 import { Command } from '@/managers/ShortcutManager';
 import { TipsSection } from '@/types/data/settings';
@@ -47,7 +47,7 @@ const DYKS: React.ReactNode[] = [
 		<A href="https://www.php.net/manual/en/faq.general.php">PHP: Hypertext Preprocessor</A>.
 	</Tip>,
 	<Tip label={DYK_LABEL}>
-		<code>{`"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.xyz`}</code> is a{' '}
+		<code>{`"very.(),:;<>[]".VERY."very@\\ "very".unusual"@strange.example.xyz`}</code> is a{' '}
 		<A href="https://en.wikipedia.org/wiki/Email_address">valid email address</A>.
 	</Tip>,
 	<Tip label={DYK_LABEL}>

@@ -1,23 +1,23 @@
 import {
-	WorkspaceData,
+	Endpoint,
 	EndpointRequest,
+	Service,
+	WorkspaceData,
+	WorkspaceItems,
 	WorkspaceMetadata,
 	WorkspaceSyncedData,
-	Endpoint,
-	Service,
-	WorkspaceItems,
 } from '@/types/data/workspace';
 import { nullifyProperties } from '@/utils/functions';
+import { extractProperty } from '@/utils/getters';
 import { log } from '@/utils/logging';
+import { mergeDeep } from '@/utils/variables';
 import { path } from '@tauri-apps/api';
 import { save } from '@tauri-apps/plugin-dialog';
 import { writeTextFile } from '@tauri-apps/plugin-fs';
 import { FileSystemManager } from '../file-system/FileSystemManager';
 import { FileSystemWorker } from '../file-system/FileSystemWorker';
-import { SaveUpdateManager } from '../SaveUpdateManager';
 import { InvokerFileUpdate } from '../RustInvoker';
-import { mergeDeep } from '@/utils/variables';
-import { extractProperty } from '@/utils/getters';
+import { SaveUpdateManager } from '../SaveUpdateManager';
 
 export const defaultWorkspaceSyncedData: WorkspaceSyncedData = {
 	services: {},
@@ -81,6 +81,8 @@ export class WorkspaceDataManager {
 
 		await writeTextFile(filePath, dataToWrite);
 	}
+
+	a = nullifyProperties<WorkspaceData & EndpointRequest>('history', 'settings', 'uiMetadata');
 
 	public static async saveData(allData: WorkspaceData, { fileName, ...metadata }: WorkspaceMetadata) {
 		const { data, sync, location } = this.splitWorkspace(allData);
@@ -233,7 +235,6 @@ export class WorkspaceDataManager {
 	 */
 	private static async createDataFilesIfNotExist({ fileName, ...workspace }: WorkspaceMetadata) {
 		log.trace(`createDataFilesIfNotExist called`);
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { uiMetadata, ...defaultData } = defaultWorkspaceData;
 		const paths = this.getWorkspacePath(fileName);
 		const promises = [

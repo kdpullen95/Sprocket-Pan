@@ -38,13 +38,13 @@ export function setInjectedCode(monaco: Monaco, scripts: Script[] = []) {
 	updateModelDefinition(monaco, getInjectedCode(scripts));
 }
 
-export const defaultOptions = {
+export const defaultOptions: editor.IEditorOptions & editor.IGlobalEditorOptions = {
 	tabSize: 2,
 	insertSpaces: false,
 	wordWrap: 'on',
 	wrappingStrategy: 'simple',
 	wrappingIndent: 'same',
-} as const satisfies editor.IStandaloneEditorConstructionOptions;
+};
 
 export function init(monaco: Monaco) {
 	monaco.typescript.javascriptDefaults.setDiagnosticsOptions({
