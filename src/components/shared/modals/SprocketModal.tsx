@@ -14,7 +14,7 @@ const sizeStyling = {
 export interface SprocketModalProps extends Omit<ModalProps, 'onClose' | 'title'> {
 	actions?: ReactNode;
 	onClose?: () => void;
-	closeOn?: ('backdropClick' | 'escapeKeyDown' | 'closeClick')[];
+	closeOn?: readonly ('backdropClick' | 'escapeKeyDown' | 'closeClick')[];
 	size?: keyof typeof sizeStyling;
 	title?: ReactNode;
 	dialogSx?: SxProps;
@@ -23,7 +23,7 @@ export interface SprocketModalProps extends Omit<ModalProps, 'onClose' | 'title'
 export function SprocketModal({
 	children,
 	onClose,
-	closeOn = allCloseOn.slice(),
+	closeOn = allCloseOn,
 	actions,
 	title,
 	size = 'md',

@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
 import { Constants } from '@/constants/constants';
+import { useEffect, useMemo, useState } from 'react';
 
 interface UseDebounceProps<T> {
 	state: T;
 	setState: (newState: T) => void;
 	debounceMS?: number;
 	writeOnClose?: boolean;
-	onDesync?: () => void;
-	onSync?: () => void;
+	isEqual?: (state: T, debouncedState: T) => boolean;
 }
 
 export const useDebounce = <TData>({
@@ -15,50 +14,37 @@ export const useDebounce = <TData>({
 	setState,
 	debounceMS = Constants.debounceTimeMS,
 	writeOnClose,
-	onDesync,
-	onSync,
+	isEqual = (a, b) => a === b,
 }: UseDebounceProps<TData>) => {
 	const [localDataState, setLocalDataState] = useState<TData>(state);
-	const [isDebouncing, setIsDebouncing] = useState(false);
 
-	const onSyncInternal = () => {
-		onSync?.();
-		setIsDebouncing(false);
-	};
-
-	const onDesyncInternal = () => {
-		onDesync?.();
-		setIsDebouncing(true);
-	};
+	const isDesync = useMemo(() => !isEqual(localDataState, state), [localDataState, state]);
 
 	// When the state changes, set the local state to the state
 	useEffect(() => {
-		if (JSON.stringify(localDataState) !== JSON.stringify(state)) {
+		if (!isEqual(localDataState, state)) {
 			setLocalDataState(structuredClone(state));
-			onSyncInternal();
 		}
 	}, [state]);
 
 	// when the local state changes, update the state
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-			if (JSON.stringify(localDataState) !== JSON.stringify(state)) {
+			if (!isEqual(localDataState, state)) {
 				setState(localDataState);
 			}
-			onSyncInternal();
 		}, debounceMS);
-		onDesyncInternal();
 		return () => clearTimeout(timeout);
 	}, [localDataState]);
 
 	// on component unmount, we want to save the local state
 	useEffect(() => {
 		return () => {
-			if (writeOnClose && localDataState != null) {
+			if (writeOnClose && localDataState != null && !isEqual(localDataState, state)) {
 				setState(localDataState);
 			}
 		};
 	}, []);
 
-	return { localDataState, setLocalDataState, isDebouncing };
+	return [localDataState, setLocalDataState, isDesync] as const;
 };

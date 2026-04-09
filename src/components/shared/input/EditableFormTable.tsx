@@ -25,7 +25,7 @@ interface EditableFormTableProps {
 
 export function EditableFormTable({ data, setData }: EditableFormTableProps) {
 	const [transformedData, setTransformedData] = useState(getTransformedData(data));
-	const { localDataState, setLocalDataState } = useDebounce({ state: transformedData, setState: setTransformedData });
+	const [localDataState, setLocalDataState] = useDebounce({ state: transformedData, setState: setTransformedData });
 	const dataKeysCount = new Map();
 	localDataState.forEach((kvp) => dataKeysCount.set(kvp.key, 1 + (dataKeysCount.get(kvp.key) ?? 0)));
 	useEffect(() => {

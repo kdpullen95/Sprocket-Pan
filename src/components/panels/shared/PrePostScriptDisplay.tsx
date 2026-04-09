@@ -15,7 +15,7 @@ interface PrePostScriptDisplayProps extends OnChangeArgs {
 export function PrePostScriptDisplay({ preRequestScript, postRequestScript, onChange }: PrePostScriptDisplayProps) {
 	const [isPostActive, setIsPostActive] = useState(false);
 
-	const { localDataState, setLocalDataState } = useDebounce({
+	const [localDataState, setLocalDataState] = useDebounce({
 		state: isPostActive ? postRequestScript : preRequestScript,
 		setState: (text) => onChange(isPostActive ? { postRequestScript: text } : { preRequestScript: text }),
 	});

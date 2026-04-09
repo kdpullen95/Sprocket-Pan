@@ -42,8 +42,8 @@ export class ItemFactory {
 			endpointIds: [],
 			localEnvironments: {},
 			baseUrl: '',
-			version: '1.0.0',
-			name: 'New Service',
+			version: '',
+			name: '',
 			description: '',
 			...structuredClone(template),
 			id: this.id(ItemPrefix.service),
@@ -52,7 +52,7 @@ export class ItemFactory {
 
 	static environment(template?: Partial<Environment>): Environment {
 		return {
-			name: 'New Environment',
+			name: '',
 			pairs: [],
 			...structuredClone(template),
 			id: this.id(ItemPrefix.environment),
@@ -68,7 +68,7 @@ export class ItemFactory {
 			baseHeaders: [],
 			url: '',
 			verb: 'GET',
-			name: 'New Endpoint',
+			name: '',
 			requestIds: [],
 			...structuredClone(template),
 			id: this.id(ItemPrefix.endpoint),
@@ -77,8 +77,8 @@ export class ItemFactory {
 
 	static request(template?: Partial<EndpointRequest>): EndpointRequest {
 		return {
-			name: 'New Request',
-			environmentOverride: { pairs: [], id: this.id(ItemPrefix.environment), name: 'Request Environment Override' },
+			name: '',
+			environmentOverride: ItemFactory.environment({ name: 'Request Environment Override' }),
 			rawType: 'Text',
 			body: '',
 			bodyType: 'none',

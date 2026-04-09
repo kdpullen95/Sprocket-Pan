@@ -29,7 +29,7 @@ export function EndpointPanel({ id }: PanelProps) {
 		dispatch(activeActions.updateEndpoint({ ...values, id }));
 	};
 
-	const { localDataState, setLocalDataState } = useDebounce({
+	const [localDataState, setLocalDataState] = useDebounce({
 		state: endpoint?.url ?? '',
 		setState: (newUrl: string) => update({ url: newUrl }),
 		debounceMS: Constants.debounceTimeMS,

@@ -22,8 +22,8 @@ export interface EndpointResponse {
 }
 
 export interface Service<TBaseUrl extends string = string> extends Item {
-	description: string;
-	version: string;
+	description?: string;
+	version?: string;
 	baseUrl: TBaseUrl;
 	localEnvironments: {
 		[environmentId: string]: Environment;
@@ -86,7 +86,7 @@ export interface Endpoint<TUrlBase extends string = string> extends Item {
 	baseQueryParams: QueryParams;
 	preRequestScript?: string;
 	postRequestScript?: string;
-	description: string;
+	description?: string;
 	serviceId: string;
 	requestIds: string[];
 	defaultRequest: string | null;

@@ -5,14 +5,15 @@ import Markdown from 'react-markdown';
 import { SprocketTooltip } from '../SprocketTooltip';
 
 interface EditableTextAreaProps {
-	text: string;
+	fallback?: string;
+	text?: string;
 	setText: (text: string) => void;
 	isValidFunc?: (text: string) => boolean;
 }
 
-export function EditableTextArea({ text, setText, isValidFunc = () => true }: EditableTextAreaProps) {
+export function EditableTextArea({ fallback, text, setText, isValidFunc = () => true }: EditableTextAreaProps) {
 	const [isEditing, setIsEditing] = useState(false);
-	const [typingText, setTypingText] = useState(text);
+	const [typingText, setTypingText] = useState(text ?? '');
 
 	const isValid = isValidFunc(typingText);
 
@@ -23,13 +24,13 @@ export function EditableTextArea({ text, setText, isValidFunc = () => true }: Ed
 				setIsEditing(false);
 			}
 		} else {
-			setTypingText(text);
+			setTypingText(text ?? '');
 			setIsEditing(true);
 		}
 	}
 
 	useEffect(() => {
-		setTypingText(text);
+		setTypingText(text ?? '');
 		setIsEditing(false);
 	}, [text]);
 
@@ -53,6 +54,7 @@ export function EditableTextArea({ text, setText, isValidFunc = () => true }: Ed
 				<Textarea
 					sx={{ width: '100%', mt: '10px' }}
 					variant="outlined"
+					placeholder={fallback}
 					value={typingText}
 					onChange={(e) => setTypingText(e.target.value)}
 					error={!isValid}

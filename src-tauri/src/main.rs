@@ -20,7 +20,7 @@ fn main() {
         .plugin(tauri_plugin_http::init())
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();
-            //window.hide().unwrap();
+            window.hide().unwrap();
             Ok(())
         })
         .plugin(

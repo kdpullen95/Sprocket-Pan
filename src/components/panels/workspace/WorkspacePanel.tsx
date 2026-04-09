@@ -1,19 +1,19 @@
-import { Box, IconButton, Stack, Typography } from '@mui/joy';
-import { PanelProps } from '../panels.interface';
-import { useSelector } from 'react-redux';
-import { itemActions } from '@/state/items';
-import { EditableHeader } from '../shared/EditableHeader';
+import { RelativeTimeChip } from '@/components/shared/RelativeTimeChip';
+import { SprocketTable } from '@/components/shared/SprocketTable';
+import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import { Minidenticon } from '@/components/shared/flair/Minidenticon';
+import { EditableText } from '@/components/shared/input/EditableText';
+import { EditableTextArea } from '@/components/shared/input/EditableTextArea';
 import { globalActions } from '@/state/global/slice';
+import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { WorkspaceMetadata } from '@/types/data/workspace';
-import { Minidenticon } from '@/components/shared/Minidenticon';
-import { EditableTextArea } from '@/components/shared/input/EditableTextArea';
 import { Refresh } from '@mui/icons-material';
-import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { EditableText } from '@/components/shared/input/EditableText';
+import { Box, IconButton, Stack, Typography } from '@mui/joy';
 import { generateSlug } from 'random-word-slugs';
-import { SprocketTable } from '@/components/shared/SprocketTable';
-import { RelativeTimeChip } from '@/components/shared/RelativeTimeChip';
+import { useSelector } from 'react-redux';
+import { PanelProps } from '../panels.interface';
+import { EditableHeader } from '../shared/EditableHeader';
 
 export function WorkspacePanel({ id }: PanelProps) {
 	const workspace = useSelector((state) => itemActions.workspace.select(state, id));
@@ -31,7 +31,11 @@ export function WorkspacePanel({ id }: PanelProps) {
 			<EditableHeader value={workspace.name} onChange={(name) => update({ name })} />
 			<Stack direction="row" gap={3} width="100%" justifyContent="stretch" flexWrap="wrap">
 				<Box width="50%" minWidth="400px" flex={1}>
-					<EditableTextArea text={workspace.description} setText={(description: string) => update({ description })} />
+					<EditableTextArea
+						fallback="description"
+						text={workspace.description}
+						setText={(description: string) => update({ description })}
+					/>
 				</Box>
 				<Box width="50%" minWidth="400px" flex={1}>
 					<SprocketTable

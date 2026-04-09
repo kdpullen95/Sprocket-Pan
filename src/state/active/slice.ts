@@ -1,4 +1,5 @@
 import { defaultWorkspaceData } from '@/managers/data/WorkspaceDataManager';
+import { Item } from '@/types/data/item';
 import { IdSpecificUiMetadata } from '@/types/data/shared';
 import {
 	Endpoint,
@@ -16,7 +17,6 @@ import { RecursivePartial } from '@/types/utils/utils';
 import { mergeDeep } from '@/utils/variables';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Create, PayloadUpdate, Update } from '../types';
-import { Item } from '@/types/data/item';
 
 const initialState = {
 	...defaultWorkspaceData,
@@ -74,6 +74,7 @@ function update<T extends Item>(state: { [key: string]: T }, item: Update<T>) {
 	if (item.id == null) {
 		throw new Error("can't update item without an id");
 	}
+	console.log('updating something', { state, item });
 	state[item.id] = { ...state[item.id], ...item };
 }
 

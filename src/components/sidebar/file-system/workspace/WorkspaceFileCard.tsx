@@ -1,7 +1,7 @@
 import { FluentArrowSwap } from '@/assets/icons/fluent/FluentArrowSwap';
 import { EllipsisTypography } from '@/components/shared/EllipsisTypography';
-import { Minidenticon } from '@/components/shared/Minidenticon';
 import { RelativeTimeChip } from '@/components/shared/RelativeTimeChip';
+import { Minidenticon } from '@/components/shared/flair/Minidenticon';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
 import { WorkspaceMetadata } from '@/types/data/workspace';

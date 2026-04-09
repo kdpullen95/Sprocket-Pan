@@ -5,8 +5,8 @@ import { formatFullDate } from '@/utils/string';
 import { Delete, EditCalendar, Info, OpenInNew } from '@mui/icons-material';
 import { Button, Card, Stack, Typography } from '@mui/joy';
 import { EllipsisTypography } from '../shared/EllipsisTypography';
-import { GradientBorderBoundingBox } from '../shared/GradientBorderBoundingBox';
-import { TextAvatar } from '../shared/Minidenticon';
+import { GradientBorderBoundingBox } from '../shared/flair/GradientBorderBoundingBox';
+import { TextAvatar } from '../shared/flair/Minidenticon';
 import { SprocketTooltip } from '../shared/SprocketTooltip';
 
 interface WorkspaceEntryProps {

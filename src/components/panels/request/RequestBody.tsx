@@ -1,7 +1,6 @@
+import { DebouncedSprocketEditor } from '@/components/hoc/WithDebounce';
 import { EditableFormTable } from '@/components/shared/input/EditableFormTable';
-import { SprocketEditor } from '@/components/shared/input/monaco/SprocketEditor';
 import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
-import { Constants } from '@/constants/constants';
 import { activeActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 import { RawBodyTypes, RequestBodyType, RequestBodyTypes } from '@/types/data/shared';
@@ -9,15 +8,12 @@ import { EndpointRequest } from '@/types/data/workspace';
 import { getRequestBodyCategory } from '@/utils/conversion';
 import { DataObject, List as ListIcon } from '@mui/icons-material';
 import { Stack } from '@mui/joy';
-import { useEffect, useRef, useState } from 'react';
 
 interface RequestBodyProps {
 	request: EndpointRequest;
 }
 
 export function RequestBody({ request }: RequestBodyProps) {
-	const [editorText, setEditorText] = useState(typeof request.body === 'string' ? request.body : '');
-	const latestText = useRef(editorText);
 	const requestBodyCategory = getRequestBodyCategory(request.bodyType);
 	const isRaw = requestBodyCategory === 'raw';
 	const isTable = requestBodyCategory === 'table';
@@ -26,16 +22,8 @@ export function RequestBody({ request }: RequestBodyProps) {
 	function update(values: Partial<EndpointRequest>) {
 		dispatch(activeActions.updateRequest({ ...values, id: request.id }));
 	}
-	// We update the text only after the user stops typing
-	useEffect(() => {
-		const delayDebounceFunc = setTimeout(() => {
-			if (isRaw) {
-				update({ body: latestText.current });
-			}
-		}, Constants.debounceTimeMS);
 
-		return () => clearTimeout(delayDebounceFunc);
-	}, [latestText.current]);
+	console.log('request is updated to', { request });
 
 	const onSelectChange = (value: RequestBodyType) => {
 		if (value) {
@@ -88,13 +76,10 @@ export function RequestBody({ request }: RequestBodyProps) {
 				)}
 			</Stack>
 			{editorLanguage && (
-				<SprocketEditor
+				<DebouncedSprocketEditor
 					height="45vh"
-					value={editorText}
-					onChange={(value) => {
-						setEditorText(value ?? '');
-						latestText.current = value ?? '';
-					}}
+					value={request.body as string}
+					onChange={(body) => update({ body })}
 					language={editorLanguage}
 				/>
 			)}

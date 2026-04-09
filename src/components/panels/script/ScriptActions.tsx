@@ -13,12 +13,12 @@ interface ScriptActionsProps {
 }
 
 export function ScriptActions({ onChange, isRunning, run, isInterrupting, interrupt, script }: ScriptActionsProps) {
-	const scriptCallableNameDebounce = useDebounce({
+	const [state, setState] = useDebounce({
 		state: script.scriptCallableName,
 		setState: (newName: string) => onChange({ scriptCallableName: newName }),
 	});
 
-	const isValidScriptCallableName = /^[a-zA-Z0-9_]+$/.test(scriptCallableNameDebounce.localDataState);
+	const isValidScriptCallableName = /^[a-zA-Z0-9_]+$/.test(state);
 
 	return (
 		<Stack direction="row" spacing={2} justifyContent="space-between" alignItems="end">
@@ -29,12 +29,9 @@ export function ScriptActions({ onChange, isRunning, run, isInterrupting, interr
 						startDecorator={<Code />}
 						size="md"
 						variant="outlined"
-						placeholder="Script-callable name goes here"
-						value={scriptCallableNameDebounce.localDataState}
+						value={state}
 						error={isValidScriptCallableName}
-						onChange={(e) => {
-							scriptCallableNameDebounce.setLocalDataState(e.target.value);
-						}}
+						onChange={(e) => setState(e.target.value)}
 						color={isValidScriptCallableName ? 'primary' : 'danger'}
 					></Input>
 				</FormControl>

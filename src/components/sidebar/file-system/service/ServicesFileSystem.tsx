@@ -1,20 +1,21 @@
-import { IconButton, Stack, Typography } from '@mui/joy';
-import { ServiceFileSystem } from './ServiceFileSystem';
-import { useSelector } from 'react-redux';
-import { FileSystemTrunk } from '../tree/FileSystemTrunk';
+import { SearchField } from '@/components/shared/input/SearchField';
+import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { selectServices } from '@/state/active/selectors';
 import { useAppDispatch } from '@/state/store';
-import { selectFilteredNestedIds } from '@/state/ui/selectors';
+import { selectFilteredNestedIds, selectSearchText } from '@/state/ui/selectors';
 import { uiActions } from '@/state/ui/slice';
-import { SearchField } from '@/components/shared/input/SearchField';
-import { SideDrawerHeader } from '../../SideDrawerHeader';
 import { collapseAll, expandAll } from '@/state/ui/thunks';
-import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { AddBox } from '@mui/icons-material';
-import { menuOptionCollapseAll, menuOptionExpandAll } from '../tree/FileSystemDropdown';
 import { ItemType } from '@/types/data/item';
+import { AddBox } from '@mui/icons-material';
+import { IconButton, Stack, Typography } from '@mui/joy';
+import { useSelector } from 'react-redux';
+import { SideDrawerHeader } from '../../SideDrawerHeader';
+import { menuOptionCollapseAll, menuOptionExpandAll } from '../tree/FileSystemDropdown';
+import { FileSystemTrunk } from '../tree/FileSystemTrunk';
+import { ServiceFileSystem } from './ServiceFileSystem';
 
 export function ServicesFileSystem() {
+	const searchText = useSelector(selectSearchText);
 	const services = useSelector(selectServices);
 	const serviceIdsUnfiltered = Object.values(services).map((srv) => srv.id);
 	const serviceIds = useSelector((state) => selectFilteredNestedIds(state, serviceIdsUnfiltered));
@@ -30,7 +31,7 @@ export function ServicesFileSystem() {
 				]}
 				actions={
 					<Stack flexWrap="wrap" direction="row" justifyContent="end" alignItems="center" gap={1}>
-						<SearchField onChange={(text) => dispatch(uiActions.setSearchText(text))} />
+						<SearchField value={searchText} onChange={(text) => dispatch(uiActions.setSearchText(text))} />
 						<SprocketTooltip text="Add New Service">
 							<IconButton onClick={() => dispatch(uiActions.addToCreateQueue(ItemType.service))}>
 								<AddBox />

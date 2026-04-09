@@ -38,7 +38,7 @@ export function ScriptPanel({ id }: PanelProps) {
 		dispatch(activeActions.updateScript({ ...values, id: script.id }));
 	}
 
-	const { localDataState, setLocalDataState } = useDebounce({
+	const [localDataState, setLocalDataState] = useDebounce({
 		state: script.content,
 		setState: (newText: string) => update({ content: newText }),
 		debounceMS: Constants.longEditTimeMS,

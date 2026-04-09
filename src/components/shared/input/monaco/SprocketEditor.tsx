@@ -6,7 +6,7 @@ import { editor } from 'monaco-editor';
 import { ReactNode, useEffect, useRef } from 'react';
 import { EditorActions } from './EditorActions';
 
-type SprocketEditorProps = Omit<EditorProps, 'onMount'> & {
+export type SprocketEditorProps = Omit<EditorProps, 'onMount'> & {
 	ActionBarItems?: ReactNode;
 	formatOnChange?: boolean;
 };

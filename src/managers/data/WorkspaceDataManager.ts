@@ -159,8 +159,8 @@ export class WorkspaceDataManager {
 		if (folder == null) {
 			throw new Error('workspace folder path must be provided');
 		}
-		const root = `${FileSystemWorker.DATA_FOLDER_NAME}${path.sep}${folder}`;
-		const base = `${root}${path.sep}${FileSystemWorker.DATA_FILE_NAME}`;
+		const root = `${FileSystemWorker.DATA_FOLDER_NAME}${path.sep()}${folder}`;
+		const base = `${root}${path.sep()}${FileSystemWorker.DATA_FILE_NAME}`;
 		return {
 			root,
 			data: `${base}.json`,
@@ -223,7 +223,7 @@ export class WorkspaceDataManager {
 	private static getSyncLocation(data: WorkspaceData) {
 		const sync = data.settings.data?.sync;
 		return sync?.enabled && sync?.location != null && sync.location !== ''
-			? `${sync.location}${path.sep}data_sync.json`
+			? `${sync.location}${path.sep()}data_sync.json`
 			: null;
 	}
 

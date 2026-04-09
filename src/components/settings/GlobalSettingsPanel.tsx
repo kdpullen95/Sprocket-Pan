@@ -1,14 +1,14 @@
-import { Box, Stack } from '@mui/joy';
-import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { SettingsTabs } from './tabs/SettingsTabs';
-import { SettingsBar } from './SettingsBar';
-import { SettingsPanelProps } from './SettingsPanel';
 import { selectGlobalLastSaved, selectGlobalSettings } from '@/state/global/selectors';
 import { globalActions } from '@/state/global/slice';
 import { useAppDispatch } from '@/state/store';
 import { mergeDeep } from '@/utils/variables';
+import { Box, Stack } from '@mui/joy';
+import { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { SettingsBar } from './SettingsBar';
+import { SettingsPanelProps } from './SettingsPanel';
 import { SettingsTitle } from './SettingsTitle';
+import { SettingsTabs } from './tabs/SettingsTabs';
 
 export function GlobalSettingsPanel({ onClose }: SettingsPanelProps) {
 	const lastSaved = useSelector(selectGlobalLastSaved);
@@ -21,7 +21,7 @@ export function GlobalSettingsPanel({ onClose }: SettingsPanelProps) {
 	const [search, setSearch] = useState('');
 	return (
 		<Stack height="75vh" justifyContent="stretch" alignItems="stretch" gap={1}>
-			<SettingsTitle onChange={setSearch} />
+			<SettingsTitle value={search} onChange={setSearch} />
 			<Box sx={{ flex: 1, overflow: 'auto' }}>
 				<SettingsTabs
 					searchText={search}
