@@ -9,7 +9,6 @@ import { WorkspaceSelector } from '../workspaces/WorkspaceSelector';
 import { RootErrorFallback } from './RootErrorFallback';
 import { Toasts } from './Toasts';
 import { Workspace } from './Workspace';
-import { ListenerWrapper } from './listeners/ListenerWrapper';
 import { ModalsWrapper } from './modals/ModalsWrapper';
 import { LoadingWorkspaceOverlay } from './overlays/LoadingWorkspaceOverlay';
 
@@ -29,7 +28,7 @@ export function Root() {
 
 	useEffect(() => {
 		setMode(defaultTheme);
-	}, [defaultTheme]);
+	}, [defaultTheme, setMode]);
 
 	return (
 		<>
@@ -40,7 +39,6 @@ export function Root() {
 				) : (
 					<>
 						<Workspace />
-						<ListenerWrapper />
 					</>
 				)}
 				<ModalsWrapper />

@@ -1,14 +1,13 @@
+import { ContextMenuItems, PredefinedContextMenuItems } from '@/components/shared/context/ContextMenuItems';
 import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { selectFilteredNestedIds } from '@/state/ui/selectors';
 import { uiActions } from '@/state/ui/slice';
-import { AddBox } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { EllipsesP } from './components/EllipsesP';
 import { VerbDiv } from './components/VerbDiv';
 import { RequestFileSystem } from './RequestFileSystem';
 import { FileSystemBranch } from './tree/FileSystemBranch';
-import { menuOptionDelete, menuOptionDuplicate } from './tree/FileSystemDropdown';
 
 interface EndpointFileSystemProps {
 	endpointId: string;
@@ -26,14 +25,15 @@ export function EndpointFileSystem({ endpointId }: EndpointFileSystemProps) {
 	return (
 		<FileSystemBranch
 			id={endpointId}
-			menuOptions={[
-				menuOptionDuplicate(() => dispatch(itemActions.endpoint.create(endpoint))),
+			menuItems={[
+				ContextMenuItems.duplicate(() => dispatch(itemActions.endpoint.create(endpoint))),
+				PredefinedContextMenuItems.separator,
 				{
-					onClick: () => dispatch(itemActions.request.create({ endpointId: endpoint.id })),
-					label: 'Add Request',
-					Icon: AddBox,
+					action: () => dispatch(itemActions.request.create({ endpointId: endpoint.id })),
+					text: 'Add Request',
 				},
-				menuOptionDelete(() => dispatch(uiActions.addToDeleteQueue(endpoint.id))),
+				PredefinedContextMenuItems.separator,
+				ContextMenuItems.delete(() => dispatch(uiActions.addToDeleteQueue(endpoint.id))),
 			]}
 			buttonContent={
 				<>

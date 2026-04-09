@@ -1,9 +1,9 @@
-import { Provider, useSelector } from 'react-redux';
-import { store } from './state/store';
-import { Root } from './components/root/Root';
 import { CssBaseline, CssVarsProvider } from '@mui/joy';
-import { createTheme } from './utils/style';
+import { Provider, useSelector } from 'react-redux';
+import { Root } from './components/root/Root';
 import { selectTheme } from './state/active/selectors';
+import { store } from './state/store';
+import { createTheme } from './utils/style';
 
 function ReduxApp() {
 	const { colors, filters } = useSelector(selectTheme);

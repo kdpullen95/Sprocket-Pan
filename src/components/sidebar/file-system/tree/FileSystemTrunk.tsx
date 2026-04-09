@@ -64,7 +64,7 @@ export function FileSystemTrunk({ items, render }: FileSystemTrunkProps) {
 			}}
 		>
 			{enabled ? (
-				<Virtuoso style={average as any} data={items} itemContent={(index, item) => render(item, index)} />
+				<Virtuoso style={average} data={items} itemContent={(index, item) => render(item, index)} />
 			) : (
 				<Box sx={{ ...average, height: '100%', overflow: 'auto' }}>
 					{items.map((item, index) => (

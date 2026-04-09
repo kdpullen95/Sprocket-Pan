@@ -1,16 +1,15 @@
 import { FluentCubeSvg } from '@/assets/icons/fluent/FluentCube';
 import { FluentCubeLinkSvg } from '@/assets/icons/fluent/FluentCubeLink';
+import { ContextMenuItems, PredefinedContextMenuItems } from '@/components/shared/context/ContextMenuItems';
 import { useShowSync } from '@/hooks/useShowSync';
 import { selectSelectedEnvironment } from '@/state/active/selectors';
 import { activeActions } from '@/state/active/slice';
 import { itemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { uiActions } from '@/state/ui/slice';
-import { CheckCircleOutlined } from '@mui/icons-material';
 import { useTheme } from '@mui/joy/styles';
 import { useSelector } from 'react-redux';
 import { EllipsesP } from '../components/EllipsesP';
-import { menuOptionDelete, menuOptionDuplicate } from '../tree/FileSystemDropdown';
 import { FileSystemLeaf } from '../tree/FileSystemLeaf';
 
 interface EnvironmentFileSystemProps {
@@ -29,14 +28,15 @@ export function EnvironmentFileSystem({ environmentId }: EnvironmentFileSystemPr
 		<FileSystemLeaf
 			color={color}
 			id={environmentId}
-			menuOptions={[
+			menuItems={[
 				{
-					onClick: () => dispatch(activeActions.selectEnvironment(envSelected ? undefined : environment.id)),
-					Icon: CheckCircleOutlined,
-					label: envSelected ? 'Deselect' : 'Select',
+					action: () => dispatch(activeActions.selectEnvironment(envSelected ? undefined : environment.id)),
+					text: envSelected ? 'Deselect' : 'Select',
 				},
-				menuOptionDuplicate(() => dispatch(itemActions.environment.duplicate(environment))),
-				menuOptionDelete(() => dispatch(uiActions.addToDeleteQueue(environment.id))),
+				PredefinedContextMenuItems.separator,
+				ContextMenuItems.duplicate(() => dispatch(itemActions.environment.duplicate(environment))),
+				PredefinedContextMenuItems.separator,
+				ContextMenuItems.delete(() => dispatch(uiActions.addToDeleteQueue(environment.id))),
 			]}
 		>
 			<div style={{ flex: 0 }}>{showSync ? <FluentCubeLinkSvg /> : <FluentCubeSvg />}</div>

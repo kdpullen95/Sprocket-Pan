@@ -23,8 +23,6 @@ export function RequestBody({ request }: RequestBodyProps) {
 		dispatch(activeActions.updateRequest({ ...values, id: request.id }));
 	}
 
-	console.log('request is updated to', { request });
-
 	const onSelectChange = (value: RequestBodyType) => {
 		if (value) {
 			const data: Partial<EndpointRequest> = { bodyType: value };

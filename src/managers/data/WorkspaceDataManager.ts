@@ -82,8 +82,6 @@ export class WorkspaceDataManager {
 		await writeTextFile(filePath, dataToWrite);
 	}
 
-	a = nullifyProperties<WorkspaceData & EndpointRequest>('history', 'settings', 'uiMetadata');
-
 	public static async saveData(allData: WorkspaceData, { fileName, ...metadata }: WorkspaceMetadata) {
 		const { data, sync, location } = this.splitWorkspace(allData);
 		const { uiMetadata, secrets, history, ...strippedData } = structuredClone(data);
