@@ -17,7 +17,10 @@ export function ScriptFileSystem({ scriptId }: ScriptFileSystemProps) {
 	const script = useSelector((state) => itemActions.script.select(state, scriptId));
 	const dispatch = useAppDispatch();
 	const showSync = useShowSync(scriptId);
-
+	if (script == null) {
+		console.warn("the deletion bug hasn't been fixed yet");
+		return <></>;
+	}
 	return (
 		<FileSystemLeaf
 			id={scriptId}

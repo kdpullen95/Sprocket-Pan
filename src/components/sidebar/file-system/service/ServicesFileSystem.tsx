@@ -1,11 +1,12 @@
 import { SearchField } from '@/components/shared/input/SearchField';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import { ItemFactory } from '@/managers/data/ItemFactory';
 import { selectServices } from '@/state/active/selectors';
+import { activeActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 import { selectFilteredNestedIds, selectSearchText } from '@/state/ui/selectors';
 import { uiActions } from '@/state/ui/slice';
 import { collapseAll, expandAll } from '@/state/ui/thunks';
-import { ItemType } from '@/types/data/item';
 import { AddBox } from '@mui/icons-material';
 import { IconButton, Stack, Typography } from '@mui/joy';
 import { useSelector } from 'react-redux';
@@ -33,7 +34,7 @@ export function ServicesFileSystem() {
 					<Stack flexWrap="wrap" direction="row" justifyContent="end" alignItems="center" gap={1}>
 						<SearchField value={searchText} onChange={(text) => dispatch(uiActions.setSearchText(text))} />
 						<SprocketTooltip text="Add New Service">
-							<IconButton onClick={() => dispatch(uiActions.addToCreateQueue(ItemType.service))}>
+							<IconButton onClick={() => dispatch(activeActions.insertService(ItemFactory.service()))}>
 								<AddBox />
 							</IconButton>
 						</SprocketTooltip>

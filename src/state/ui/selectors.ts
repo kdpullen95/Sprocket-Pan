@@ -1,7 +1,7 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { uiSlice } from './slice';
 import { getValidIdsFromSearchTerm } from '@/utils/search';
-import { selectServices, selectEndpoints, selectRequests } from '../active/selectors';
+import { createSelector } from '@reduxjs/toolkit';
+import { selectEndpoints, selectRequests, selectServices } from '../active/selectors';
+import { uiSlice } from './slice';
 
 export const selectUiState = uiSlice.selectSlice;
 
@@ -17,10 +17,6 @@ export const selectPeekHistory = createSelector(selectUiState, ({ tabsHistoryPos
 
 export const selectNextForDeletion = createSelector(selectUiState, ({ deleteQueue }) => {
 	return deleteQueue[0];
-});
-
-export const selectNextForCreation = createSelector(selectUiState, ({ createQueue }) => {
-	return createQueue[0];
 });
 
 export const selectNextForDiff = createSelector(selectUiState, ({ diffQueue }) => {

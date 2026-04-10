@@ -99,6 +99,7 @@ export interface Environment extends Item {
 export interface RootEnvironment extends Environment {
 	linked?: Record<string, string | null>;
 	parents?: string[];
+	badge?: { color?: string; prefix?: string };
 }
 
 export interface SyncMetadata {

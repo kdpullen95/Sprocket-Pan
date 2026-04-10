@@ -1,9 +1,9 @@
 import { SearchField } from '@/components/shared/input/SearchField';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import { ItemFactory } from '@/managers/data/ItemFactory';
 import { selectEnvironments } from '@/state/active/selectors';
+import { activeActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { ItemType } from '@/types/data/item';
 import { searchEnvironments } from '@/utils/search';
 import { AddBox } from '@mui/icons-material';
 import { IconButton, ListDivider, Stack, Typography } from '@mui/joy';
@@ -34,7 +34,7 @@ export function EnvironmentsFileSystem() {
 						<Stack direction="row">
 							<OpenSecretsButton />
 							<SprocketTooltip text="Add New Environment">
-								<IconButton onClick={() => dispatch(uiActions.addToCreateQueue(ItemType.environment))}>
+								<IconButton onClick={() => dispatch(activeActions.insertEnvironment(ItemFactory.environment()))}>
 									<AddBox />
 								</IconButton>
 							</SprocketTooltip>

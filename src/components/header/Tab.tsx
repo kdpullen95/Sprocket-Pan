@@ -6,6 +6,8 @@ import { Close } from '@mui/icons-material';
 import { IconButton, ListItemDecorator, Tab as MuiTab, Stack } from '@mui/joy';
 import { useSelector } from 'react-redux';
 import { EllipsisTypography } from '../shared/EllipsisTypography';
+import { ContextMenu } from '../shared/context/ContextMenu';
+import { PredefinedContextMenuItems } from '../shared/context/ContextMenuItems';
 
 function useTabInfo(id: string) {
 	const actions = extractActions(id);
@@ -29,33 +31,56 @@ export function Tab({ id }: TabProps) {
 	const dispatch = useAppDispatch();
 	const { key, item } = useTabInfo(id);
 	return (
-		<MuiTab
-			component="div"
-			indicatorPlacement="top"
-			value={id}
-			id={`tab_${id}`}
-			sx={{
-				minWidth: 230,
-				maxWidth: 460,
-				scrollSnapAlign: 'start',
-			}}
+		<ContextMenu
+			items={[
+				{
+					text: 'Close',
+					items: [
+						{ text: 'Close This', action: () => dispatch(uiActions.closeTab(id)) },
+						{ text: 'Close Others', action: () => dispatch(uiActions.closeOtherTabs(id)) },
+						PredefinedContextMenuItems.separator,
+						{
+							text: 'Close Left',
+							action: () => dispatch(uiActions.closeTabsDirectionally({ center: id, left: true })),
+						},
+						{
+							text: 'Close Right',
+							action: () => dispatch(uiActions.closeTabsDirectionally({ center: id })),
+						},
+						PredefinedContextMenuItems.separator,
+						{ text: 'Close All', action: () => dispatch(uiActions.clearTabs()) },
+					],
+				},
+			]}
 		>
-			<Stack direction="row" flexWrap="nowrap" alignItems="center" justifyContent="space-between" width="100%">
-				<ListItemDecorator sx={{ flex: 0 }}>{tabTypeIcon[key]}</ListItemDecorator>
-				<EllipsisTypography>{item.name}</EllipsisTypography>
-				<ListItemDecorator sx={{ flex: 0 }}>
-					<IconButton
-						color="danger"
-						onClick={(e) => {
-							dispatch(uiActions.closeTab(id));
-							e.stopPropagation();
-						}}
-						size="sm"
-					>
-						<Close />
-					</IconButton>
-				</ListItemDecorator>
-			</Stack>
-		</MuiTab>
+			<MuiTab
+				component="div"
+				indicatorPlacement="top"
+				value={id}
+				id={`tab_${id}`}
+				sx={{
+					minWidth: 230,
+					maxWidth: 460,
+					scrollSnapAlign: 'start',
+				}}
+			>
+				<Stack direction="row" flexWrap="nowrap" alignItems="center" justifyContent="space-between" width="100%">
+					<ListItemDecorator sx={{ flex: 0 }}>{tabTypeIcon[key]}</ListItemDecorator>
+					<EllipsisTypography>{item.name}</EllipsisTypography>
+					<ListItemDecorator sx={{ flex: 0 }}>
+						<IconButton
+							color="danger"
+							onClick={(e) => {
+								dispatch(uiActions.closeTab(id));
+								e.stopPropagation();
+							}}
+							size="sm"
+						>
+							<Close />
+						</IconButton>
+					</ListItemDecorator>
+				</Stack>
+			</MuiTab>
+		</ContextMenu>
 	);
 }

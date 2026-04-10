@@ -1,7 +1,9 @@
+import { useAppDispatch } from '@/state/store';
 import { selectToast } from '@/state/ui/selectors';
+import { uiActions } from '@/state/ui/slice';
 import { Close, Info, Warning } from '@mui/icons-material';
 import { ColorPaletteProp, Divider, IconButton, Snackbar, Stack, Typography } from '@mui/joy';
-import { useEffect, useState } from 'react';
+import { JSX } from 'react';
 import { useSelector } from 'react-redux';
 
 export interface ToastProps {
@@ -13,15 +15,8 @@ export interface ToastProps {
 // this is intended for expansion into stacked/multi-toasts
 // but for now only supports a single toast at a time.
 export function Toasts() {
-	const [open, setOpen] = useState(false);
 	const toast = useSelector(selectToast);
-	useEffect(() => {
-		if (toast == null) {
-			setOpen(false);
-		} else {
-			setOpen(true);
-		}
-	}, [toast]);
+	const dispatch = useAppDispatch();
 	return (
 		<Snackbar
 			sx={{ maxWidth: '900px' }}
@@ -36,16 +31,16 @@ export function Toasts() {
 			animationDuration={900}
 			autoHideDuration={null}
 			variant="soft"
-			open={open}
+			open={toast != null}
 			color={toast?.color}
 			onClose={(_event, reason) => {
 				if (reason === 'clickaway') {
 					return;
 				}
-				setOpen(false);
+				dispatch(uiActions.clearToast());
 			}}
 			endDecorator={
-				<IconButton variant="soft" color={toast?.color} onClick={() => setOpen(false)}>
+				<IconButton variant="soft" color={toast?.color} onClick={() => dispatch(uiActions.clearToast())}>
 					<Close />
 				</IconButton>
 			}

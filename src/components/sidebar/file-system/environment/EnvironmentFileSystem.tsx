@@ -23,6 +23,10 @@ export function EnvironmentFileSystem({ environmentId }: EnvironmentFileSystemPr
 	const dispatch = useAppDispatch();
 	const showSync = useShowSync(environmentId);
 	const theme = useTheme();
+	if (environment == null) {
+		console.warn("the deletion bug hasn't been fixed yet");
+		return <></>;
+	}
 	const color = envSelected ? theme.palette.primary.plainColor : undefined;
 	return (
 		<FileSystemLeaf
