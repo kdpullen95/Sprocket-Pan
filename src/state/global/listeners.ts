@@ -1,9 +1,10 @@
-import { createListenerMiddleware, ThunkDispatch, UnknownAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import { activeActions } from '../active/slice';
-import { uiActions } from '../ui/slice';
 import { WorkspaceDataManager } from '@/managers/data/WorkspaceDataManager';
-import { getSettingsFromState, filterOldHistoryEntries } from '@/utils/application';
+import { filterOldHistoryEntries, getSettingsFromState } from '@/utils/application';
+import type { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit';
+import { createListenerMiddleware } from '@reduxjs/toolkit';
+import { ActiveActions } from '../active/slice';
+import type { RootState } from '../store';
+import { UiActions } from '../ui/slice';
 
 const workspaceSelectionListener = createListenerMiddleware<
 	RootState,
@@ -16,22 +17,22 @@ workspaceSelectionListener.startListening({
 	},
 	effect: async (_, { dispatch, getState }) => {
 		const global = getState().global;
-		dispatch(activeActions.reset());
-		dispatch(uiActions.reset());
+		dispatch(ActiveActions.reset());
+		dispatch(UiActions.reset());
 		if (global.activeWorkspace != null) {
-			dispatch(uiActions.setIsLoadingWorkspace(true));
+			dispatch(UiActions.setIsLoadingWorkspace(true));
 			const data = await WorkspaceDataManager.initializeWorkspace(global.workspaces[global.activeWorkspace]);
 			const settings = getSettingsFromState({ global, active: data });
 			// TODO: I'd love to move this filtering somewhere more obvious or at least adjacent to other parsing.
 			data.history = filterOldHistoryEntries(data.history, settings.history.maxDays);
-			dispatch(activeActions.setFullState(data));
+			dispatch(ActiveActions.setFullState(data));
 			if (settings.data.validation.enabled) {
 				const orphans = await WorkspaceDataManager.processOrphans(data, global.workspaces[global.activeWorkspace]);
 				if (orphans.endpoints.length > 0 || orphans.requests.length > 0) {
-					dispatch(uiActions.setOrphans(orphans));
+					dispatch(UiActions.setOrphans(orphans));
 				}
 			}
-			dispatch(uiActions.setIsLoadingWorkspace(false));
+			dispatch(UiActions.setIsLoadingWorkspace(false));
 		}
 	},
 });

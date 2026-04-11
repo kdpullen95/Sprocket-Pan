@@ -1,25 +1,26 @@
-import { Select, Stack, Typography, Option } from '@mui/joy';
-import { SectionProps } from './sectionProps';
-import { Link } from '@mui/icons-material';
 import { EditableText } from '@/components/shared/input/EditableText';
+import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
 import { SprocketTable } from '@/components/shared/SprocketTable';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { Service } from '@/types/data/workspace';
-import { camelCaseToTitle } from '@/utils/string';
-import { selectSelectedServiceEnvironments } from '@/state/active/selectors';
-import { useSelector } from 'react-redux';
-import { activeActions } from '@/state/active/slice';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
+import type { Service } from '@/types/data/workspace';
+import { camelCaseToTitle } from '@/utils/string';
+import { Link } from '@mui/icons-material';
+import { Stack, Typography } from '@mui/joy';
+import { useSelector } from 'react-redux';
+import type { SectionProps } from './sectionProps';
 
 const serviceDataKeys = ['version', 'baseUrl'] as const satisfies readonly (keyof Service)[];
 
 export function InformationSection({ service, onChange }: SectionProps) {
-	const selectedEnvironmentId = useSelector(selectSelectedServiceEnvironments)[service.id];
+	const selectedEnvironmentId = useSelector(ActiveSelect.selectedServiceEnvironments)[service.id];
 	const activeEnv = selectedEnvironmentId == null ? null : service.localEnvironments[selectedEnvironmentId];
 	const envList = Object.values(service.localEnvironments);
 	const dispatch = useAppDispatch();
 	const setServiceEnv = (id: string | null) =>
-		dispatch(activeActions.setSelectedServiceEnvironment({ serviceId: service.id, serviceEnvId: id ?? undefined }));
+		dispatch(ActiveActions.setSelectedServiceEnvironment({ serviceId: service.id, serviceEnvId: id ?? undefined }));
 	return (
 		<SprocketTable
 			borderAxis="bothBetween"
@@ -47,13 +48,12 @@ export function InformationSection({ service, onChange }: SectionProps) {
 							<Typography>{activeEnv?.name ?? 'None'}</Typography>
 						</Stack>
 					) : (
-						<Select placeholder="None" value={activeEnv?.id ?? null} onChange={(_, value) => setServiceEnv(value)}>
-							{envList.map((env) => (
-								<Option value={env.id} key={env.id}>
-									{env.name}
-								</Option>
-							))}
-						</Select>
+						<SprocketSelect
+							placeholder="None"
+							value={activeEnv?.id ?? ''}
+							onChange={(value) => setServiceEnv(value)}
+							options={envList.map((env) => ({ value: env.id, label: env.name }))}
+						/>
 					),
 				},
 			]}

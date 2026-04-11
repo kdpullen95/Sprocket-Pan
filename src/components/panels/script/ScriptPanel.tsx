@@ -5,18 +5,18 @@ import { Constants } from '@/constants/constants';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useEditorTheme } from '@/hooks/useEditorTheme';
 import { ScriptRunnerManager } from '@/managers/scripts/ScriptRunnerManager';
-import { selectScripts } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
-import { itemActions } from '@/state/items';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
+import { ItemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
-import { Script } from '@/types/data/workspace';
+import type { Script } from '@/types/data/workspace';
 import { sleep } from '@/utils/misc';
 import { toValidFunctionName } from '@/utils/string';
 import { Stack, Typography } from '@mui/joy';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Group, Panel } from 'react-resizable-panels';
-import { PanelProps } from '../panels.interface';
+import type { PanelProps } from '../panels.interface';
 import { EditableHeader } from '../shared/EditableHeader';
 import { ScriptActions } from './ScriptActions';
 
@@ -25,8 +25,8 @@ import { ScriptActions } from './ScriptActions';
 export function ScriptPanel({ id }: PanelProps) {
 	const interruptTrigger = useRef<null | ((message?: string) => void)>(null);
 	const editorTheme = useEditorTheme();
-	const script = useSelector((state) => itemActions.script.select(state, id));
-	const scripts = useSelector(selectScripts);
+	const script = useSelector((state) => ItemActions.script.select(state, id));
+	const scripts = useSelector(ActiveSelect.scripts);
 	const scriptNames = new Set(Object.values(scripts).map((script) => script.name));
 	const [isRunning, setIsRunning] = useState(false);
 	const [isInterrupting, setIsInterrupting] = useState(false);
@@ -35,10 +35,10 @@ export function ScriptPanel({ id }: PanelProps) {
 	const dispatch = useAppDispatch();
 
 	function update(values: Partial<Script>) {
-		dispatch(activeActions.updateScript({ ...values, id: script.id }));
+		dispatch(ActiveActions.updateScript({ ...values, id: script.id }));
 	}
 
-	const { localDataState, setLocalDataState } = useDebounce({
+	const [localDataState, setLocalDataState] = useDebounce({
 		state: script.content,
 		setState: (newText: string) => update({ content: newText }),
 		debounceMS: Constants.longEditTimeMS,

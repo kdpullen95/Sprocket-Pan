@@ -1,15 +1,17 @@
-import { FunctionComponent } from 'react';
-import { PanelProps } from './panels.interface';
+import { UiSelect } from '@/state/ui/selectors';
+import { ItemPrefix } from '@/types/data/item';
+import type { FunctionComponent } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import { useSelector } from 'react-redux';
+import { ErrorFallback } from '../shared/ErrorFallback';
 import { EndpointPanel } from './endpoint/EndpointPanel';
 import { EnvironmentPanel } from './environment/EnvironmentPanel';
+import type { PanelProps } from './panels.interface';
 import { RequestPanel } from './request/RequestPanel';
 import { ScriptPanel } from './script/ScriptPanel';
-import { ServicePanel } from './service/ServicePanel';
 import { SecretsPanel } from './secrets/SecretsPanel';
-import { ErrorBoundary } from 'react-error-boundary';
-import { ErrorFallback } from '../shared/ErrorFallback';
+import { ServicePanel } from './service/ServicePanel';
 import { WorkspacePanel } from './workspace/WorkspacePanel';
-import { ItemPrefix } from '@/types/data/item';
 
 const contentMap: Record<string | 'secrets', FunctionComponent<PanelProps>> = {
 	[ItemPrefix.request]: RequestPanel,
@@ -32,9 +34,12 @@ function extractTabContent(id: string) {
 
 export function TabContent({ id }: PanelProps) {
 	const Tab = extractTabContent(id);
+	const selectedTab = useSelector(UiSelect.selectedTab);
 	return (
 		<ErrorBoundary FallbackComponent={ErrorFallback}>
-			<Tab id={id} />
+			<div style={{ display: selectedTab === id ? 'block' : 'none' }}>
+				<Tab id={id} />
+			</div>
 		</ErrorBoundary>
 	);
 }

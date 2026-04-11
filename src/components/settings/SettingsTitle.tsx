@@ -3,9 +3,10 @@ import { SearchField } from '../shared/input/SearchField';
 
 interface SettingsTitleProps {
 	onChange: (str: string) => void;
+	value: string;
 }
 
-export function SettingsTitle({ onChange }: SettingsTitleProps) {
+export function SettingsTitle({ value, onChange }: SettingsTitleProps) {
 	return (
 		<Stack direction="row" alignItems="center" justifyContent="stretch" maxWidth="100%">
 			<Box sx={{ flex: 0, minWidth: '25%' }}></Box>
@@ -13,7 +14,7 @@ export function SettingsTitle({ onChange }: SettingsTitleProps) {
 				Settings
 			</Typography>
 			<Box sx={{ flex: 0, maxWidth: '25%', minWidth: '25%' }}>
-				<SearchField onChange={onChange} />
+				<SearchField value={value} onChange={onChange} />
 			</Box>
 		</Stack>
 	);

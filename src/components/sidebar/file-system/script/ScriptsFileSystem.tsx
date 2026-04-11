@@ -1,20 +1,21 @@
-import { IconButton, ListDivider, Stack, Typography } from '@mui/joy';
-import { ScriptFileSystem } from './ScriptFileSystem';
-import { useSelector } from 'react-redux';
-import { Fragment, useMemo, useState } from 'react';
-import { selectScripts } from '@/state/active/selectors';
-import { searchScripts } from '@/utils/search';
-import { FileSystemTrunk } from '../tree/FileSystemTrunk';
 import { SearchField } from '@/components/shared/input/SearchField';
-import { SideDrawerHeader } from '../../SideDrawerHeader';
-import { useAppDispatch } from '@/state/store';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { uiActions } from '@/state/ui/slice';
+import { ItemFactory } from '@/managers/data/ItemFactory';
+
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
+import { useAppDispatch } from '@/state/store';
+import { searchScripts } from '@/utils/search';
 import { AddBox } from '@mui/icons-material';
-import { ItemType } from '@/types/data/item';
+import { IconButton, ListDivider, Stack, Typography } from '@mui/joy';
+import { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { SideDrawerHeader } from '../../SideDrawerHeader';
+import { FileSystemTrunk } from '../tree/FileSystemTrunk';
+import { ScriptFileSystem } from './ScriptFileSystem';
 
 export function ScriptsFileSystem() {
-	const scripts = useSelector(selectScripts);
+	const scripts = useSelector(ActiveSelect.scripts);
 	const [searchText, setSearchText] = useState('');
 	const dispatch = useAppDispatch();
 
@@ -26,9 +27,9 @@ export function ScriptsFileSystem() {
 				content="Scripts"
 				actions={
 					<Stack flexWrap="wrap" direction="row" justifyContent="end" alignItems="center" gap={1}>
-						<SearchField onChange={setSearchText} />
+						<SearchField value={searchText} onChange={setSearchText} />
 						<SprocketTooltip text="Add New Script">
-							<IconButton onClick={() => dispatch(uiActions.addToCreateQueue(ItemType.script))}>
+							<IconButton onClick={() => dispatch(ActiveActions.insertScript(ItemFactory.script()))}>
 								<AddBox />
 							</IconButton>
 						</SprocketTooltip>

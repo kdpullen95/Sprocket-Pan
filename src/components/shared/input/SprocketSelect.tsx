@@ -1,27 +1,35 @@
-import { FormControl, FormLabel, Select, Option, FormHelperText, SelectProps } from '@mui/joy';
-import { SxProps } from '@mui/joy/styles/types';
-import { Info } from '@mui/icons-material';
-import { SprocketTooltip } from '../SprocketTooltip';
+/* eslint-disable @typescript-eslint/no-empty-object-type */ // we're constrained by mui's choices
 import { useComponentIdentifier } from '@/hooks/useComponentIdentifier';
+import { Info } from '@mui/icons-material';
+import { FormControl, FormHelperText, FormLabel, Option, Select } from '@mui/joy';
+import type { SelectProps } from '@mui/joy/Select/SelectProps';
+import type { SxProps } from '@mui/joy/styles/types';
+import { SprocketTooltip } from '../SprocketTooltip';
 
 export type SelectOption<T> = {
 	value: T;
 	group?: string;
 } & ({ label: string } | { label: React.ReactNode; key: string | number });
 
-type SelectPropsSubset = Omit<SelectProps<any, any>, 'onChange' | 'value' | 'slotProps'>;
+type SelectValue<T, M extends boolean = false> = M extends false ? T : T[];
 
-export interface SprocketSelectProps<T> extends SelectPropsSubset {
-	value: T;
+type SelectPropsSubset<T extends {}, M extends boolean = false> = Omit<
+	SelectProps<T, M>,
+	'onChange' | 'slotProps' | 'value'
+>;
+
+export interface SprocketSelectProps<T extends {}, M extends boolean = false> extends SelectPropsSubset<T, M> {
+	multiple?: M;
 	options: SelectOption<T>[];
-	onChange: (value: T) => void;
+	value: SelectValue<T, M>;
+	onChange: (value: SelectValue<T, M>) => void;
 	label?: string;
 	controlSx?: SxProps;
 	hint?: string;
 	tooltip?: string;
 }
 
-export function SprocketSelect<T>({
+export function SprocketSelect<T extends {}, M extends boolean = false>({
 	label,
 	options,
 	onChange,
@@ -31,7 +39,7 @@ export function SprocketSelect<T>({
 	tooltip,
 	placeholder,
 	...overrides
-}: SprocketSelectProps<T>) {
+}: SprocketSelectProps<T, M>) {
 	const aria = useComponentIdentifier();
 	return (
 		<FormControl sx={controlSx}>
@@ -55,10 +63,11 @@ export function SprocketSelect<T>({
 					},
 				}}
 				placeholder={placeholder}
-				value={value}
+				// TODO: figure out how to not any here
+				value={value as any}
 				onChange={(_, value) => {
 					if (value != null) {
-						onChange(value as T);
+						onChange(value as SelectValue<T, M>);
 					}
 				}}
 				{...overrides}

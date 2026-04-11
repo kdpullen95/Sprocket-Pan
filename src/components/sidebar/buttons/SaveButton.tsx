@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { CircularProgress, IconButton } from '@mui/joy';
-import SaveIcon from '@mui/icons-material/Save';
-import Badge from '@mui/joy/Badge';
-import { useSelector } from 'react-redux';
-import { selectHasBeenModifiedSinceLastSave } from '@/state/active/selectors';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { useAppDispatch } from '@/state/store';
+import { ActiveSelect } from '@/state/active/selectors';
 import { saveActiveData } from '@/state/active/thunks';
+import { useAppDispatch } from '@/state/store';
+import { Save } from '@mui/icons-material';
+import { CircularProgress, IconButton } from '@mui/joy';
+import Badge from '@mui/joy/Badge';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export function SaveButton() {
 	const [loading, setLoading] = useState(false);
-	const isModified = useSelector(selectHasBeenModifiedSinceLastSave);
+	const isModified = useSelector(ActiveSelect.hasBeenModifiedSinceLastSave);
 	const dispatch = useAppDispatch();
 
 	function save() {
@@ -32,7 +32,7 @@ export function SaveButton() {
 				badgeInset="14%"
 			>
 				<IconButton variant="plain" color="neutral" onClick={save} disabled={!isModified || loading}>
-					{loading ? <CircularProgress /> : <SaveIcon />}
+					{loading ? <CircularProgress /> : <Save />}
 				</IconButton>
 			</Badge>
 		</SprocketTooltip>

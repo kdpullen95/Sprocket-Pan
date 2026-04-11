@@ -1,13 +1,14 @@
-import { Action, ThunkDispatch, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
-import { RootState } from '../../store';
-import { activeActions, activeSlice } from '../slice';
+import type { Action, ThunkDispatch } from '@reduxjs/toolkit';
+import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
+import type { RootState } from '../../store';
+import { ActiveActions, ActiveSlice } from '../slice';
 
 const isModifiedListener = createListenerMiddleware<RootState, ThunkDispatch<RootState, Action, Action>>();
 
 const isIgnoredSliceAction = isAnyOf(
-	activeActions.setModifiedNow,
-	activeActions.setFullState,
-	activeActions.setSavedNow,
+	ActiveActions.setModifiedNow,
+	ActiveActions.setFullState,
+	ActiveActions.setSavedNow,
 );
 
 isModifiedListener.startListening({
@@ -22,10 +23,10 @@ isModifiedListener.startListening({
 		);
 	},
 	effect: (action, { dispatch }) => {
-		if (isIgnoredSliceAction(action) || !action.type.startsWith(activeSlice.name)) {
+		if (isIgnoredSliceAction(action) || !action.type.startsWith(ActiveSlice.name)) {
 			return;
 		}
-		dispatch(activeActions.setModifiedNow());
+		dispatch(ActiveActions.setModifiedNow());
 	},
 });
 

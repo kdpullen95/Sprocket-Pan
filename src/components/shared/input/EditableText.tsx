@@ -1,10 +1,9 @@
-import { Box, IconButton, Input, Stack, TypographyProps } from '@mui/joy';
+import { Cancel, Check, ModeEdit } from '@mui/icons-material';
+import { Box, IconButton, Input, Stack } from '@mui/joy';
+import type { TypographyProps } from '@mui/joy/Typography/TypographyProps';
 import { useEffect, useState } from 'react';
-import CheckIcon from '@mui/icons-material/Check';
-import CancelIcon from '@mui/icons-material/Cancel';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import { SprocketTooltip } from '../SprocketTooltip';
 import { EllipsisTypography } from '../EllipsisTypography';
+import { SprocketTooltip } from '../SprocketTooltip';
 
 export interface EditableTextProps extends Partial<TypographyProps> {
 	text?: string;
@@ -82,7 +81,7 @@ export function EditableText({
 						startDecorator={
 							<SprocketTooltip text="Cancel">
 								<IconButton sx={{ ml: '-10px' }} onClick={toggleEditing} size="sm">
-									<CancelIcon />
+									<Cancel />
 								</IconButton>
 							</SprocketTooltip>
 						}
@@ -96,7 +95,7 @@ export function EditableText({
 									onClick={commitInput}
 									size="sm"
 								>
-									<CheckIcon />
+									<Check />
 								</IconButton>
 							</SprocketTooltip>
 						}
@@ -106,7 +105,7 @@ export function EditableText({
 			<Box>
 				<SprocketTooltip text="Edit" sx={{ flexBasis: 0 }}>
 					<IconButton onClick={toggleEditing} disabled={isEditing} size="sm">
-						<ModeEditIcon />
+						<ModeEdit />
 					</IconButton>
 				</SprocketTooltip>
 			</Box>

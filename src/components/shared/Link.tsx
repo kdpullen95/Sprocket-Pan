@@ -1,6 +1,6 @@
 import { Box } from '@mui/joy';
-import { PropsWithChildren } from 'react';
 import { open } from '@tauri-apps/plugin-shell';
+import type { PropsWithChildren } from 'react';
 
 interface AProps extends PropsWithChildren {
 	href: string;

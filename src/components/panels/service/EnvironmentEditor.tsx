@@ -1,13 +1,13 @@
-import { IconButton } from '@mui/joy';
+import { InlineItemName } from '@/components/shared/InlineItemName';
+import { EditableText } from '@/components/shared/input/EditableText';
+import { EditableData } from '@/components/shared/input/monaco/EditableData';
+import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import type { Environment } from '@/types/data/workspace';
+import type { KeyValuePair } from '@/types/shared/keyValues';
 import { Delete, FileCopy, RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
+import { IconButton } from '@mui/joy';
 import { useEffect, useState } from 'react';
 import { AreYouSureModal } from '../../shared/modals/AreYouSureModal';
-import { Environment } from '@/types/data/workspace';
-import { EditableText } from '@/components/shared/input/EditableText';
-import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { EditableData } from '@/components/shared/input/monaco/EditableData';
-import { KeyValuePair } from '@/types/shared/keyValues';
-import { InlineItemName } from '@/components/shared/InlineItemName';
 
 interface EnvironmentEditorProps {
 	serviceId: string;

@@ -1,5 +1,7 @@
-import { Button, ColorPaletteProp, Stack } from '@mui/joy';
-import { ReactNode, useState } from 'react';
+import type { ColorPaletteProp } from '@mui/joy';
+import { Button, Stack } from '@mui/joy';
+import type { ReactNode } from 'react';
+import { useState } from 'react';
 
 interface Tab {
 	title: string;

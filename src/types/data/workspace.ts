@@ -1,10 +1,10 @@
-import { KeyValuePair } from '../shared/keyValues';
-import { SprocketError } from '../state/state';
-import { RecursivePartial } from '../utils/utils';
-import { AuditLog } from './audit';
-import { Item } from './item';
-import { Settings } from './settings';
-import { QueryParams, RawBodyType, RequestBodyType, RESTfulRequestVerb, SPHeaders, UiMetadata } from './shared';
+import type { KeyValuePair } from '../shared/keyValues';
+import type { SprocketError } from '../state/state';
+import type { RecursivePartial } from '../utils/utils';
+import type { AuditLog } from './audit';
+import type { Item } from './item';
+import type { Settings } from './settings';
+import type { QueryParams, RawBodyType, RequestBodyType, RESTfulRequestVerb, SPHeaders, UiMetadata } from './shared';
 
 export interface WorkspaceMetadata extends Item {
 	description: string;
@@ -22,8 +22,8 @@ export interface EndpointResponse {
 }
 
 export interface Service<TBaseUrl extends string = string> extends Item {
-	description: string;
-	version: string;
+	description?: string;
+	version?: string;
 	baseUrl: TBaseUrl;
 	localEnvironments: {
 		[environmentId: string]: Environment;
@@ -86,7 +86,7 @@ export interface Endpoint<TUrlBase extends string = string> extends Item {
 	baseQueryParams: QueryParams;
 	preRequestScript?: string;
 	postRequestScript?: string;
-	description: string;
+	description?: string;
 	serviceId: string;
 	requestIds: string[];
 	defaultRequest: string | null;
@@ -99,6 +99,7 @@ export interface Environment extends Item {
 export interface RootEnvironment extends Environment {
 	linked?: Record<string, string | null>;
 	parents?: string[];
+	badge?: { color?: string; prefix?: string };
 }
 
 export interface SyncMetadata {

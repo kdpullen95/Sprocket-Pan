@@ -7,6 +7,11 @@ use commands::{close_splashscreen, save_files, show_in_explorer, zoom};
 
 fn main() {
     tauri::Builder::default()
+        .plugin(
+            tauri_plugin_log::Builder::new()
+                .level(tauri_plugin_log::log::LevelFilter::Info)
+                .build(),
+        )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_fs::init())
@@ -15,7 +20,7 @@ fn main() {
         .plugin(tauri_plugin_http::init())
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();
-            //window.hide().unwrap();
+            window.hide().unwrap();
             Ok(())
         })
         .plugin(

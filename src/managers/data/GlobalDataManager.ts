@@ -1,12 +1,12 @@
 import { DEFAULT_SETTINGS } from '@/constants/defaults';
-import { GlobalState } from '@/state/global/slice';
-import { GlobalData } from '@/types/data/global';
-import { WorkspaceMetadata } from '@/types/data/workspace';
+import type { GlobalState } from '@/state/global/slice';
+import type { GlobalData } from '@/types/data/global';
+import type { WorkspaceMetadata } from '@/types/data/workspace';
 import { mergeDeep } from '@/utils/variables';
 import { FileSystemManager } from '../file-system/FileSystemManager';
 import { FileSystemWorker } from '../file-system/FileSystemWorker';
-import { WorkspaceDataManager } from './WorkspaceDataManager';
 import { SaveUpdateManager } from '../SaveUpdateManager';
+import { WorkspaceDataManager } from './WorkspaceDataManager';
 
 export class GlobalDataManager {
 	public static readonly PATH = 'global.json';

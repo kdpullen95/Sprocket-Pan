@@ -1,15 +1,22 @@
-import { FormControl, FormLabel, IconButton, Stack } from '@mui/joy';
-import { StrategyInput, StrategyInputProps } from './StrategyInput';
-import { InputSliderProps, InputSlider } from '@/components/shared/input/InputSlider';
-import { SprocketInputProps, SprocketInput } from '@/components/shared/input/SprocketInput';
-import { SprocketSwitchProps, SprocketSwitch } from '@/components/shared/input/SprocketSwitch';
-import { SprocketSelectProps, SprocketSelect } from '@/components/shared/input/SprocketSelect';
-import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { PaletteSelect, PaletteSelectProps } from '@/components/shared/input/PaletteSelect';
-import { SxProps } from '@mui/joy/styles/types';
-import { useShouldDisplayFromSearch } from './hooks';
+/* eslint-disable @typescript-eslint/no-empty-object-type -- Mui Select uses the empty object type */
 import { FluentGlobeArrowUp } from '@/assets/icons/fluent/FluentGlobeArrowUp';
 import { FluentGlobeReset } from '@/assets/icons/fluent/FluentGlobeReset';
+import type { InputSliderProps } from '@/components/shared/input/InputSlider';
+import { InputSlider } from '@/components/shared/input/InputSlider';
+import type { PaletteSelectProps } from '@/components/shared/input/PaletteSelect';
+import { PaletteSelect } from '@/components/shared/input/PaletteSelect';
+import type { SprocketInputProps } from '@/components/shared/input/SprocketInput';
+import { SprocketInput } from '@/components/shared/input/SprocketInput';
+import type { SprocketSelectProps } from '@/components/shared/input/SprocketSelect';
+import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
+import type { SprocketSwitchProps } from '@/components/shared/input/SprocketSwitch';
+import { SprocketSwitch } from '@/components/shared/input/SprocketSwitch';
+import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import { FormControl, FormLabel, IconButton, Stack } from '@mui/joy';
+import type { SxProps } from '@mui/joy/styles/types';
+import { useShouldDisplayFromSearch } from './hooks';
+import type { StrategyInputProps } from './StrategyInput';
+import { StrategyInput } from './StrategyInput';
 
 interface ResetButtonProps {
 	override: boolean;
@@ -56,7 +63,7 @@ interface SettingsFieldProps<T> {
 	onUpdateGlobal: (arg: T) => void;
 }
 
-export function SettingsSelect<T>({
+export function SettingsSelect<T extends {}>({
 	value,
 	overlay,
 	onChange,

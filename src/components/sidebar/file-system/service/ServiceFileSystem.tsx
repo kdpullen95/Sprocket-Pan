@@ -1,27 +1,21 @@
-import { EndpointFileSystem } from '../EndpointFileSystem';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import { useSelector } from 'react-redux';
+import { ContextMenuItems, PredefinedContextMenuItems } from '@/components/shared/context/ContextMenuItems';
+import { ItemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
-import { selectFilteredNestedIds } from '@/state/ui/selectors';
-import { uiActions } from '@/state/ui/slice';
-import { collapseAll, expandAll } from '@/state/ui/thunks';
-import { FileSystemBranch } from '../tree/FileSystemBranch';
-import {
-	menuOptionDuplicate,
-	menuOptionCollapseAll,
-	menuOptionExpandAll,
-	menuOptionDelete,
-} from '../tree/FileSystemDropdown';
+import { UiSelect } from '@/state/ui/selectors';
+import { UiActions } from '@/state/ui/slice';
+import { UiThunks } from '@/state/ui/thunks';
+import { useSelector } from 'react-redux';
 import { EllipsesP } from '../components/EllipsesP';
-import { itemActions } from '@/state/items';
+import { EndpointFileSystem } from '../EndpointFileSystem';
+import { FileSystemBranch } from '../tree/FileSystemBranch';
 
 interface ServiceFileSystemProps {
 	serviceId: string;
 }
 
 export function ServiceFileSystem({ serviceId }: ServiceFileSystemProps) {
-	const service = useSelector((state) => itemActions.service.select(state, serviceId));
-	const endpointIds = useSelector((state) => selectFilteredNestedIds(state, service?.endpointIds ?? []));
+	const service = useSelector((state) => ItemActions.service.select(state, serviceId));
+	const endpointIds = useSelector((state) => UiSelect.filteredNestedIds(state, service?.endpointIds ?? []));
 
 	const dispatch = useAppDispatch();
 	if (service == null) {
@@ -31,16 +25,18 @@ export function ServiceFileSystem({ serviceId }: ServiceFileSystemProps) {
 	return (
 		<FileSystemBranch
 			id={serviceId}
-			menuOptions={[
-				menuOptionDuplicate(() => dispatch(itemActions.service.duplicate(service))),
+			menuItems={[
+				ContextMenuItems.duplicate(() => dispatch(ItemActions.service.duplicate(service))),
+				PredefinedContextMenuItems.separator,
 				{
-					onClick: () => dispatch(itemActions.endpoint.create({ serviceId: service.id })),
-					label: 'Add Endpoint',
-					Icon: AddBoxIcon,
+					action: () => dispatch(ItemActions.endpoint.create({ serviceId: service.id })),
+					text: 'Add Endpoint',
 				},
-				menuOptionCollapseAll(() => dispatch(collapseAll(service.endpointIds))),
-				menuOptionExpandAll(() => dispatch(expandAll([service.id, ...service.endpointIds]))),
-				menuOptionDelete(() => dispatch(uiActions.addToDeleteQueue(service.id))),
+				PredefinedContextMenuItems.separator,
+				ContextMenuItems.collapse(() => dispatch(UiThunks.collapseAll(service.endpointIds))),
+				ContextMenuItems.expand(() => dispatch(UiThunks.expandAll([service.id, ...service.endpointIds]))),
+				PredefinedContextMenuItems.separator,
+				ContextMenuItems.delete(() => dispatch(UiActions.addToDeleteQueue(service.id))),
 			]}
 			buttonContent={<EllipsesP>{service.name}</EllipsesP>}
 		>

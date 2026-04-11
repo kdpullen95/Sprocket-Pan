@@ -1,133 +1,80 @@
-import { Select, Option, FormControl, FormLabel, Stack } from '@mui/joy';
-import ListIcon from '@mui/icons-material/List';
-import DataObjectIcon from '@mui/icons-material/DataObject';
-import { useEffect, useRef, useState } from 'react';
+import { DebouncedSprocketEditor } from '@/components/hoc/WithDebounce';
 import { EditableFormTable } from '@/components/shared/input/EditableFormTable';
-import { Constants } from '@/constants/constants';
-import { activeActions } from '@/state/active/slice';
+import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
-import { RequestBodyTypes, RawBodyTypes } from '@/types/data/shared';
-import { EndpointRequest } from '@/types/data/workspace';
+import type { RequestBodyType } from '@/types/data/shared';
+import { RawBodyTypes, RequestBodyTypes } from '@/types/data/shared';
+import type { EndpointRequest } from '@/types/data/workspace';
 import { getRequestBodyCategory } from '@/utils/conversion';
-import { SprocketEditor } from '@/components/shared/input/monaco/SprocketEditor';
+import { DataObject, List as ListIcon } from '@mui/icons-material';
+import { Stack } from '@mui/joy';
 
 interface RequestBodyProps {
 	request: EndpointRequest;
 }
 
 export function RequestBody({ request }: RequestBodyProps) {
-	const [editorText, setEditorText] = useState(typeof request.body === 'string' ? request.body : '');
-	const latestText = useRef(editorText);
 	const requestBodyCategory = getRequestBodyCategory(request.bodyType);
 	const isRaw = requestBodyCategory === 'raw';
 	const isTable = requestBodyCategory === 'table';
 	const dispatch = useAppDispatch();
-	function update(values: Partial<EndpointRequest>) {
-		dispatch(activeActions.updateRequest({ ...values, id: request.id }));
-	}
-	// We update the text only after the user stops typing
-	useEffect(() => {
-		const delayDebounceFunc = setTimeout(() => {
-			if (isRaw) {
-				update({ body: latestText.current });
-			}
-		}, Constants.debounceTimeMS);
 
-		return () => clearTimeout(delayDebounceFunc);
-	}, [latestText.current]);
+	function update(values: Partial<EndpointRequest>) {
+		dispatch(ActiveActions.updateRequest({ ...values, id: request.id }));
+	}
+
+	const onSelectChange = (value: RequestBodyType) => {
+		if (value) {
+			const data: Partial<EndpointRequest> = { bodyType: value };
+			if (value === 'raw') {
+				data.rawType = 'JSON';
+			} else {
+				data.rawType = undefined;
+			}
+			const bodyIsString = typeof request.body === 'string';
+			const bodyIsNullish = request.body == undefined;
+			const bodyIsTable = !bodyIsString && !bodyIsNullish;
+			if (bodyIsTable && value === 'raw') {
+				data.body = JSON.stringify(request.body);
+			} else if (bodyIsString && getRequestBodyCategory(value) === 'table') {
+				data.body = '';
+			}
+			update(data);
+		}
+	};
 
 	const editorLanguage = isRaw && request.rawType != null ? request.rawType.toLocaleLowerCase() : undefined;
 
 	return (
 		<Stack gap={1}>
 			<Stack direction="row" gap={2}>
-				<FormControl sx={{ flexGrow: 1 }}>
-					<FormLabel id="select-body-type-label" htmlFor="select-body-type">
-						Body Type
-					</FormLabel>
-					<Select
-						value={request.bodyType}
-						startDecorator={<ListIcon />}
-						color="primary"
-						slotProps={{
-							button: {
-								id: 'select-body-type-button',
-								// TODO: Material UI set aria-labelledby correctly & automatically
-								// but Base UI and Joy UI don't yet.
-								'aria-labelledby': 'select-body-type-label select-body-type-button',
-							},
-						}}
-						onChange={(_e, value) => {
-							if (value) {
-								const data: Partial<EndpointRequest> = { bodyType: value };
-								if (value === 'raw') {
-									data.rawType = 'JSON';
-								} else {
-									data.rawType = undefined;
-								}
-								const bodyIsString = typeof request.body === 'string';
-								const bodyIsNullish = request.body == undefined;
-								const bodyIsTable = !bodyIsString && !bodyIsNullish;
-								if (bodyIsTable && value === 'raw') {
-									try {
-										data.body = JSON.stringify(request.body);
-									} catch (e) {
-										data.body = '';
-									}
-								} else if (bodyIsString && getRequestBodyCategory(value) === 'table') {
-									data.body = '';
-								}
-								update(data);
-							}
-						}}
-					>
-						{RequestBodyTypes.map((type, index) => (
-							<Option value={type} key={index}>
-								{type}
-							</Option>
-						))}
-					</Select>
-				</FormControl>
+				<SprocketSelect
+					sx={{ flexGrow: 1 }}
+					label="Body Type"
+					startDecorator={<ListIcon />}
+					value={request.bodyType}
+					options={RequestBodyTypes.map((value) => ({ value, label: value }))}
+					onChange={onSelectChange}
+					color="primary"
+				/>
 				{isRaw && (
-					<FormControl sx={{ width: '200px' }}>
-						<FormLabel id="select-text-type-label" htmlFor="select-text-type">
-							Text Type
-						</FormLabel>
-						<Select
-							value={request.rawType ?? 'JSON'}
-							startDecorator={<DataObjectIcon />}
-							color="primary"
-							slotProps={{
-								button: {
-									id: 'select-text-type-button',
-									// TODO: Material UI set aria-labelledby correctly & automatically
-									// but Base UI and Joy UI don't yet.
-									'aria-labelledby': 'select-text-type-label select-text-type-button',
-								},
-							}}
-							onChange={(_e, value) => {
-								if (value) {
-									update({ rawType: value });
-								}
-							}}
-						>
-							{RawBodyTypes.map((type, index) => (
-								<Option value={type} key={index}>
-									{type}
-								</Option>
-							))}
-						</Select>
-					</FormControl>
+					<SprocketSelect
+						sx={{ width: '200px' }}
+						label="Text Type"
+						startDecorator={<DataObject />}
+						value={request.rawType ?? 'JSON'}
+						options={RawBodyTypes.map((value) => ({ value, label: value }))}
+						onChange={(rawType) => rawType != null && update({ rawType })}
+						color="primary"
+					/>
 				)}
 			</Stack>
 			{editorLanguage && (
-				<SprocketEditor
+				<DebouncedSprocketEditor
 					height="45vh"
-					value={editorText}
-					onChange={(value) => {
-						setEditorText(value ?? '');
-						latestText.current = value ?? '';
-					}}
+					value={request.body as string}
+					onChange={(body) => update({ body })}
 					language={editorLanguage}
 				/>
 			)}

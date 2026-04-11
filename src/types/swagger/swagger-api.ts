@@ -1,5 +1,5 @@
-import { RawBodyType, RequestBodyType, RESTfulRequestVerb } from '../data/shared';
-import { RecursivePartial } from '../utils/utils';
+import type { RawBodyType, RequestBodyType, RESTfulRequestVerb } from '../data/shared';
+import type { RecursivePartial } from '../utils/utils';
 
 type ContentType = Exclude<RequestBodyType, 'none' | 'raw'> | Lowercase<RawBodyType>;
 

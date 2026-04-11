@@ -1,16 +1,25 @@
-import { useEffect, useRef } from 'react';
-import { DiffEditor, DiffEditorProps } from '@monaco-editor/react';
-import { editor } from 'monaco-editor';
 import { useEditorTheme } from '@/hooks/useEditorTheme';
-import { defaultEditorOptions } from '@/managers/monaco/MonacoInitManager';
+import { useMonacoOptionsSync } from '@/hooks/useMonacoSync';
+import { MonacoManager } from '@/managers/monaco/MonacoManager';
+import type { DiffEditorProps } from '@monaco-editor/react';
+import { DiffEditor } from '@monaco-editor/react';
+import type { editor } from 'monaco-editor';
+import { useCallback, useEffect, useRef } from 'react';
 
-const diffOptions = { ...defaultEditorOptions, readOnly: true, domReadOnly: true, originalEditable: false };
+const base = {
+	...MonacoManager.defaultOptions,
+	readOnly: true,
+	domReadOnly: true,
+	originalEditable: false,
+};
 
 export function DiffText({ original, modified, options, width, height, language, ...props }: DiffEditorProps) {
-	const combinedOptions = { ...diffOptions, ...options };
 	const editorTheme = useEditorTheme();
 	const editorRef = useRef<editor.IStandaloneDiffEditor | null>(null);
-	const format = async () => {
+
+	const combinedOptions = useMonacoOptionsSync({ base, options, ref: editorRef });
+
+	const format = useCallback(async () => {
 		if (editorRef.current != null) {
 			editorRef.current?.updateOptions({ ...combinedOptions, readOnly: false, originalEditable: true });
 			const formatFirst = editorRef.current.getOriginalEditor().getAction('editor.action.formatDocument')?.run();
@@ -18,17 +27,11 @@ export function DiffText({ original, modified, options, width, height, language,
 			await Promise.all([formatFirst, formatSecond]);
 			editorRef.current?.updateOptions(combinedOptions);
 		}
-	};
-
-	useEffect(() => {
-		if (options != null) {
-			editorRef.current?.updateOptions(combinedOptions);
-		}
 	}, [combinedOptions]);
 
 	useEffect(() => {
 		format();
-	}, [original, modified]);
+	}, [original, modified, format]);
 
 	return (
 		<DiffEditor

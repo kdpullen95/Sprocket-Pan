@@ -1,10 +1,11 @@
 import { Dropdown, IconButton, Menu, MenuButton, MenuItem } from '@mui/joy';
-import { PropsWithChildren, useState } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
+import { useState } from 'react';
 
 export interface MenuOption {
 	label: string;
 	onClick: () => void;
-	Icon: any;
+	Icon: () => ReactNode;
 }
 
 interface SprocketDropdownProps extends PropsWithChildren {

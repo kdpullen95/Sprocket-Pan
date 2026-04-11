@@ -1,14 +1,16 @@
-import { Tooltip, TooltipProps } from '@mui/joy';
+import { Tooltip } from '@mui/joy';
+import type { TooltipProps } from '@mui/joy/Tooltip/TooltipProps';
 
-interface SprocketTooltipProps extends Partial<TooltipProps> {
-	children: JSX.Element;
+type PartialTooltipProps = Partial<Omit<TooltipProps, 'children'>> & Pick<TooltipProps, 'children'>;
+
+interface SprocketTooltipProps extends PartialTooltipProps {
 	text: string;
 	disabled?: boolean;
 }
 
 export function SprocketTooltip({ children, text, disabled, sx, ...props }: SprocketTooltipProps) {
 	return disabled ? (
-		<>{children}</>
+		children
 	) : (
 		<Tooltip
 			enterDelay={250}

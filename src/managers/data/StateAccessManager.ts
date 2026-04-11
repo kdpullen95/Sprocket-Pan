@@ -1,4 +1,4 @@
-import { StateAccess } from '@/state/types';
+import type { StateAccess } from '@/state/types';
 
 export class StateAccessManager {
 	static stateAccess: StateAccess | null = null;

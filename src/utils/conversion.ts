@@ -1,6 +1,6 @@
-import { OptionalScriptContext } from '@/managers/scripts/types';
-import { RawBodyType, RequestBodyType } from '@/types/data/shared';
-import { SprocketError } from '@/types/state/state';
+import type { OptionalScriptContext } from '@/managers/scripts/types';
+import type { RawBodyType, RequestBodyType } from '@/types/data/shared';
+import type { SprocketError } from '@/types/state/state';
 import mime from 'mime';
 
 export function getRequestBodyCategory(requestBodyType: RequestBodyType) {

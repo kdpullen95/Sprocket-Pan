@@ -1,16 +1,15 @@
-import { useSelector } from 'react-redux';
-import { menuOptionDuplicate, menuOptionDelete } from './tree/FileSystemDropdown';
-import { FileSystemLeaf } from './tree/FileSystemLeaf';
-import { Add, Close } from '@mui/icons-material';
-import { activeActions } from '@/state/active/slice';
-import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { EllipsesP } from './components/EllipsesP';
 import { FluentSnippetSvg } from '@/assets/icons/fluent/FluentSnippet';
 import { FluentSnippetLinkSvg } from '@/assets/icons/fluent/FluentSnippetLink';
+import { ContextMenuItems, PredefinedContextMenuItems } from '@/components/shared/context/ContextMenuItems';
 import { useShowSync } from '@/hooks/useShowSync';
-import { itemActions } from '@/state/items';
-import { useTheme } from '@mui/joy';
+import { ActiveActions } from '@/state/active/slice';
+import { ItemActions } from '@/state/items';
+import { useAppDispatch } from '@/state/store';
+import { UiActions } from '@/state/ui/slice';
+import { useTheme } from '@mui/joy/styles';
+import { useSelector } from 'react-redux';
+import { EllipsesP } from './components/EllipsesP';
+import { FileSystemLeaf } from './tree/FileSystemLeaf';
 
 interface RequestFileSystemProps {
 	requestId: string;
@@ -18,8 +17,8 @@ interface RequestFileSystemProps {
 
 export function RequestFileSystem({ requestId }: RequestFileSystemProps) {
 	const showSync = useShowSync(requestId);
-	const request = useSelector((state) => itemActions.request.select(state, requestId));
-	const endpoint = useSelector((state) => itemActions.endpoint.select(state, request?.endpointId));
+	const request = useSelector((state) => ItemActions.request.select(state, requestId));
+	const endpoint = useSelector((state) => ItemActions.endpoint.select(state, request?.endpointId));
 	const dispatch = useAppDispatch();
 	if (request == null) {
 		return null;
@@ -31,17 +30,18 @@ export function RequestFileSystem({ requestId }: RequestFileSystemProps) {
 		<FileSystemLeaf
 			color={color}
 			id={requestId}
-			menuOptions={[
+			menuItems={[
 				{
-					Icon: isDefault ? Close : Add,
-					label: isDefault ? 'Unset Endpoint Default' : 'Set Endpoint Default',
-					onClick: () =>
+					text: isDefault ? 'Unset Endpoint Default' : 'Set Endpoint Default',
+					action: () =>
 						dispatch(
-							activeActions.updateEndpoint({ defaultRequest: isDefault ? null : request.id, id: request.endpointId }),
+							ActiveActions.updateEndpoint({ defaultRequest: isDefault ? null : request.id, id: request.endpointId }),
 						),
 				},
-				menuOptionDuplicate(() => dispatch(itemActions.request.create(request))),
-				menuOptionDelete(() => dispatch(uiActions.addToDeleteQueue(request.id))),
+				PredefinedContextMenuItems.separator,
+				ContextMenuItems.duplicate(() => dispatch(ItemActions.request.create(request))),
+				PredefinedContextMenuItems.separator,
+				ContextMenuItems.delete(() => dispatch(UiActions.addToDeleteQueue(request.id))),
 			]}
 		>
 			<div style={{ flex: 0 }}>{showSync ? <FluentSnippetLinkSvg /> : <FluentSnippetSvg />}</div>

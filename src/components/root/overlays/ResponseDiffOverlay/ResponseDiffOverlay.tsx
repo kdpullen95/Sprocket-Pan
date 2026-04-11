@@ -1,21 +1,22 @@
-import { IconButton, Sheet, Stack, Typography } from '@mui/joy';
-import { useState } from 'react';
-import { ResponseSelectForm, SelectedResponse } from './ResponseSelectForm';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { VisualEventLog } from '@/components/panels/request/response/VisualEventLog';
 import { DiffText } from '@/components/shared/input/monaco/DiffText';
 import { SprocketTabs } from '@/components/shared/SprocketTabs';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { UriTypography } from '@/components/shared/UriTypography';
-import { DiffQueueEntry } from '@/state/ui/slice';
-import { headersToJson, multilineUrl } from '@/utils/serialization';
-import { useSelector } from 'react-redux';
-import { selectHistoryById } from '@/state/active/selectors';
-import { statusText } from '@/utils/misc';
 import { VerbDiv } from '@/components/sidebar/file-system/components/VerbDiv';
+import { ActiveSelect } from '@/state/active/selectors';
+import type { DiffQueueEntry } from '@/state/ui/slice';
+import { statusText } from '@/utils/misc';
+import { headersToJson, multilineUrl } from '@/utils/serialization';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { IconButton, Sheet, Stack, Typography } from '@mui/joy';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import type { SelectedResponse } from './ResponseSelectForm';
+import { ResponseSelectForm } from './ResponseSelectForm';
 
 function useGetResponseData(selection: SelectedResponse | null) {
-	const history = useSelector((state) => selectHistoryById(state, selection?.id));
+	const history = useSelector((state) => ActiveSelect.historyById(state, selection?.id));
 	if (selection == null || history == null) {
 		return null;
 	}

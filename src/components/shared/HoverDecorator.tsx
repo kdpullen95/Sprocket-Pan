@@ -1,5 +1,6 @@
-import { Box, BoxProps } from '@mui/joy';
-import { PropsWithChildren } from 'react';
+import { Box } from '@mui/joy';
+import type { BoxProps } from '@mui/joy/Box/BoxProps';
+import type { PropsWithChildren } from 'react';
 
 interface HoverDecoratorProps extends PropsWithChildren, BoxProps {
 	endDecorator?: React.ReactNode;

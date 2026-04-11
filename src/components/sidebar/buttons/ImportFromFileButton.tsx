@@ -1,17 +1,17 @@
-import { open } from '@tauri-apps/plugin-dialog';
-import { Box, Dropdown, IconButton, ListItemDecorator, Menu, MenuButton } from '@mui/joy';
-import { useRef, useState } from 'react';
+import { Insomnia } from '@/assets/icons/brands/Insomnia';
+import { OpenApi } from '@/assets/icons/brands/OpenApi';
+import { Postman } from '@/assets/icons/brands/Postman';
+import { SprocketPan } from '@/assets/icons/brands/SprocketPan';
+import { FluentImport } from '@/assets/icons/fluent/FluentImport';
 import { DropdownMenuItem } from '@/components/shared/DropdownMenuItem';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { useClickOutsideAlerter } from '@/hooks/useClickOutsideAlerter';
 import { WorkspaceDataManager } from '@/managers/data/WorkspaceDataManager';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
-import { OpenApi } from '@/assets/icons/brands/OpenApi';
-import { Postman } from '@/assets/icons/brands/Postman';
-import { Insomnia } from '@/assets/icons/brands/Insomnia';
-import { SprocketPan } from '@/assets/icons/brands/SprocketPan';
-import { FluentImport } from '@/assets/icons/fluent/FluentImport';
-import { activeActions } from '@/state/active/slice';
+import { Box, Dropdown, IconButton, ListItemDecorator, Menu, MenuButton } from '@mui/joy';
+import { open } from '@tauri-apps/plugin-dialog';
+import { useRef, useState } from 'react';
 
 export function ImportFromFileButton() {
 	const dispatch = useAppDispatch();
@@ -38,8 +38,8 @@ export function ImportFromFileButton() {
 									],
 								});
 								if (selectedUrl && typeof selectedUrl === 'string') {
-									const data = WorkspaceDataManager.loadSprocketFile(selectedUrl);
-									dispatch(activeActions.injectState(data));
+									const data = await WorkspaceDataManager.loadSprocketFile(selectedUrl);
+									dispatch(ActiveActions.injectState(data));
 								}
 							}}
 						>
@@ -59,8 +59,8 @@ export function ImportFromFileButton() {
 									],
 								});
 								if (selectedUrl && typeof selectedUrl === 'string') {
-									const data = WorkspaceDataManager.loadSwaggerFile(selectedUrl);
-									dispatch(activeActions.injectState(data));
+									// const data = WorkspaceDataManager.loadSwaggerFile(selectedUrl);
+									// dispatch(ActiveActions.injectState(data));
 								}
 							}}
 						>
@@ -80,8 +80,8 @@ export function ImportFromFileButton() {
 									],
 								});
 								if (selectedUrl && typeof selectedUrl === 'string') {
-									const data = WorkspaceDataManager.loadPostmanFile(selectedUrl);
-									dispatch(activeActions.injectState(data));
+									// const data = WorkspaceDataManager.loadPostmanFile(selectedUrl);
+									// dispatch(ActiveActions.injectState(data));
 								}
 							}}
 						>
@@ -101,8 +101,8 @@ export function ImportFromFileButton() {
 									],
 								});
 								if (selectedUrl && typeof selectedUrl === 'string') {
-									const data = WorkspaceDataManager.loadInsomniaFile(selectedUrl);
-									dispatch(activeActions.injectState(data));
+									// const data = WorkspaceDataManager.loadInsomniaFile(selectedUrl);
+									// dispatch(ActiveActions.injectState(data));
 								}
 							}}
 						>

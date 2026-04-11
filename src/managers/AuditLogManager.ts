@@ -1,5 +1,5 @@
-import { AuditLog, RequestEvent, TransformedAuditLog } from '../types/data/audit';
-import { OptionalScriptContext } from './scripts/types';
+import type { AuditLog, RequestEvent, TransformedAuditLog } from '../types/data/audit';
+import type { OptionalScriptContext } from './scripts/types';
 
 export class AuditLogManager {
 	static addToAuditLogFromContext(

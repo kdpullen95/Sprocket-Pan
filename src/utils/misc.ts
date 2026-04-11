@@ -1,6 +1,7 @@
-import { Token } from '@/types/shared/misc';
-import { Interrupt } from './types';
 import { statusCodes } from '@/constants/statusCodes';
+import type { KeyValuePair } from '@/types/shared/keyValues';
+import type { Token } from '@/types/shared/misc';
+import type { Interrupt } from './types';
 
 export function sleep(ms = 0): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
@@ -28,4 +29,17 @@ export function statusText(code?: number) {
 		return 'N/A';
 	}
 	return `${code}: ${statusCodes[code]}`;
+}
+
+export function getDuplicateKeys(pairs: KeyValuePair[]) {
+	const dups = new Set<string>();
+	const keys = new Set<string>();
+	pairs.forEach(({ key }) => {
+		if (keys.has(key)) {
+			dups.add(key);
+		} else {
+			keys.add(key);
+		}
+	});
+	return dups;
 }

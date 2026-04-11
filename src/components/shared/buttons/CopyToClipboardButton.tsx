@@ -1,8 +1,9 @@
-import { IconButton, Box, IconButtonProps } from '@mui/joy';
+import { ContentCopy, DownloadDone } from '@mui/icons-material';
+import type { IconButtonProps } from '@mui/joy';
+import { Box, IconButton } from '@mui/joy';
+import type { PropsWithChildren } from 'react';
+import { useState } from 'react';
 import { SprocketTooltip } from '../SprocketTooltip';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { PropsWithChildren, useState } from 'react';
-import { DownloadDone } from '@mui/icons-material';
 
 interface CopyToClipboardButtonProps extends PropsWithChildren, IconButtonProps {
 	tooltipText?: string;
@@ -11,7 +12,7 @@ interface CopyToClipboardButtonProps extends PropsWithChildren, IconButtonProps 
 
 export function CopyToClipboardButton({
 	tooltipText = 'Copy to Clipboard',
-	children = <ContentCopyIcon />,
+	children = <ContentCopy />,
 	copyText,
 	...props
 }: CopyToClipboardButtonProps) {

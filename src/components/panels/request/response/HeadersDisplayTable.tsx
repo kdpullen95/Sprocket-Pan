@@ -2,7 +2,7 @@ import { CopyToClipboardButton } from '@/components/shared/buttons/CopyToClipboa
 import { HoverDecorator } from '@/components/shared/HoverDecorator';
 import { SprocketTable } from '@/components/shared/SprocketTable';
 import { BREAK_ALL_TEXT } from '@/styles/text';
-import { KeyValuePair } from '@/types/shared/keyValues';
+import type { KeyValuePair } from '@/types/shared/keyValues';
 import { toKeyValuePairs } from '@/utils/application';
 import { Box, Typography } from '@mui/joy';
 
@@ -16,8 +16,8 @@ export function HeadersDisplayTable({ headers, label, title = 'Headers' }: Heade
 	if (headers == null) {
 		return <></>;
 	}
-	headers = Array.isArray(headers) ? headers : toKeyValuePairs(headers);
-	if (headers.length === 0) {
+	const arr = Array.isArray(headers) ? headers : toKeyValuePairs(headers);
+	if (arr.length === 0) {
 		return <></>;
 	}
 	return (
@@ -30,7 +30,7 @@ export function HeadersDisplayTable({ headers, label, title = 'Headers' }: Heade
 					{ key: 'headerKey', label: 'Key', style: { width: '30%' } },
 					{ key: 'value', label: 'Value' },
 				]}
-				data={headers.map(({ key, value }) => ({
+				data={arr.map(({ key, value }) => ({
 					key,
 					headerKey: key,
 					value: (

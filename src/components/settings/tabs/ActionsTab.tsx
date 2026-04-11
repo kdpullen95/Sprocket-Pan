@@ -1,9 +1,9 @@
-import { Stack, Typography, Divider } from '@mui/joy';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import { Divider, Stack, Typography } from '@mui/joy';
 
-import { SettingsTabProps } from './types';
-import { SettingsInput, SettingsStrategyInput } from './SettingsFields';
 import { toNumberOrUndefined } from '@/utils/math';
+import { HourglassBottom } from '@mui/icons-material';
+import { SettingsInput, SettingsStrategyInput } from './SettingsFields';
+import type { SettingsTabProps } from './types';
 
 function toMSOrUndefined(num: unknown) {
 	const ret = toNumberOrUndefined(num);
@@ -24,7 +24,7 @@ export function ActionsTab({ overlay, settings, searchText, onChange, onUpdateGl
 				overlay={overlay?.request?.timeoutMS == null ? undefined : overlay.request.timeoutMS / 1000}
 				onChange={(val) => onChange({ request: { timeoutMS: toMSOrUndefined(val) } })}
 				onUpdateGlobal={(val) => onUpdateGlobal({ request: { timeoutMS: toMSOrUndefined(val) } })}
-				startDecorator={<HourglassBottomIcon />}
+				startDecorator={<HourglassBottom />}
 				endDecorator="Seconds"
 			/>
 			<Divider></Divider>
@@ -40,7 +40,7 @@ export function ActionsTab({ overlay, settings, searchText, onChange, onUpdateGl
 				overlay={overlay?.script?.timeoutMS == null ? undefined : overlay.script.timeoutMS / 1000}
 				onChange={(val) => onChange({ script: { timeoutMS: toMSOrUndefined(val) } })}
 				onUpdateGlobal={(val) => onUpdateGlobal({ script: { timeoutMS: toMSOrUndefined(val) } })}
-				startDecorator={<HourglassBottomIcon />}
+				startDecorator={<HourglassBottom />}
 				endDecorator="Seconds"
 			/>
 			<SettingsStrategyInput

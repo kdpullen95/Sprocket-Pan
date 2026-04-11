@@ -1,13 +1,13 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { uiSlice } from './slice';
 import { getValidIdsFromSearchTerm } from '@/utils/search';
-import { selectServices, selectEndpoints, selectRequests } from '../active/selectors';
+import { createSelector } from '@reduxjs/toolkit';
+import { ActiveSelect } from '../active/selectors';
+import { UiSlice } from './slice';
 
-export const selectUiState = uiSlice.selectSlice;
+const UiSelectState = UiSlice.selectSlice;
 
-export const selectActiveTab = createSelector(selectUiState, (state) => state.selectedTab);
+const selectSelectedTab = createSelector(UiSelectState, (state) => state.selectedTab);
 
-export const selectPeekHistory = createSelector(selectUiState, ({ tabsHistoryPosition, tabsHistory }) => {
+const selectPeekHistory = createSelector(UiSelectState, ({ tabsHistoryPosition, tabsHistory }) => {
 	const length = tabsHistory.length;
 	return {
 		next: tabsHistoryPosition === length - 1 ? null : tabsHistoryPosition + 1,
@@ -15,38 +15,52 @@ export const selectPeekHistory = createSelector(selectUiState, ({ tabsHistoryPos
 	};
 });
 
-export const selectNextForDeletion = createSelector(selectUiState, ({ deleteQueue }) => {
+const selectNextForDeletion = createSelector(UiSelectState, ({ deleteQueue }) => {
 	return deleteQueue[0];
 });
 
-export const selectNextForCreation = createSelector(selectUiState, ({ createQueue }) => {
-	return createQueue[0];
-});
-
-export const selectNextForDiff = createSelector(selectUiState, ({ diffQueue }) => {
+const selectNextForDiff = createSelector(UiSelectState, ({ diffQueue }) => {
 	return diffQueue[0];
 });
 
-export const selectSearchText = createSelector(selectUiState, (state) => state.searchText);
+const selectSearchText = createSelector(UiSelectState, (state) => state.searchText);
 
-export const selectFilteredIds = createSelector(
-	[selectSearchText, selectServices, selectEndpoints, selectRequests],
+const selectFilteredIds = createSelector(
+	[selectSearchText, ActiveSelect.services, ActiveSelect.endpoints, ActiveSelect.requests],
 	(searchText, services, endpoints, requests) =>
 		searchText === '' ? null : getValidIdsFromSearchTerm(searchText, { services, endpoints, requests }),
 );
 
-export const selectFilteredNestedIds = createSelector(
+const selectFilteredNestedIds = createSelector(
 	[selectFilteredIds, (_, nestedIds: string[]) => nestedIds],
 	(filteredIds, nestedIds) => (filteredIds == null ? nestedIds : nestedIds.filter(filteredIds.has.bind(filteredIds))),
 );
 
-export const selectIsActiveTab = createSelector(
-	[selectActiveTab, (_, id: string) => id],
+const selectIsActiveTab = createSelector(
+	[selectSelectedTab, (_, id: string) => id],
 	(activeTab, id) => activeTab === id,
 );
 
-export const selectIsLoadingWorkspace = createSelector(selectUiState, (state) => state.isLoadingWorkspace);
+const selectIsLoadingWorkspace = createSelector(UiSelectState, (state) => state.isLoadingWorkspace);
 
-export const selectOrphans = createSelector(selectUiState, (state) => state.orphans);
+const selectOrphans = createSelector(UiSelectState, (state) => state.orphans);
 
-export const selectToast = createSelector(selectUiState, (state) => state.toast);
+const selectToast = createSelector(UiSelectState, (state) => state.toast);
+
+const selectTabs = createSelector(UiSelectState, (state) => state.tabs);
+
+export const UiSelect = {
+	slice: UiSelectState,
+	selectedTab: selectSelectedTab,
+	peekHistory: selectPeekHistory,
+	nextForDeletion: selectNextForDeletion,
+	nextForDiff: selectNextForDiff,
+	searchText: selectSearchText,
+	filteredIds: selectFilteredIds,
+	filteredNestedIds: selectFilteredNestedIds,
+	isSelectedTab: selectIsActiveTab,
+	isLoadingWorkspace: selectIsLoadingWorkspace,
+	orphans: selectOrphans,
+	toast: selectToast,
+	tabs: selectTabs,
+} as const;

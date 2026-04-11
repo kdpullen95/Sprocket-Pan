@@ -1,23 +1,20 @@
-import { Badge, Box, IconButton, Snackbar } from '@mui/joy';
-import { useState, useRef } from 'react';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditIcon from '@mui/icons-material/Edit';
-import { Editor } from '@monaco-editor/react';
-import CancelIcon from '@mui/icons-material/Cancel';
-import SaveIcon from '@mui/icons-material/Save';
-import { editor } from 'monaco-editor';
-import { ActionBar, ActionBarPassthroughProps } from '../ActionBar';
-import { ReportProblem } from '@mui/icons-material';
 import { useEditorTheme } from '@/hooks/useEditorTheme';
-import { defaultEditorOptions } from '@/managers/monaco/MonacoInitManager';
-import { selectSelectedEnvironment, selectEnvironments } from '@/state/active/selectors';
+import { MonacoManager } from '@/managers/monaco/MonacoManager';
+import { ActiveSelect } from '@/state/active/selectors';
+import type { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
 import { clamp } from '@/utils/math';
 import { replaceValuesByKey } from '@/utils/variables';
+import { Editor } from '@monaco-editor/react';
+import { Cancel, Edit, ReportProblem, Save, Visibility } from '@mui/icons-material';
+import { Badge, Box, IconButton, Snackbar } from '@mui/joy';
+import type { editor } from 'monaco-editor';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { KeyValueValues, KeyValuePair } from '@/types/shared/keyValues';
 import { CopyToClipboardButton } from '../../buttons/CopyToClipboardButton';
 import { FormatButton } from '../../buttons/FormatButton';
 import { SprocketTooltip } from '../../SprocketTooltip';
+import type { ActionBarPassthroughProps } from '../ActionBar';
+import { ActionBar } from '../ActionBar';
 
 export function parseEditorJSON<T>(text: string): Record<string, T> {
 	if (text === '') {
@@ -57,12 +54,12 @@ export function EditableData<T extends KeyValueValues>({
 }: EditableDataProps<T>) {
 	const theme = useEditorTheme();
 
-	const selectedEnvironment = useSelector(selectSelectedEnvironment);
-	const environments = useSelector(selectEnvironments);
+	const selectedEnvironment = useSelector(ActiveSelect.selectedEnvironment);
+	const environments = useSelector(ActiveSelect.environments);
 	const envValues = envPairs ?? (selectedEnvironment == null ? [] : environments[selectedEnvironment].pairs);
 
-	const [editorText, setEditorText] = useState(toEditorJSON(initialValues));
-	const [hasChanged, setChanged] = useState(false);
+	const [editorText, setEditorText] = useState(() => toEditorJSON(initialValues));
+	const [hasChanged, setHasChanged] = useState(false);
 	const [isReadOnly, setIsReadOnly] = useState(false);
 	const [isFormatting, setIsFormatting] = useState(false);
 	const [isMalformedJSON, setIsMalformedJSON] = useState(false);
@@ -84,7 +81,7 @@ export function EditableData<T extends KeyValueValues>({
 
 	const reset = () => {
 		setEditorText(toEditorJSON(initialValues));
-		setChanged(false);
+		setHasChanged(false);
 		format();
 	};
 
@@ -93,7 +90,7 @@ export function EditableData<T extends KeyValueValues>({
 			const tableData = parseEditorJSON<T>(editorText);
 			if (tableData != null) {
 				onChange(Object.entries(tableData).map(([key, value]) => ({ key, value })));
-				setChanged(false);
+				setHasChanged(false);
 				format();
 			}
 		} catch {
@@ -124,7 +121,7 @@ export function EditableData<T extends KeyValueValues>({
 		if (isFormatting) {
 			setIsFormatting(false);
 		} else {
-			setChanged(true);
+			setHasChanged(true);
 		}
 	};
 
@@ -136,17 +133,17 @@ export function EditableData<T extends KeyValueValues>({
 					<>
 						{actions.end}
 						<SprocketTooltip text={`Switch to ${isReadOnly ? 'Edit' : 'View'} Mode`}>
-							<IconButton onClick={switchMode}>{isReadOnly ? <EditIcon /> : <VisibilityIcon />}</IconButton>
+							<IconButton onClick={switchMode}>{isReadOnly ? <Edit /> : <Visibility />}</IconButton>
 						</SprocketTooltip>
 						<SprocketTooltip text="Clear Changes">
 							<IconButton disabled={!hasChanged} onClick={reset}>
-								<CancelIcon />
+								<Cancel />
 							</IconButton>
 						</SprocketTooltip>
 						<SprocketTooltip text="Save Changes">
 							<IconButton disabled={!hasChanged || isMalformedJSON} onClick={save}>
 								<Badge invisible={!hasChanged} color="primary">
-									<SaveIcon />
+									<Save />
 								</Badge>
 							</IconButton>
 						</SprocketTooltip>
@@ -181,7 +178,7 @@ export function EditableData<T extends KeyValueValues>({
 					onChange={onEditorChange}
 					language="json"
 					theme={theme}
-					options={defaultEditorOptions}
+					options={MonacoManager.defaultOptions}
 					onMount={(editor) => {
 						editorRef.current = editor;
 						format();

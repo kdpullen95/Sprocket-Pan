@@ -1,13 +1,13 @@
+import { HistoryControl } from '@/components/panels/request/response/HistoryControl';
+import { ActiveSelect } from '@/state/active/selectors';
+import { BREAK_ALL_TEXT } from '@/styles/text';
+import type { Endpoint, EndpointRequest, Service } from '@/types/data/workspace';
+import { formatShortFullDate } from '@/utils/string';
+import { FormControl, FormLabel, Stack, Typography } from '@mui/joy';
+import type { SxProps } from '@mui/joy/styles/types';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SearchableRequestDropdown } from './SearchableRequestDropdown';
-import { FormControl, FormLabel, Stack, Typography } from '@mui/joy';
-import { SxProps } from '@mui/joy/styles/types';
-import { HistoryControl } from '@/components/panels/request/response/HistoryControl';
-import { selectServices, selectEndpoints, selectRequests, selectHistory } from '@/state/active/selectors';
-import { BREAK_ALL_TEXT } from '@/styles/text';
-import { EndpointRequest, Endpoint, Service } from '@/types/data/workspace';
-import { formatShortFullDate } from '@/utils/string';
 
 export type SelectedResponse = { id: string; index: number };
 
@@ -19,13 +19,13 @@ interface ResponseSelectFormProps {
 }
 
 export function ResponseSelectForm({ onChange, initialValue, collapsed = false, sx }: ResponseSelectFormProps) {
-	const services = useSelector(selectServices);
-	const endpoints = useSelector(selectEndpoints);
-	const requests = useSelector(selectRequests);
-	const histories = useSelector(selectHistory);
+	const services = useSelector(ActiveSelect.services);
+	const endpoints = useSelector(ActiveSelect.endpoints);
+	const requests = useSelector(ActiveSelect.requests);
+	const histories = useSelector(ActiveSelect.history);
 
 	const [selectedHistoryIndex, setSelectedHistoryIndex] = useState<number>(0);
-	const [selectedRequest, setSelectedResponse] = useState<EndpointRequest | null>(null);
+	const [selectedRequest, setSelectedRequest] = useState<EndpointRequest | null>(null);
 	const [selectedEndpoint, setSelectedEndpoint] = useState<Endpoint | null>(null);
 	const [selectedService, setSelectedService] = useState<Service | null>(null);
 
@@ -35,7 +35,7 @@ export function ResponseSelectForm({ onChange, initialValue, collapsed = false, 
 
 	const setRequest = (value: string | null, index: number = 0) => {
 		const request = value == null ? null : requests[value];
-		setSelectedResponse(request);
+		setSelectedRequest(request);
 		setSelectedHistoryIndex(index);
 		onChange(request == null ? null : { id: request.id, index });
 	};
@@ -61,7 +61,7 @@ export function ResponseSelectForm({ onChange, initialValue, collapsed = false, 
 		const endpoint = endpoints[request?.endpointId];
 		const service = services[endpoint?.serviceId];
 		setSelectedHistoryIndex(initialValue.index);
-		setSelectedResponse(request);
+		setSelectedRequest(request);
 		setSelectedEndpoint(endpoint);
 		setSelectedService(service);
 	}, []);

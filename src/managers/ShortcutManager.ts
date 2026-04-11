@@ -1,4 +1,4 @@
-import { TypeOf } from '@/types/utils/utils';
+import type { TypeOf } from '@/types/utils/utils';
 
 type ClickEvent = Pick<MouseEvent, 'ctrlKey' | 'metaKey' | 'shiftKey'>;
 
@@ -21,12 +21,12 @@ const clickTranslations = [
 	},
 ];
 
-export class ShortcutManager {
-	public static translateClick(event: ClickEvent) {
-		return clickTranslations.find(({ matches }) => matches(event))?.command;
-	}
-
-	public static getKeys(commands: Command[]) {
-		return commands.join('+');
-	}
+function translateClick(event: ClickEvent) {
+	return clickTranslations.find(({ matches }) => matches(event))?.command;
 }
+
+function getKeys(commands: Command[]) {
+	return commands.join('+');
+}
+
+export const ShortcutManager = { translateClick, getKeys };

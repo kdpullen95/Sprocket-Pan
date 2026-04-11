@@ -1,7 +1,8 @@
-import { ThunkDispatch, UnknownAction, createListenerMiddleware } from '@reduxjs/toolkit';
-import { RootState } from '../../store';
-import { log } from '@/utils/logging';
 import { StateAccessManager } from '@/managers/data/StateAccessManager';
+import { log } from '@/utils/logging';
+import type { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit';
+import { createListenerMiddleware } from '@reduxjs/toolkit';
+import type { RootState } from '../../store';
 
 const stateAccessListener = createListenerMiddleware<RootState, ThunkDispatch<RootState, undefined, UnknownAction>>();
 

@@ -1,17 +1,17 @@
+import { EditableData } from '@/components/shared/input/monaco/EditableData';
 import { SprocketTabs } from '@/components/shared/SprocketTabs';
 import { useComputedServiceEnvironment } from '@/hooks/useComputedEnvironment';
-import { activeActions } from '@/state/active/slice';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
-import { Endpoint } from '@/types/data/workspace';
+import type { Endpoint } from '@/types/data/workspace';
 import { AccordionGroup } from '@mui/joy';
 import { PrePostScriptDisplay } from '../shared/PrePostScriptDisplay';
-import { EditableData } from '@/components/shared/input/monaco/EditableData';
 
 export function EndpointEditTabs({ endpoint }: { endpoint: Endpoint }) {
 	const envPairs = useComputedServiceEnvironment(endpoint.serviceId).toArray();
 	const dispatch = useAppDispatch();
 	function update(values: Partial<Endpoint>) {
-		dispatch(activeActions.updateEndpoint({ ...values, id: endpoint.id }));
+		dispatch(ActiveActions.updateEndpoint({ ...values, id: endpoint.id }));
 	}
 	return (
 		<SprocketTabs

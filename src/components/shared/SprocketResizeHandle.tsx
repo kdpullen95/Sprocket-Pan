@@ -1,5 +1,6 @@
-import { Divider, useTheme } from '@mui/joy';
-import { SxProps } from '@mui/joy/styles/types';
+import { Divider } from '@mui/joy';
+import { useTheme } from '@mui/joy/styles';
+import type { SxProps } from '@mui/joy/styles/types';
 import { Separator } from 'react-resizable-panels';
 
 interface SprocketResizeHandleProps {

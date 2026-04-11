@@ -1,4 +1,4 @@
-import { PropsWithChildren, CSSProperties } from 'react';
+import type { CSSProperties, PropsWithChildren } from 'react';
 
 interface EllipsesPProps extends PropsWithChildren {
 	style?: CSSProperties;

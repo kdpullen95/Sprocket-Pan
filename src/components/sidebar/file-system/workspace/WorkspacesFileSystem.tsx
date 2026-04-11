@@ -1,47 +1,50 @@
-import { useSelector } from 'react-redux';
-import { selectActiveWorkspace, selectWorkspacesList } from '@/state/global/selectors';
-import { ActiveWorkspaceFileCard } from './ActiveWorkspaceFileCard';
-import { WorkspaceFileCard } from './WorkspaceFileCard';
-import { Box, Button, Stack, Typography } from '@mui/joy';
-import { SideDrawerHeader } from '../../SideDrawerHeader';
-import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { useEffect, useState } from 'react';
-import { WorkspaceMetadata } from '@/types/data/workspace';
-import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { InlineItemName } from '@/components/shared/InlineItemName';
 import { SprocketModal } from '@/components/shared/modals/SprocketModal';
-import { ImportExport, RemoveCircle, Save } from '@mui/icons-material';
-import { globalActions } from '@/state/global/slice';
+import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
+import { ActiveSelect } from '@/state/active/selectors';
 import { saveActiveData } from '@/state/active/thunks';
-import { selectHasBeenModifiedSinceLastSave } from '@/state/active/selectors';
+import { GlobalSelect } from '@/state/global/selectors';
+import { GlobalActions } from '@/state/global/slice';
+import { useAppDispatch } from '@/state/store';
+import { UiActions } from '@/state/ui/slice';
+import type { WorkspaceMetadata } from '@/types/data/workspace';
+import { ImportExport, RemoveCircle, Save } from '@mui/icons-material';
+import { Box, Button, Stack, Typography } from '@mui/joy';
+import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { SideDrawerHeader } from '../../SideDrawerHeader';
+import { ActiveWorkspaceFileCard } from './ActiveWorkspaceFileCard';
 import { ImportSelector } from './ImportSelector';
+import { WorkspaceFileCard } from './WorkspaceFileCard';
 
 export function WorkspacesFileSystem() {
 	const [switchingTo, setSwitchingTo] = useState<WorkspaceMetadata | undefined>(undefined);
 	const [isImportOpen, setIsImportOpen] = useState(false);
-	const isModified = useSelector(selectHasBeenModifiedSinceLastSave);
+	const isModified = useSelector(ActiveSelect.hasBeenModifiedSinceLastSave);
 	const { average } = useScrollbarTheme();
-	const workspaces = useSelector(selectWorkspacesList);
-	const activeWorkspace = useSelector(selectActiveWorkspace);
+	const workspaces = useSelector(GlobalSelect.workspacesList);
+	const activeWorkspace = useSelector(GlobalSelect.activeWorkspace);
 	const dispatch = useAppDispatch();
 	const inactiveWorkspaces = workspaces.filter((workspace) => workspace.fileName !== activeWorkspace?.fileName);
 	const onOpenTab = (id: string) => {
-		dispatch(uiActions.addTab(id));
-		dispatch(uiActions.setSelectedTab(id));
+		dispatch(UiActions.addTab(id));
+		dispatch(UiActions.setSelectedTab(id));
 	};
-	const switchWorkspace = async (save = false) => {
-		setSwitchingTo(undefined);
-		if (save) {
-			await dispatch(saveActiveData());
-		}
-		dispatch(globalActions.setSelectedWorkspace(switchingTo));
-	};
+	const switchWorkspace = useCallback(
+		async (save = false) => {
+			setSwitchingTo(undefined);
+			if (save) {
+				await dispatch(saveActiveData());
+			}
+			dispatch(GlobalActions.setSelectedWorkspace(switchingTo));
+		},
+		[dispatch, switchingTo],
+	);
 	useEffect(() => {
 		if (switchingTo != null && !isModified) {
 			switchWorkspace();
 		}
-	}, [switchingTo, isModified]);
+	}, [switchingTo, isModified, switchWorkspace]);
 	return (
 		<>
 			<SideDrawerHeader

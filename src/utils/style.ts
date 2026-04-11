@@ -1,5 +1,6 @@
-import { Settings } from '@/types/data/settings';
-import { extendTheme, Theme, useColorScheme } from '@mui/joy';
+import type { Settings } from '@/types/data/settings';
+import type { Theme, useColorScheme } from '@mui/joy';
+import { extendTheme } from '@mui/joy';
 import chroma from 'chroma-js';
 
 declare module '@mui/joy/styles' {
@@ -25,7 +26,7 @@ export function getEditorTheme(colorScheme: ReturnType<typeof useColorScheme>) {
  * If given a color that cannot be parsed by chroma.hex(), will throw.
  */
 export function createPalette(hex = '#000000') {
-	const color = chroma.hex(hex);
+	const color = chroma(hex);
 	const scale = chroma.scale([color.brighten(6), color, color.darken(6)]).domain([0, 1000]);
 	return {
 		50: scale(50).hex(),

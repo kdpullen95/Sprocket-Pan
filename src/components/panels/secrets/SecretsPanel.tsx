@@ -1,19 +1,19 @@
+import { EditableData } from '@/components/shared/input/monaco/EditableData';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
+import { useAppDispatch } from '@/state/store';
 import { Box } from '@mui/joy';
 import { useSelector } from 'react-redux';
-import { PanelProps } from '../panels.interface';
-import { selectSecrets } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
-import { useAppDispatch } from '@/state/store';
-import { EditableData } from '@/components/shared/input/monaco/EditableData';
+import type { PanelProps } from '../panels.interface';
 
-export function SecretsPanel({ id }: PanelProps) {
-	const secrets = useSelector(selectSecrets);
+export function SecretsPanel(_: PanelProps) {
+	const secrets = useSelector(ActiveSelect.secrets);
 	const dispatch = useAppDispatch();
 	return (
 		<Box sx={{ height: '70vh', p: 2 }}>
 			<EditableData
 				initialValues={secrets}
-				onChange={(values) => dispatch(activeActions.setSecrets(values))}
+				onChange={(values) => dispatch(ActiveActions.setSecrets(values))}
 				fullSize
 			/>
 		</Box>

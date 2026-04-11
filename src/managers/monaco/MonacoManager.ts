@@ -1,8 +1,10 @@
-import { Script } from '@/types/data/workspace';
-import { Monaco } from '@monaco-editor/react';
-import { editor } from 'monaco-editor';
-import { internalTypesRaw } from './internalTypes';
+import type { Script } from '@/types/data/workspace';
+import type { useMonaco } from '@monaco-editor/react';
+import type { editor } from 'monaco-editor';
 import { getScriptsAsCode } from '../scripts/scripts';
+import { internalTypesRaw } from './internalTypes';
+
+type Monaco = NonNullable<ReturnType<typeof useMonaco>>;
 
 // this is hacky but how it has to be done because of
 // https://github.com/microsoft/monaco-editor/issues/2696
@@ -24,7 +26,7 @@ function updateModelDefinition(monaco: Monaco, injectedCode: string) {
 	monaco.editor.createModel(injectedCode, 'typescript', newUri);
 }
 
-export function getMonacoInjectedCode(scripts: Script[]) {
+export function getInjectedCode(scripts: Script[]) {
 	const ret = `${internalTypesRaw}
 	const sp = {} as SprocketInjectedScripts;
 	const sprocketPan = sp;
@@ -32,33 +34,33 @@ export function getMonacoInjectedCode(scripts: Script[]) {
 	return ret;
 }
 
-export function setMonacoInjectedCode(monaco: Monaco, scripts: Script[] = []) {
-	updateModelDefinition(monaco, getMonacoInjectedCode(scripts));
+export function setInjectedCode(monaco: Monaco, scripts: Script[] = []) {
+	updateModelDefinition(monaco, getInjectedCode(scripts));
 }
 
-export const defaultEditorOptions = {
+export const defaultOptions: editor.IEditorOptions & editor.IGlobalEditorOptions = {
 	tabSize: 2,
 	insertSpaces: false,
 	wordWrap: 'on',
 	wrappingStrategy: 'simple',
 	wrappingIndent: 'same',
-} as const satisfies editor.IStandaloneEditorConstructionOptions;
+};
 
-export function initMonaco(monaco: Monaco) {
-	monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+export function init(monaco: Monaco) {
+	monaco.typescript.javascriptDefaults.setDiagnosticsOptions({
 		noSemanticValidation: false,
 		noSyntaxValidation: false,
 	});
-	monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+	monaco.typescript.typescriptDefaults.setDiagnosticsOptions({
 		diagnosticCodesToIgnore: [
 			1375, //'await' expressions are only allowed at the top level of a file when that file is a module
 			1378, //Top-level 'await' expressions are only allowed when the 'module' option is set to 'esnext' or 'system', and the 'target' option is set to 'es2017' or higher
 			1108, //A 'return' statement can only be used within a function body.
 		],
 	});
-	monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-		target: monaco.languages.typescript.ScriptTarget.ESNext,
-		module: monaco.languages.typescript.ModuleKind.ESNext,
+	monaco.typescript.javascriptDefaults.setCompilerOptions({
+		target: monaco.typescript.ScriptTarget.ESNext,
+		module: monaco.typescript.ModuleKind.ESNext,
 		allowNonTsExtensions: true,
 		alwaysStrict: true,
 		noUnusedParameters: true,
@@ -66,7 +68,9 @@ export function initMonaco(monaco: Monaco) {
 		noUnusedLocals: true,
 	});
 
-	monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
-	monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
-	setMonacoInjectedCode(monaco);
+	monaco.typescript.javascriptDefaults.setEagerModelSync(true);
+	monaco.typescript.typescriptDefaults.setEagerModelSync(true);
+	setInjectedCode(monaco);
 }
+
+export const MonacoManager = { init, setInjectedCode, getInjectedCode, defaultOptions };

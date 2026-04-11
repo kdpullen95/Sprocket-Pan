@@ -1,16 +1,13 @@
-import { Button, Card, Stack, Typography } from '@mui/joy';
-import EditCalendarIcon from '@mui/icons-material/EditCalendar';
-import InfoIcon from '@mui/icons-material/Info';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { GlobalActions } from '@/state/global/slice';
 import { useAppDispatch } from '@/state/store';
-import { WorkspaceMetadata } from '@/types/data/workspace';
+import type { WorkspaceMetadata } from '@/types/data/workspace';
 import { formatFullDate } from '@/utils/string';
+import { Delete, EditCalendar, Info, OpenInNew } from '@mui/icons-material';
+import { Button, Card, Stack, Typography } from '@mui/joy';
 import { EllipsisTypography } from '../shared/EllipsisTypography';
-import { GradientBorderBoundingBox } from '../shared/GradientBorderBoundingBox';
+import { GradientBorderBoundingBox } from '../shared/flair/GradientBorderBoundingBox';
+import { TextAvatar } from '../shared/flair/Minidenticon';
 import { SprocketTooltip } from '../shared/SprocketTooltip';
-import { TextAvatar } from '../shared/Minidenticon';
-import { globalActions } from '@/state/global/slice';
 
 interface WorkspaceEntryProps {
 	workspace: WorkspaceMetadata;
@@ -23,7 +20,7 @@ export function WorkspaceEntry({ workspace, onDelete }: WorkspaceEntryProps) {
 		onDelete(workspace);
 	}
 	function openWorkspace() {
-		dispatch(globalActions.setSelectedWorkspace(workspace));
+		dispatch(GlobalActions.setSelectedWorkspace(workspace));
 	}
 	return (
 		<Card
@@ -48,22 +45,22 @@ export function WorkspaceEntry({ workspace, onDelete }: WorkspaceEntryProps) {
 				<Stack gap={1} ml={1}>
 					<Stack direction="row" gap={1} alignItems="center">
 						<SprocketTooltip text="Last Modified">
-							<EditCalendarIcon />
+							<EditCalendar />
 						</SprocketTooltip>
 						<Typography level="body-md"> {formatFullDate(new Date(workspace.lastModified))}</Typography>
 					</Stack>
 					<Stack direction="row" gap={1} alignItems="center">
 						<SprocketTooltip text="Description">
-							<InfoIcon />
+							<Info />
 						</SprocketTooltip>
 						<EllipsisTypography level="body-sm">{workspace.description}</EllipsisTypography>
 					</Stack>
 				</Stack>
 				<Stack justifyContent="space-between" direction="row" gap={6} ml="-2px">
-					<Button variant="plain" color="danger" startDecorator={<DeleteIcon />} onClick={deleteWorkspace}>
+					<Button variant="plain" color="danger" startDecorator={<Delete />} onClick={deleteWorkspace}>
 						Delete
 					</Button>
-					<Button sx={{ width: '100%' }} variant="outlined" startDecorator={<OpenInNewIcon />} onClick={openWorkspace}>
+					<Button sx={{ width: '100%' }} variant="outlined" startDecorator={<OpenInNew />} onClick={openWorkspace}>
 						Open
 					</Button>
 				</Stack>

@@ -1,33 +1,28 @@
-import { useState } from 'react';
-import { IconButton, Input } from '@mui/joy';
-import { ClearRounded, PendingOutlined, Search } from '@mui/icons-material';
 import { Constants } from '@/constants/constants';
 import { useDebounce } from '@/hooks/useDebounce';
+import { ClearRounded, PendingOutlined, Search } from '@mui/icons-material';
+import { IconButton, Input } from '@mui/joy';
+import type { SxProps } from '@mui/joy/styles/types';
 import { SprocketTooltip } from '../SprocketTooltip';
-import { SxProps } from '@mui/joy/styles/types';
 
 export interface SearchFieldProps {
 	onChange: (text: string) => void;
+	value: string;
 	debounce?: number;
 	slideout?: boolean;
 	sx?: SxProps;
 }
 
-export function SearchField({ onChange, debounce = Constants.searchDebounceTimeMS, sx }: SearchFieldProps) {
-	const [isTyping, setTyping] = useState(false);
-
-	const { localDataState, setLocalDataState } = useDebounce<string | null>({
-		state: null,
+export function SearchField({ onChange, value, debounce = Constants.searchDebounceTimeMS, sx }: SearchFieldProps) {
+	const [localDataState, setLocalDataState, isDesync] = useDebounce<string | null>({
+		state: value,
 		setState: (text: string | null) => onChange(text ?? ''),
 		debounceMS: debounce,
-		onSync: () => setTyping(false),
-		onDesync: () => setTyping(true),
 	});
 
 	function cancel() {
 		setLocalDataState('');
 		onChange('');
-		setTyping(false);
 	}
 
 	return (
@@ -39,7 +34,7 @@ export function SearchField({ onChange, debounce = Constants.searchDebounceTimeM
 			sx={{ minWidth: '150px', flex: 1, ...sx }}
 			startDecorator={<Search />}
 			endDecorator={
-				isTyping ? (
+				isDesync ? (
 					<PendingOutlined color="secondary" />
 				) : (
 					<SprocketTooltip text="Clear search">

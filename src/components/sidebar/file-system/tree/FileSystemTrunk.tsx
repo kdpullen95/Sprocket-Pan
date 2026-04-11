@@ -1,7 +1,9 @@
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
-import { selectSettings } from '@/state/active/selectors';
-import { Box, useTheme } from '@mui/joy';
-import { Fragment, ReactNode } from 'react';
+import { ActiveSelect } from '@/state/active/selectors';
+import { Box } from '@mui/joy';
+import { useTheme } from '@mui/joy/styles';
+import type { ReactNode } from 'react';
+import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { Virtuoso } from 'react-virtuoso';
 
@@ -14,7 +16,7 @@ export function FileSystemTrunk({ items, render }: FileSystemTrunkProps) {
 	const { average } = useScrollbarTheme();
 	const {
 		virtualization: { enabled },
-	} = useSelector(selectSettings);
+	} = useSelector(ActiveSelect.settings);
 	const theme = useTheme();
 	return (
 		<Box
@@ -63,7 +65,7 @@ export function FileSystemTrunk({ items, render }: FileSystemTrunkProps) {
 			}}
 		>
 			{enabled ? (
-				<Virtuoso style={average as any} data={items} itemContent={(index, item) => render(item, index)} />
+				<Virtuoso style={average} data={items} itemContent={(index, item) => render(item, index)} />
 			) : (
 				<Box sx={{ ...average, height: '100%', overflow: 'auto' }}>
 					{items.map((item, index) => (

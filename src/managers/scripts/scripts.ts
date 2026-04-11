@@ -1,5 +1,5 @@
-import { Script } from '@/types/data/workspace';
-import { OptionalScriptContext } from './types';
+import type { Script } from '@/types/data/workspace';
+import type { OptionalScriptContext } from './types';
 
 export function getWrappedScript({ scriptCallableName, content }: Script) {
 	return `async function ${scriptCallableName}() {

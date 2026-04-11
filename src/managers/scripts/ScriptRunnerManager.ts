@@ -1,14 +1,14 @@
-import { Script } from '@/types/data/workspace';
+import type { Script } from '@/types/data/workspace';
+import { getSettingsFromState } from '@/utils/application';
+import { errorToSprocketError } from '@/utils/conversion';
+import { runContextfulInterruptibleScript } from '@/utils/functions';
 import { log } from '@/utils/logging';
 import ts from 'typescript';
 import { AuditLogManager } from '../AuditLogManager';
-import { getSettingsFromState } from '@/utils/application';
-import { OptionalScriptContext } from './types';
-import { runContextfulInterruptibleScript } from '@/utils/functions';
-import { SprocketScriptContext } from './SprocketScriptContext';
-import { errorToSprocketError } from '@/utils/conversion';
 import { StateAccessManager } from '../data/StateAccessManager';
 import { constructRunnableScript } from './scripts';
+import { SprocketScriptContext } from './SprocketScriptContext';
+import type { OptionalScriptContext } from './types';
 
 export interface RunTypescriptWithFullContextArgs extends Omit<OptionalScriptContext, 'name'> {
 	script: string | Script;

@@ -1,5 +1,6 @@
-import { RESTfulRequestVerb } from '@/types/data/shared';
-import chroma, { Color } from 'chroma-js';
+import type { RESTfulRequestVerb } from '@/types/data/shared';
+import type { Color } from 'chroma-js';
+import chroma from 'chroma-js';
 
 const GET = chroma('#4d88ff');
 const POST = chroma('#09aa3e');

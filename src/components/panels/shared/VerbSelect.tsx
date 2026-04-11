@@ -1,7 +1,8 @@
+import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
 import { verbColors } from '@/constants/style';
-import { RESTfulRequestVerb, RESTfulRequestVerbs } from '@/types/data/shared';
+import type { RESTfulRequestVerb } from '@/types/data/shared';
+import { RESTfulRequestVerbs } from '@/types/data/shared';
 import { Label } from '@mui/icons-material';
-import { Select, Option } from '@mui/joy';
 
 interface VerbSelectProps {
 	value: RESTfulRequestVerb;
@@ -13,7 +14,7 @@ interface VerbSelectProps {
 export function VerbSelect({ value, onChange, open, onClick }: VerbSelectProps) {
 	const { color } = verbColors[value];
 	return (
-		<Select
+		<SprocketSelect
 			sx={{
 				minWidth: 150,
 				color,
@@ -23,17 +24,8 @@ export function VerbSelect({ value, onChange, open, onClick }: VerbSelectProps) 
 			value={value}
 			startDecorator={<Label sx={{ color }} />}
 			variant="soft"
-			onChange={(_, newVerb) => {
-				if (newVerb) {
-					onChange?.(newVerb);
-				}
-			}}
-		>
-			{RESTfulRequestVerbs.map((verb, index) => (
-				<Option key={index} value={verb} sx={{ color: verbColors[verb].color }}>
-					{verb}
-				</Option>
-			))}
-		</Select>
+			onChange={(verb) => verb != null && onChange?.(verb)}
+			options={RESTfulRequestVerbs.map((verb) => ({ value: verb, label: verb }))}
+		/>
 	);
 }

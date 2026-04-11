@@ -1,5 +1,5 @@
 import { Stack } from '@mui/joy';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 export interface ActionBarProps extends PropsWithChildren {
 	start?: React.ReactNode;

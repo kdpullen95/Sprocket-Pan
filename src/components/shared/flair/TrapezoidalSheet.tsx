@@ -1,4 +1,5 @@
-import { Sheet, SheetProps } from '@mui/joy';
+import { Sheet } from '@mui/joy';
+import type { SheetProps } from '@mui/joy/Sheet/SheetProps';
 
 /**
  * Gets clip paths.

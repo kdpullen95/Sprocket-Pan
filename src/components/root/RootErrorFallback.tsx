@@ -1,6 +1,6 @@
 import { Container, Sheet } from '@mui/joy';
+import type { FallbackProps } from 'react-error-boundary';
 import { ErrorFallback } from '../shared/ErrorFallback';
-import { FallbackProps } from 'react-error-boundary';
 
 export function RootErrorFallback(props: FallbackProps) {
 	return (

@@ -1,5 +1,5 @@
-import { OptionalScriptContext } from '@/managers/scripts/types';
-import { ItemType } from '../data/item';
+import type { OptionalScriptContext } from '@/managers/scripts/types';
+import type { ItemType } from '../data/item';
 
 export type StateContext<TData, TDataName extends string> = Record<TDataName, TData> &
 	Record<`set${Capitalize<TDataName>}`, React.Dispatch<React.SetStateAction<TData>>>;

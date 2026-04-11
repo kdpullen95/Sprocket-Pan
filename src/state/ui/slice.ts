@@ -1,9 +1,9 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { TabType } from '../../types/state/state';
+import type { ToastProps } from '@/components/root/Toasts';
+import type { OrphanData } from '@/managers/data/WorkspaceDataManager';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { SelectedResponse } from '../../components/root/overlays/ResponseDiffOverlay/ResponseSelectForm';
 import { log } from '../../utils/logging';
-import { SelectedResponse } from '../../components/root/overlays/ResponseDiffOverlay/ResponseSelectForm';
-import { OrphanData } from '@/managers/data/WorkspaceDataManager';
-import { ToastProps } from '@/components/root/Toasts';
 
 export type DiffQueueEntry = { original: SelectedResponse; modified: SelectedResponse };
 
@@ -14,7 +14,6 @@ export interface UiState {
 	tabsHistoryPosition: number;
 	deleteQueue: string[];
 	diffQueue: DiffQueueEntry[];
-	createQueue: TabType[];
 	searchText: string;
 	orphans: OrphanData | null;
 	toast?: ToastProps;
@@ -27,7 +26,6 @@ const initialState: UiState = {
 	tabsHistoryPosition: 0,
 	selectedTab: null,
 	deleteQueue: [],
-	createQueue: [],
 	diffQueue: [],
 	searchText: '',
 	orphans: null,
@@ -41,7 +39,7 @@ function closeTab(state: UiState, closeId: string) {
 	}
 }
 
-export const uiSlice = createSlice({
+export const UiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
@@ -51,36 +49,16 @@ export const uiSlice = createSlice({
 		closeTabs: (state, { payload }: PayloadAction<string[]>) => {
 			payload.forEach((id) => closeTab(state, id));
 		},
-		addToDiffQueue: (state, { payload }: PayloadAction<SelectedResponse | DiffQueueEntry>) => {
-			if ('original' in payload) {
-				state.diffQueue.push(payload);
-			} else {
-				state.diffQueue.push({ original: payload, modified: payload });
+		closeOtherTabs: (state, { payload }: PayloadAction<string>) => {
+			const arr = state.tabs.filter((id) => id !== payload);
+			arr.forEach((id) => closeTab(state, id));
+		},
+		closeTabsDirectionally: (state, { payload }: PayloadAction<{ center: string; left?: boolean }>) => {
+			const index = state.tabs.findIndex((tab) => tab === payload.center);
+			if (index >= 0) {
+				const arr = payload.left ? state.tabs.slice(0, index) : state.tabs.slice(index + 1, state.tabs.length);
+				arr.forEach((id) => closeTab(state, id));
 			}
-		},
-		addToDeleteQueue: (state, { payload }: PayloadAction<string>) => {
-			state.deleteQueue.push(payload);
-		},
-		addToCreateQueue: (state, { payload }: PayloadAction<TabType>) => {
-			state.createQueue.push(payload);
-		},
-		removeFromDeleteQueue: (state, { payload }: PayloadAction<string>) => {
-			state.deleteQueue.splice(
-				state.deleteQueue.findIndex((id) => id === payload),
-				1,
-			);
-		},
-		removeFromCreateQueue: (state, { payload }: PayloadAction<TabType>) => {
-			state.createQueue.splice(
-				state.createQueue.findIndex((id) => id === payload),
-				1,
-			);
-		},
-		popDiffQueue: (state) => {
-			state.diffQueue.pop();
-		},
-		setSearchText: (state, { payload }: PayloadAction<string>) => {
-			state.searchText = payload;
 		},
 		addTabs: (state, action: PayloadAction<UiState['tabs']>) => {
 			state.tabs = { ...state.tabs, ...action.payload };
@@ -89,6 +67,10 @@ export const uiSlice = createSlice({
 			if (!state.tabs.includes(payload)) {
 				state.tabs.push(payload);
 			}
+		},
+		reorderTabs: (state, { payload }: PayloadAction<string[]>) => {
+			// TODO: validate that we're not adding/removing tabs here
+			state.tabs = payload;
 		},
 		setSelectedTab: (state, { payload }: PayloadAction<string>) => {
 			state.selectedTab = payload;
@@ -102,6 +84,29 @@ export const uiSlice = createSlice({
 			state.tabs = [];
 			state.tabsHistory = [];
 			state.tabsHistoryPosition = 0;
+			state.selectedTab = null;
+		},
+		addToDiffQueue: (state, { payload }: PayloadAction<SelectedResponse | DiffQueueEntry>) => {
+			if ('original' in payload) {
+				state.diffQueue.push(payload);
+			} else {
+				state.diffQueue.push({ original: payload, modified: payload });
+			}
+		},
+		addToDeleteQueue: (state, { payload }: PayloadAction<string>) => {
+			state.deleteQueue.push(payload);
+		},
+		removeFromDeleteQueue: (state, { payload }: PayloadAction<string>) => {
+			state.deleteQueue.splice(
+				state.deleteQueue.findIndex((id) => id === payload),
+				1,
+			);
+		},
+		popDiffQueue: (state) => {
+			state.diffQueue.pop();
+		},
+		setSearchText: (state, { payload }: PayloadAction<string>) => {
+			state.searchText = payload;
 		},
 		setSelectedTabFromHistory: (state, { payload }: PayloadAction<number | null>) => {
 			if (payload != null) {
@@ -119,6 +124,9 @@ export const uiSlice = createSlice({
 		toast: (state, { payload }: PayloadAction<ToastProps>) => {
 			state.toast = payload;
 		},
+		clearToast: (state) => {
+			state.toast = undefined;
+		},
 		setIsLoadingWorkspace: (state, { payload }: PayloadAction<boolean>) => {
 			state.isLoadingWorkspace = payload;
 		},
@@ -126,4 +134,4 @@ export const uiSlice = createSlice({
 	},
 });
 
-export const uiActions = uiSlice.actions;
+export const UiActions = UiSlice.actions;

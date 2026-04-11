@@ -1,6 +1,7 @@
 import { defaultWorkspaceData } from '@/managers/data/WorkspaceDataManager';
-import { IdSpecificUiMetadata } from '@/types/data/shared';
-import {
+import type { Item } from '@/types/data/item';
+import type { IdSpecificUiMetadata } from '@/types/data/shared';
+import type {
 	Endpoint,
 	EndpointRequest,
 	Environment,
@@ -11,12 +12,12 @@ import {
 	SyncMetadata,
 	WorkspaceData,
 } from '@/types/data/workspace';
-import { KeyValuePair } from '@/types/shared/keyValues';
-import { RecursivePartial } from '@/types/utils/utils';
+import type { KeyValuePair } from '@/types/shared/keyValues';
+import type { RecursivePartial } from '@/types/utils/utils';
 import { mergeDeep } from '@/utils/variables';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Create, PayloadUpdate, Update } from '../types';
-import { Item } from '@/types/data/item';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { Create, PayloadUpdate, Update } from '../types';
 
 const initialState = {
 	...defaultWorkspaceData,
@@ -88,7 +89,7 @@ const injectableKeys: (keyof WorkspaceData)[] = [
 	'syncMetadata',
 ];
 
-export const activeSlice = createSlice({
+export const ActiveSlice = createSlice({
 	name: 'active',
 	initialState: initialState,
 	reducers: {
@@ -251,8 +252,8 @@ export const activeSlice = createSlice({
 	},
 });
 
-export const activeActions = activeSlice.actions;
+export const ActiveActions = ActiveSlice.actions;
 
-export const activeThunkName = `t/${activeSlice.name}`;
+export const activeThunkName = `t/${ActiveSlice.name}`;
 
 export type { Update };

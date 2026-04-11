@@ -1,5 +1,5 @@
 import { Stack, Typography, useTheme } from '@mui/joy';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 interface SettingsGroupProps extends PropsWithChildren {
 	title: string;

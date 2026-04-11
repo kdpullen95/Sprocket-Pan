@@ -1,6 +1,7 @@
-import { Modal, ModalClose, ModalDialog, ModalProps, Stack, Typography } from '@mui/joy';
-import { SxProps } from '@mui/material';
-import { ReactNode } from 'react';
+import type { ModalProps } from '@mui/joy';
+import { Modal, ModalClose, ModalDialog, Stack, Typography } from '@mui/joy';
+import type { SxProps } from '@mui/joy/styles/types';
+import type { ReactNode } from 'react';
 
 const allCloseOn = ['backdropClick', 'escapeKeyDown', 'closeClick'] as const;
 
@@ -14,7 +15,7 @@ const sizeStyling = {
 export interface SprocketModalProps extends Omit<ModalProps, 'onClose' | 'title'> {
 	actions?: ReactNode;
 	onClose?: () => void;
-	closeOn?: ('backdropClick' | 'escapeKeyDown' | 'closeClick')[];
+	closeOn?: readonly ('backdropClick' | 'escapeKeyDown' | 'closeClick')[];
 	size?: keyof typeof sizeStyling;
 	title?: ReactNode;
 	dialogSx?: SxProps;
@@ -23,7 +24,7 @@ export interface SprocketModalProps extends Omit<ModalProps, 'onClose' | 'title'
 export function SprocketModal({
 	children,
 	onClose,
-	closeOn = allCloseOn.slice(),
+	closeOn = allCloseOn,
 	actions,
 	title,
 	size = 'md',

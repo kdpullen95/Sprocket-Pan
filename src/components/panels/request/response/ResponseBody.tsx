@@ -1,12 +1,12 @@
+import { ButtonTabs } from '@/components/shared/ButtonTabs';
 import { SprocketEditor } from '@/components/shared/input/monaco/SprocketEditor';
-import { EndpointResponse } from '@/types/data/workspace';
-import { SprocketError } from '@/types/state/state';
+import type { EndpointResponse } from '@/types/data/workspace';
+import type { SprocketError } from '@/types/state/state';
+import { statusText } from '@/utils/misc';
 import { getStatusCodeColor } from '@/utils/string';
+import { Warning } from '@mui/icons-material';
 import { Box, Typography } from '@mui/joy';
 import { defaultResponse } from '../constants';
-import { statusText } from '@/utils/misc';
-import { ButtonTabs } from '@/components/shared/ButtonTabs';
-import { Warning } from '@mui/icons-material';
 
 const editorLanguageOptions = ['json', 'html', 'xml', 'yaml'];
 

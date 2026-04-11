@@ -1,11 +1,12 @@
-import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
-import { DataTab } from './DataTab';
-import { GeneralTab } from './GeneralTab';
-import { ActionsTab } from './ActionsTab';
-import { DisplayTab } from './DisplayTab';
-import { WorkspaceTab, WorkspaceTabProps } from './WorkspaceTab';
-import { SettingsTabProps } from './types';
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
+import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
+import { ActionsTab } from './ActionsTab';
+import { DataTab } from './DataTab';
+import { DisplayTab } from './DisplayTab';
+import { GeneralTab } from './GeneralTab';
+import type { WorkspaceTabProps } from './WorkspaceTab';
+import { WorkspaceTab } from './WorkspaceTab';
+import type { SettingsTabProps } from './types';
 
 export function SettingsTabs({ goToWorkspaceSelection, ...tabProps }: SettingsTabProps & Partial<WorkspaceTabProps>) {
 	const { average } = useScrollbarTheme();

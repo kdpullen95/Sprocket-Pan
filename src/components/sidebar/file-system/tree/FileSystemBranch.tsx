@@ -1,29 +1,29 @@
-import { FileSystemLeafProps } from './FileSystemLeaf';
-import { useSelector } from 'react-redux';
-import { selectUiMetadataById } from '@/state/active/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { selectIsActiveTab } from '@/state/ui/selectors';
+import { UiSelect } from '@/state/ui/selectors';
+import { UiActions } from '@/state/ui/slice';
+import { useSelector } from 'react-redux';
 import { CollapsibleFolder } from '../components/CollapsibleFolder';
 import { FileSystemEntry } from './FileSystemEntry';
+import type { FileSystemLeafProps } from './FileSystemLeaf';
 
 interface FileSystemBranchProps extends FileSystemLeafProps {
 	buttonContent: React.ReactNode;
 }
 
-export function FileSystemBranch({ buttonContent, children, menuOptions, id }: FileSystemBranchProps) {
+export function FileSystemBranch({ buttonContent, children, menuItems, id }: FileSystemBranchProps) {
 	const dispatch = useAppDispatch();
-	const collapsed = useSelector((state) => selectUiMetadataById(state, id))?.collapsed ?? false;
-	const isSelected = useSelector((state) => selectIsActiveTab(state, id));
+	const collapsed = useSelector((state) => ActiveSelect.uiMetadataById(state, id))?.collapsed ?? false;
+	const isSelected = useSelector((state) => UiSelect.isSelectedTab(state, id));
 	return (
 		<>
-			<FileSystemEntry id={id} menuOptions={menuOptions} isSelected={isSelected}>
+			<FileSystemEntry id={id} menuItems={menuItems} isSelected={isSelected}>
 				<CollapsibleFolder collapsed={collapsed} id={id} />
 				<button
 					style={{ gap: '7px', display: 'flex', alignItems: 'center', flex: 1, minWidth: '50px' }}
 					onClick={() => {
-						dispatch(uiActions.addTab(id));
-						dispatch(uiActions.setSelectedTab(id));
+						dispatch(UiActions.addTab(id));
+						dispatch(UiActions.setSelectedTab(id));
 					}}
 				>
 					{buttonContent}

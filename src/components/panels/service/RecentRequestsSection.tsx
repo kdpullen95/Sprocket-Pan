@@ -1,18 +1,18 @@
-import { useMemo } from 'react';
+import { ActiveSelect } from '@/state/active/selectors';
+import type { Service } from '@/types/data/workspace';
 import { Box, List } from '@mui/joy';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RecentRequestListItem } from './RecentRequestListItem';
-import { selectRequests, selectEndpoints, selectHistory } from '@/state/active/selectors';
-import { Service } from '@/types/data/workspace';
 
 interface RecentRequestsSectionProps {
 	service: Service;
 }
 
 export function RecentRequestsSection({ service }: RecentRequestsSectionProps) {
-	const requests = useSelector(selectRequests);
-	const histories = useSelector(selectHistory);
-	const endpoints = useSelector(selectEndpoints);
+	const requests = useSelector(ActiveSelect.requests);
+	const histories = useSelector(ActiveSelect.history);
+	const endpoints = useSelector(ActiveSelect.endpoints);
 	const recentRequests = useMemo(
 		() =>
 			service.endpointIds
@@ -39,13 +39,13 @@ export function RecentRequestsSection({ service }: RecentRequestsSectionProps) {
 					return history2.length - history1.length;
 				})
 				.slice(0, 20),
-		[service],
+		[endpoints, histories, requests, service.endpointIds],
 	);
 
 	return (
 		<List>
-			{recentRequests.map((request, index) => (
-				<Box key={index}>
+			{recentRequests.map((request) => (
+				<Box key={request.id}>
 					<RecentRequestListItem request={request} />
 				</Box>
 			))}

@@ -1,23 +1,23 @@
-import {
-	WorkspaceData,
+import type {
+	Endpoint,
 	EndpointRequest,
+	Service,
+	WorkspaceData,
+	WorkspaceItems,
 	WorkspaceMetadata,
 	WorkspaceSyncedData,
-	Endpoint,
-	Service,
-	WorkspaceItems,
 } from '@/types/data/workspace';
 import { nullifyProperties } from '@/utils/functions';
+import { extractProperty } from '@/utils/getters';
 import { log } from '@/utils/logging';
+import { mergeDeep } from '@/utils/variables';
 import { path } from '@tauri-apps/api';
 import { save } from '@tauri-apps/plugin-dialog';
 import { writeTextFile } from '@tauri-apps/plugin-fs';
 import { FileSystemManager } from '../file-system/FileSystemManager';
 import { FileSystemWorker } from '../file-system/FileSystemWorker';
+import type { InvokerFileUpdate } from '../RustInvoker';
 import { SaveUpdateManager } from '../SaveUpdateManager';
-import { InvokerFileUpdate } from '../RustInvoker';
-import { mergeDeep } from '@/utils/variables';
-import { extractProperty } from '@/utils/getters';
 
 export const defaultWorkspaceSyncedData: WorkspaceSyncedData = {
 	services: {},
@@ -159,8 +159,8 @@ export class WorkspaceDataManager {
 		if (folder == null) {
 			throw new Error('workspace folder path must be provided');
 		}
-		const root = `${FileSystemWorker.DATA_FOLDER_NAME}${path.sep}${folder}`;
-		const base = `${root}${path.sep}${FileSystemWorker.DATA_FILE_NAME}`;
+		const root = `${FileSystemWorker.DATA_FOLDER_NAME}${path.sep()}${folder}`;
+		const base = `${root}${path.sep()}${FileSystemWorker.DATA_FILE_NAME}`;
 		return {
 			root,
 			data: `${base}.json`,
@@ -223,7 +223,7 @@ export class WorkspaceDataManager {
 	private static getSyncLocation(data: WorkspaceData) {
 		const sync = data.settings.data?.sync;
 		return sync?.enabled && sync?.location != null && sync.location !== ''
-			? `${sync.location}${path.sep}data_sync.json`
+			? `${sync.location}${path.sep()}data_sync.json`
 			: null;
 	}
 
@@ -233,7 +233,6 @@ export class WorkspaceDataManager {
 	 */
 	private static async createDataFilesIfNotExist({ fileName, ...workspace }: WorkspaceMetadata) {
 		log.trace(`createDataFilesIfNotExist called`);
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { uiMetadata, ...defaultData } = defaultWorkspaceData;
 		const paths = this.getWorkspacePath(fileName);
 		const promises = [

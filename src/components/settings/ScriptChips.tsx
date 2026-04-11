@@ -1,9 +1,8 @@
-import { IconButton, Chip } from '@mui/joy';
-import WestIcon from '@mui/icons-material/West';
-import EastIcon from '@mui/icons-material/East';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { tabTypeIcon } from '@/constants/components';
-import { ScriptRunnerStrategy } from '@/types/data/settings';
+import type { ScriptRunnerStrategy } from '@/types/data/settings';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { East, West } from '@mui/icons-material';
+import { Chip, IconButton } from '@mui/joy';
 
 interface ScriptChipsProps {
 	prefix: string;
@@ -16,7 +15,7 @@ export function ScriptChips({ prefix, strategy, setStrategy }: ScriptChipsProps)
 	return (
 		<span ref={parent}>
 			{strategy.map((strategyItem, index) => (
-				<span key={`${strategyItem}${index}`}>
+				<span key={`${strategyItem}`}>
 					{index !== 0 && (
 						<IconButton
 							sx={{ verticalAlign: 'middle' }}
@@ -29,7 +28,7 @@ export function ScriptChips({ prefix, strategy, setStrategy }: ScriptChipsProps)
 								setStrategy(copy);
 							}}
 						>
-							<WestIcon />
+							<West />
 						</IconButton>
 					)}
 					<Chip sx={{ verticalAlign: 'middle' }} startDecorator={tabTypeIcon[strategyItem]}>
@@ -47,7 +46,7 @@ export function ScriptChips({ prefix, strategy, setStrategy }: ScriptChipsProps)
 								setStrategy(copy);
 							}}
 						>
-							<EastIcon />
+							<East />
 						</IconButton>
 					)}
 				</span>

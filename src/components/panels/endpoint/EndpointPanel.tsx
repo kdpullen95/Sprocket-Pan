@@ -1,35 +1,35 @@
-import { Button, Stack, Input } from '@mui/joy';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { useSelector } from 'react-redux';
+import { SyncButton } from '@/components/shared/buttons/SyncButton';
 import { EnvironmentTypography } from '@/components/shared/EnvironmentTypography';
 import { Constants } from '@/constants/constants';
 import { useComputedServiceEnvironment } from '@/hooks/useComputedEnvironment';
 import { useDebounce } from '@/hooks/useDebounce';
 import { EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
-import { activeActions } from '@/state/active/slice';
+import { ActiveActions } from '@/state/active/slice';
+import { ItemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { Endpoint } from '@/types/data/workspace';
-import { PanelProps } from '../panels.interface';
-import { EndpointEditTabs } from './EndpointEditTabs';
+import { UiActions } from '@/state/ui/slice';
+import type { Endpoint } from '@/types/data/workspace';
+import { ExitToApp } from '@mui/icons-material';
+import { Button, Input, Stack } from '@mui/joy';
+import { useSelector } from 'react-redux';
+import type { PanelProps } from '../panels.interface';
 import { EditableHeader } from '../shared/EditableHeader';
-import { SyncButton } from '@/components/shared/buttons/SyncButton';
 import { VerbSelect } from '../shared/VerbSelect';
-import { itemActions } from '@/state/items';
+import { EndpointEditTabs } from './EndpointEditTabs';
 
 export function EndpointPanel({ id }: PanelProps) {
 	const dispatch = useAppDispatch();
-	const endpoint = useSelector((state) => itemActions.endpoint.select(state, id));
-	const service = useSelector((state) => itemActions.service.select(state, endpoint?.serviceId));
+	const endpoint = useSelector((state) => ItemActions.endpoint.select(state, id));
+	const service = useSelector((state) => ItemActions.service.select(state, endpoint?.serviceId));
 
 	const computedEnv = useComputedServiceEnvironment(endpoint?.serviceId);
 	const envSnippets = EnvironmentContextResolver.stringWithVarsToSnippet(service?.baseUrl || 'unknown', computedEnv);
 
 	const update = (values: Partial<Endpoint>) => {
-		dispatch(activeActions.updateEndpoint({ ...values, id }));
+		dispatch(ActiveActions.updateEndpoint({ ...values, id }));
 	};
 
-	const { localDataState, setLocalDataState } = useDebounce({
+	const [localDataState, setLocalDataState] = useDebounce({
 		state: endpoint?.url ?? '',
 		setState: (newUrl: string) => update({ url: newUrl }),
 		debounceMS: Constants.debounceTimeMS,
@@ -58,12 +58,12 @@ export function EndpointPanel({ id }: PanelProps) {
 				<Button
 					sx={{ minWidth: 150 }}
 					color="primary"
-					startDecorator={<ExitToAppIcon />}
+					startDecorator={<ExitToApp />}
 					disabled={!endpoint.defaultRequest}
 					onClick={() => {
 						if (endpoint.defaultRequest) {
-							dispatch(uiActions.addTab(endpoint.defaultRequest));
-							dispatch(uiActions.setSelectedTab(endpoint.defaultRequest));
+							dispatch(UiActions.addTab(endpoint.defaultRequest));
+							dispatch(UiActions.setSelectedTab(endpoint.defaultRequest));
 						}
 					}}
 				>

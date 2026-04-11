@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { Box, FormLabel, Grid, Input, Slider } from '@mui/joy';
 import { clamp } from '@/utils/math';
+import { Box, FormLabel, Grid, Input, Slider } from '@mui/joy';
+import * as React from 'react';
 
 export interface InputSliderProps {
 	label: string;
@@ -24,7 +24,7 @@ export function InputSlider({ label, value, onChange, endDecorator, icon, range,
 				<Grid>{icon}</Grid>
 				<Grid xs>
 					<Slider
-						value={typeof value === 'number' ? value : 0}
+						value={value}
 						onChange={(_, val) => onChange(val as number)}
 						aria-labelledby={`input-slider-${label}`}
 						min={range.min}
@@ -38,7 +38,7 @@ export function InputSlider({ label, value, onChange, endDecorator, icon, range,
 						sx={{ width: '100px' }}
 						value={value}
 						onChange={(e) => onChange(e.target.value === '' ? 0 : Number(e.target.value))}
-						onBlur={(_) => onChange(clamp(value, range.min, range.max))}
+						onBlur={() => onChange(clamp(value, range.min, range.max))}
 						endDecorator={endDecorator}
 						type="number"
 					/>

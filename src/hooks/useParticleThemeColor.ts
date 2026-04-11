@@ -1,4 +1,4 @@
-import { useColorScheme, useTheme } from '@mui/joy';
+import { useColorScheme, useTheme } from '@mui/joy/styles';
 import chroma from 'chroma-js';
 
 export function useParticleThemeColor() {

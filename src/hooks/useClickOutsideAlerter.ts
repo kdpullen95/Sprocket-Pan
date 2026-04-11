@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 interface UseClickOutsideAlerterArgs {
-	ref: React.MutableRefObject<HTMLInputElement | null>;
+	ref: React.RefObject<HTMLInputElement | null>;
 	onOutsideClick: () => void;
 }
 
@@ -10,11 +10,7 @@ interface UseClickOutsideAlerterArgs {
  */
 export function useClickOutsideAlerter({ ref, onOutsideClick }: UseClickOutsideAlerterArgs) {
 	useEffect(() => {
-		/**
-		 * Alert if clicked on outside of element
-		 */
 		function handleClickOutside(event: MouseEvent) {
-			// if not a left click
 			if (event.buttons !== 1) {
 				return;
 			}
@@ -22,11 +18,7 @@ export function useClickOutsideAlerter({ ref, onOutsideClick }: UseClickOutsideA
 				onOutsideClick();
 			}
 		}
-		// Bind the DOM event listener
 		document.addEventListener('mousedown', handleClickOutside);
-		return () => {
-			// Unbind the DOM event listener on clean up
-			document.removeEventListener('mousedown', handleClickOutside);
-		};
+		return () => document.removeEventListener('mousedown', handleClickOutside);
 	}, [ref]);
 }

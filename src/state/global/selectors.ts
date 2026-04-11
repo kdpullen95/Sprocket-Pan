@@ -1,18 +1,27 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { globalSlice } from './slice';
+import { GlobalSlice } from './slice';
 
-export const selectGlobalState = globalSlice.selectSlice;
+const selectGlobalState = GlobalSlice.selectSlice;
 
-export const selectWorkspaces = createSelector(selectGlobalState, (state) => state.workspaces);
+const selectWorkspaces = createSelector(selectGlobalState, (state) => state.workspaces);
 
-export const selectWorkspacesList = createSelector(selectWorkspaces, (workspaces) =>
+const selectWorkspacesList = createSelector(selectWorkspaces, (workspaces) =>
 	Object.values(workspaces).sort((a, b) => b.lastModified - a.lastModified),
 );
 
-export const selectActiveWorkspace = createSelector(selectGlobalState, (state) =>
+const selectActiveWorkspace = createSelector(selectGlobalState, (state) =>
 	state.activeWorkspace == null ? null : state.workspaces[state.activeWorkspace],
 );
 
-export const selectGlobalSettings = createSelector(selectGlobalState, (state) => state.settings);
+const selectGlobalSettings = createSelector(selectGlobalState, (state) => state.settings);
 
-export const selectGlobalLastSaved = createSelector(selectGlobalState, (state) => state.lastSaved);
+const selectGlobalLastSaved = createSelector(selectGlobalState, (state) => state.lastSaved);
+
+export const GlobalSelect = {
+	slice: selectGlobalState,
+	workspaces: selectWorkspaces,
+	workspacesList: selectWorkspacesList,
+	activeWorkspace: selectActiveWorkspace,
+	settings: selectGlobalSettings,
+	lastSaved: selectGlobalLastSaved,
+} as const;

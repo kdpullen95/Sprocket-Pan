@@ -1,42 +1,38 @@
-import {
-	ListItemDecorator,
-	ListItemContent,
-	Typography,
-	IconButton,
-	ListItem,
-	Divider,
-	List,
-	Box,
-	Stack,
-	ListItemButton,
-} from '@mui/joy';
-import { useState } from 'react';
-import TimerIcon from '@mui/icons-material/Timer';
-import AnchorIcon from '@mui/icons-material/Anchor';
-import BadgeIcon from '@mui/icons-material/Badge';
-import LaunchIcon from '@mui/icons-material/Launch';
-import SendIcon from '@mui/icons-material/Send';
-import CodeIcon from '@mui/icons-material/Code';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
-import { useSelector } from 'react-redux';
-import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { CollapseExpandButton } from '@/components/sidebar/buttons/CollapseExpandButton';
 import { tabTypeIcon } from '@/constants/components';
 import { AuditLogManager } from '@/managers/AuditLogManager';
-import {
-	selectRequests,
-	selectEnvironments,
-	selectServices,
-	selectEndpoints,
-	selectScripts,
-} from '@/state/active/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { TransformedAuditLog, AuditLog } from '@/types/data/audit';
+import { UiActions } from '@/state/ui/slice';
+import type { AuditLog, TransformedAuditLog } from '@/types/data/audit';
 import { camelCaseToTitle, formatMilliseconds } from '@/utils/string';
+import {
+	Anchor,
+	ArrowDropDown,
+	ArrowDropUp,
+	Code,
+	Launch,
+	SelfImprovement,
+	Send,
+	Timer,
+	WhereToVote,
+} from '@mui/icons-material';
+import {
+	Badge,
+	Box,
+	Divider,
+	IconButton,
+	List,
+	ListItem,
+	ListItemButton,
+	ListItemContent,
+	ListItemDecorator,
+	Stack,
+	Typography,
+} from '@mui/joy';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const indentationSize = 20;
 
@@ -44,31 +40,31 @@ const eventStrIconsMap = {
 	Service: (
 		<>
 			{tabTypeIcon.service}
-			<CodeIcon />
+			<Code />
 		</>
 	),
 	Endpoint: (
 		<>
 			{tabTypeIcon.endpoint}
-			<CodeIcon />
+			<Code />
 		</>
 	),
 	Request: (
 		<>
 			{tabTypeIcon.request}
-			<CodeIcon />
+			<Code />
 		</>
 	),
 	request: (
 		<>
 			{tabTypeIcon.request}
-			<SendIcon />
+			<Send />
 		</>
 	),
-	root: <AnchorIcon />,
+	root: <Anchor />,
 	standaloneScript: (
 		<>
-			<SelfImprovementIcon />
+			<SelfImprovement />
 			{tabTypeIcon.script}
 		</>
 	),
@@ -81,19 +77,15 @@ interface VisualEventLogInnerProps {
 }
 
 function VisualEventLogInner({ transformedLog, requestId, indentation }: VisualEventLogInnerProps) {
-	const requests = useSelector(selectRequests);
-	const environments = useSelector(selectEnvironments);
-	const services = useSelector(selectServices);
-	const endpoints = useSelector(selectEndpoints);
-	const scripts = useSelector(selectScripts);
+	const { requests, environments, services, endpoints, scripts } = useSelector(ActiveSelect.allItems);
 	const data = { requests, environments, services, endpoints, scripts };
 	const dispatch = useAppDispatch();
 	const [collapsed, setCollapsed] = useState(false);
 	const requestEvent = transformedLog.before;
 	const icons = (
 		<>
-			{requestEvent.eventType.includes('pre') && <ArrowDropUpIcon />}
-			{requestEvent.eventType.includes('post') && <ArrowDropDownIcon />}
+			{requestEvent.eventType.includes('pre') && <ArrowDropUp />}
+			{requestEvent.eventType.includes('post') && <ArrowDropDown />}
 			{
 				eventStrIconsMap[
 					(Object.keys(eventStrIconsMap).find((event) => requestEvent.eventType.includes(event)) ??
@@ -122,12 +114,12 @@ function VisualEventLogInner({ transformedLog, requestId, indentation }: VisualE
 						<Typography level="title-sm"></Typography>
 						<Typography level="body-sm">
 							<Stack direction="row" alignItems="center" gap={1}>
-								<TimerIcon />
+								<Timer />
 								{formatMilliseconds(transformedLog.after.timestamp - transformedLog.before.timestamp)}
 							</Stack>
 							{dataType && requestEvent.associatedId && (
 								<Stack direction="row" alignItems="center" gap={1}>
-									<BadgeIcon />
+									<Badge />
 									{associatedItem?.name ?? 'Unknown'} {camelCaseToTitle(dataType)}
 									{requestEvent.associatedId != requestId ? (
 										<SprocketTooltip text={`Open ${associatedItem?.name ?? 'Unknown'} ${camelCaseToTitle(dataType)}`}>
@@ -138,12 +130,12 @@ function VisualEventLogInner({ transformedLog, requestId, indentation }: VisualE
 												onClick={() => {
 													if (associatedItem != null) {
 														const id = requestEvent.associatedId as string;
-														dispatch(uiActions.addTab(id));
-														dispatch(uiActions.setSelectedTab(id));
+														dispatch(UiActions.addTab(id));
+														dispatch(UiActions.setSelectedTab(id));
 													}
 												}}
 											>
-												<LaunchIcon />
+												<Launch />
 											</IconButton>
 										</SprocketTooltip>
 									) : (
@@ -156,7 +148,7 @@ function VisualEventLogInner({ transformedLog, requestId, indentation }: VisualE
 														).toLocaleLowerCase()} for this request`
 											}
 										>
-											<WhereToVoteIcon color="success" />
+											<WhereToVote color="success" />
 										</SprocketTooltip>
 									)}
 								</Stack>

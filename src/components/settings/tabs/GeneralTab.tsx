@@ -1,16 +1,15 @@
-import { Stack, Button, CircularProgress, Divider, Typography, Link } from '@mui/joy';
-import { emit } from '@tauri-apps/api/event';
-import { useEffect, useState } from 'react';
-import HelpIcon from '@mui/icons-material/Help';
-import CloudDoneIcon from '@mui/icons-material/CloudDone';
-import { getVersion } from '@tauri-apps/api/app';
-import { SettingsTabProps } from './types';
-import { SettingsSelect, SettingsSwitch } from './SettingsFields';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { Constants } from '@/constants/constants';
-import { VariableNameDisplay, TipsSection } from '@/types/data/settings';
+import { TipsSection, VariableNameDisplay } from '@/types/data/settings';
 import { log } from '@/utils/logging';
 import { sleep } from '@/utils/misc';
+import { CloudDone, Help } from '@mui/icons-material';
+import { Button, CircularProgress, Divider, Link, Stack, Typography } from '@mui/joy';
+import { getVersion } from '@tauri-apps/api/app';
+import { emit } from '@tauri-apps/api/event';
+import { useEffect, useState } from 'react';
+import { SettingsSelect, SettingsSwitch } from './SettingsFields';
+import type { SettingsTabProps } from './types';
 
 export function GeneralTab({ overlay, settings, onChange, onUpdateGlobal, searchText }: SettingsTabProps) {
 	const [checkingForUpdate, setCheckingForUpdate] = useState(false);
@@ -94,11 +93,11 @@ export function GeneralTab({ overlay, settings, onChange, onUpdateGlobal, search
 				</Button>
 				{hasCheckedForUpdate ? (
 					<SprocketTooltip text="You have already checked for updates">
-						<CloudDoneIcon sx={{ transform: 'scale(1.4)' }} color="success" />
+						<CloudDone sx={{ transform: 'scale(1.4)' }} color="success" />
 					</SprocketTooltip>
 				) : (
 					<SprocketTooltip text="You have not yet checked for updates">
-						<HelpIcon sx={{ transform: 'scale(1.4)' }} color="primary" />
+						<Help sx={{ transform: 'scale(1.4)' }} color="primary" />
 					</SprocketTooltip>
 				)}
 			</Stack>

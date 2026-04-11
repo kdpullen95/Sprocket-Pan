@@ -1,25 +1,24 @@
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
+import { GlobalSelect } from '@/state/global/selectors';
+import { GlobalActions } from '@/state/global/slice';
+import { useAppDispatch } from '@/state/store';
+import { clearLeafProperties } from '@/utils/functions';
+import { mergeDeep } from '@/utils/variables';
 import { Box, Stack } from '@mui/joy';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { SettingsTabs } from './tabs/SettingsTabs';
 import { SettingsBar } from './SettingsBar';
-import { selectActiveState, selectWorkspaceSettings } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
-import { selectGlobalSettings } from '@/state/global/selectors';
-import { globalActions } from '@/state/global/slice';
-import { useAppDispatch } from '@/state/store';
-import { mergeDeep } from '@/utils/variables';
-import { clearLeafProperties } from '@/utils/functions';
 import { SettingsTitle } from './SettingsTitle';
+import { SettingsTabs } from './tabs/SettingsTabs';
 
 export interface SettingsPanelProps {
 	onClose: () => void;
 }
 
 export function SettingsPanel({ onClose }: SettingsPanelProps) {
-	const lastSaved = useSelector(selectActiveState).lastSaved;
-	const workspaceSettings = useSelector(selectWorkspaceSettings);
-	const globalSettings = useSelector(selectGlobalSettings);
+	const { lastSaved, settings: workspaceSettings } = useSelector(ActiveSelect.slice);
+	const globalSettings = useSelector(GlobalSelect.settings);
 	const [unsavedSettings, setUnsavedSettings] = useState(workspaceSettings);
 	const [unsavedGlobalSettings, setUnsavedGlobalSettings] = useState(globalSettings);
 	const hasChanged = useMemo(() => {
@@ -30,12 +29,12 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 	}, [workspaceSettings, unsavedSettings, globalSettings, unsavedGlobalSettings]);
 	const dispatch = useAppDispatch();
 	function goToWorkspaceSelection() {
-		dispatch(globalActions.setSelectedWorkspace(undefined));
+		dispatch(GlobalActions.setSelectedWorkspace(undefined));
 	}
 	const [search, setSearch] = useState('');
 	return (
 		<Stack height="75vh" justifyContent="stretch" alignItems="stretch" gap={1}>
-			<SettingsTitle onChange={setSearch} />
+			<SettingsTitle value={search} onChange={setSearch} />
 			<Box sx={{ flex: 1, overflow: 'auto' }}>
 				<SettingsTabs
 					searchText={search}
@@ -53,8 +52,8 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 			</Box>
 			<SettingsBar
 				onSave={() => {
-					dispatch(activeActions.insertSettings(unsavedSettings));
-					dispatch(globalActions.insertSettings(unsavedGlobalSettings));
+					dispatch(ActiveActions.insertSettings(unsavedSettings));
+					dispatch(GlobalActions.insertSettings(unsavedGlobalSettings));
 				}}
 				onClose={onClose}
 				overlay={unsavedSettings}

@@ -1,5 +1,6 @@
-import { ItemPrefix, ItemProperty, ItemType } from '@/types/data/item';
-import { WorkspaceItems } from '@/types/data/workspace';
+import type { ItemType } from '@/types/data/item';
+import { ItemPrefix, ItemProperty } from '@/types/data/item';
+import type { WorkspaceItems } from '@/types/data/workspace';
 
 const itemPrefixes = Object.entries(ItemPrefix);
 

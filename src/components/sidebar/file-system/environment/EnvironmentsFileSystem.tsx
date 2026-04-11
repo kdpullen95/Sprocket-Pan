@@ -1,21 +1,21 @@
+import { SearchField } from '@/components/shared/input/SearchField';
+import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
+import { ItemFactory } from '@/managers/data/ItemFactory';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
+import { useAppDispatch } from '@/state/store';
+import { searchEnvironments } from '@/utils/search';
+import { AddBox } from '@mui/icons-material';
 import { IconButton, ListDivider, Stack, Typography } from '@mui/joy';
-import { EnvironmentFileSystem } from './EnvironmentFileSystem';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectEnvironments } from '@/state/active/selectors';
-import { searchEnvironments } from '@/utils/search';
-import { FileSystemTrunk } from '../tree/FileSystemTrunk';
-import { SearchField } from '@/components/shared/input/SearchField';
 import { OpenSecretsButton } from '../../buttons/OpenSecretsButton';
 import { SideDrawerHeader } from '../../SideDrawerHeader';
-import { AddBox } from '@mui/icons-material';
-import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { uiActions } from '@/state/ui/slice';
-import { useAppDispatch } from '@/state/store';
-import { ItemType } from '@/types/data/item';
+import { FileSystemTrunk } from '../tree/FileSystemTrunk';
+import { EnvironmentFileSystem } from './EnvironmentFileSystem';
 
 export function EnvironmentsFileSystem() {
-	const environments = useSelector(selectEnvironments);
+	const environments = useSelector(ActiveSelect.environments);
 	const [searchText, setSearchText] = useState('');
 	const dispatch = useAppDispatch();
 
@@ -30,11 +30,11 @@ export function EnvironmentsFileSystem() {
 				content="Environments"
 				actions={
 					<Stack flexWrap="wrap" direction="row" justifyContent="end" alignItems="center" gap={1}>
-						<SearchField onChange={setSearchText} />
+						<SearchField value={searchText} onChange={setSearchText} />
 						<Stack direction="row">
 							<OpenSecretsButton />
 							<SprocketTooltip text="Add New Environment">
-								<IconButton onClick={() => dispatch(uiActions.addToCreateQueue(ItemType.environment))}>
+								<IconButton onClick={() => dispatch(ActiveActions.insertEnvironment(ItemFactory.environment()))}>
 									<AddBox />
 								</IconButton>
 							</SprocketTooltip>

@@ -1,48 +1,48 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { activeSlice } from './slice';
 import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
 import { EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
 import { queryParamsToString } from '@/utils/application';
 import { mergeDeep } from '@/utils/variables';
-import { selectGlobalState, selectGlobalSettings } from '../global/selectors';
+import { createSelector } from '@reduxjs/toolkit';
+import { GlobalSelect } from '../global/selectors';
+import { ActiveSlice } from './slice';
 
-export const selectActiveState = activeSlice.selectSlice;
+const selectActiveState = ActiveSlice.selectSlice;
 
-export const selectSelectedEnvironment = createSelector(selectActiveState, (state) => state.selectedEnvironment);
+const selectSelectedEnvironment = createSelector(selectActiveState, (state) => state.selectedEnvironment);
 
-export const selectSelectedEnvironmentValue = createSelector(selectActiveState, (state) =>
+const selectSelectedEnvironmentValue = createSelector(selectActiveState, (state) =>
 	state.selectedEnvironment == null ? null : state.environments[state.selectedEnvironment],
 );
 
 // we're handling state secrets lol
-export const selectSecrets = createSelector(selectActiveState, (state) => state.secrets);
+const selectSecrets = createSelector(selectActiveState, (state) => state.secrets);
 
-export const selectEndpoints = createSelector(selectActiveState, (state) => state.endpoints);
+const selectEndpoints = createSelector(selectActiveState, (state) => state.endpoints);
 
-export const selectServices = createSelector(selectActiveState, (state) => state.services);
+const selectServices = createSelector(selectActiveState, (state) => state.services);
 
-export const selectSelectedServiceEnvironments = createSelector(
+const selectSelectedServiceEnvironments = createSelector(
 	selectActiveState,
 	(state) => state.selectedServiceEnvironments,
 );
 
-export const selectEnvironments = createSelector(selectActiveState, (state) => {
+const selectEnvironments = createSelector(selectActiveState, (state) => {
 	return state.environments;
 });
 
-export const selectEnvironmentIds = createSelector(selectEnvironments, (environments) => {
+const selectEnvironmentIds = createSelector(selectEnvironments, (environments) => {
 	return Object.values(environments).map((env) => env.id);
 });
 
-export const selectRequests = createSelector(selectActiveState, (state) => state.requests);
+const selectRequests = createSelector(selectActiveState, (state) => state.requests);
 
-export const selectHistory = createSelector(selectActiveState, (state) => state.history);
+const selectHistory = createSelector(selectActiveState, (state) => state.history);
 
-export const selectHistoryById = createSelector([selectHistory, (_, id?: string) => id], (history, id) =>
+const selectHistoryById = createSelector([selectHistory, (_, id?: string) => id], (history, id) =>
 	id == null ? [] : (history[id] ?? []),
 );
 
-export const selectFullRequestInfoById = createSelector(
+const selectFullRequestInfoById = createSelector(
 	[selectRequests, selectEndpoints, selectServices, (_, id: string) => id],
 	(requests, endpoints, services, id) => {
 		const request = requests[id];
@@ -56,11 +56,11 @@ export const selectFullRequestInfoById = createSelector(
 	},
 );
 
-export const selectUiMetadata = createSelector([selectActiveState, selectGlobalState], (activeState, globalState) =>
+const selectUiMetadata = createSelector([selectActiveState, GlobalSelect.slice], (activeState, globalState) =>
 	mergeDeep(globalState.uiMetadata, activeState.uiMetadata),
 );
 
-export const selectAllItems = createSelector(selectActiveState, selectGlobalState, (active, global) => ({
+const selectAllItems = createSelector(selectActiveState, GlobalSelect.slice, (active, global) => ({
 	environments: active.environments,
 	services: active.services,
 	requests: active.requests,
@@ -69,38 +69,38 @@ export const selectAllItems = createSelector(selectActiveState, selectGlobalStat
 	workspaces: global.workspaces,
 }));
 
-export const selectIdSpecificUiMetadata = createSelector(selectUiMetadata, (state) => state.idSpecific);
+const selectIdSpecificUiMetadata = createSelector(selectUiMetadata, (state) => state.idSpecific);
 
-export const selectUiMetadataById = createSelector(
+const selectUiMetadataById = createSelector(
 	[selectIdSpecificUiMetadata, (_, id: string) => id],
 	(state, id) => state[id],
 );
 
-export const selectWorkspaceSettings = createSelector(selectActiveState, (state) => state?.settings);
+const selectWorkspaceSettings = createSelector(selectActiveState, (state) => state?.settings);
 
-export const selectSettings = createSelector(selectGlobalSettings, selectWorkspaceSettings, (global, workspace) =>
+const selectSettings = createSelector(GlobalSelect.settings, selectWorkspaceSettings, (global, workspace) =>
 	mergeDeep(global, workspace),
 );
 
-export const selectZoomLevel = createSelector(selectSettings, (state) => state.theme.zoom);
+const selectZoomLevel = createSelector(selectSettings, (state) => state.theme.zoom);
 
-export const selectDefaultTheme = createSelector(selectSettings, (state) => state.theme.base);
+const selectDefaultTheme = createSelector(selectSettings, (state) => state.theme.base);
 
-export const selectTheme = createSelector(selectSettings, (state) => state.theme);
+const selectTheme = createSelector(selectSettings, (state) => state.theme);
 
-export const selectSaveStateTimestamps = createSelector(selectActiveState, (state) => ({
+const selectSaveStateTimestamps = createSelector(selectActiveState, (state) => ({
 	modified: state.lastModified,
 	saved: state.lastSaved,
 }));
 
-export const selectScripts = createSelector(selectActiveState, (state) => state.scripts);
+const selectScripts = createSelector(selectActiveState, (state) => state.scripts);
 
-export const selectHasBeenModifiedSinceLastSave = createSelector(
+const selectHasBeenModifiedSinceLastSave = createSelector(
 	selectSaveStateTimestamps,
 	(time) => time.modified > time.saved,
 );
 
-export const selectEnvironmentSnippets = createSelector([selectActiveState, (_, id: string) => id], (state, id) => {
+const selectEnvironmentSnippets = createSelector([selectActiveState, (_, id: string) => id], (state, id) => {
 	const requestData = state.requests[id];
 	const endpointData = state.endpoints[requestData?.endpointId];
 	const serviceData = state.services[endpointData?.serviceId];
@@ -119,4 +119,34 @@ export const selectEnvironmentSnippets = createSelector([selectActiveState, (_, 
 	});
 });
 
-export const selectSyncMetadata = createSelector(selectActiveState, (state) => state.syncMetadata);
+const selectSyncMetadata = createSelector(selectActiveState, (state) => state.syncMetadata);
+
+export const ActiveSelect = {
+	slice: selectActiveState,
+	selectedEnvironment: selectSelectedEnvironment,
+	selectedEnvironmentValue: selectSelectedEnvironmentValue,
+	secrets: selectSecrets,
+	endpoints: selectEndpoints,
+	services: selectServices,
+	selectedServiceEnvironments: selectSelectedServiceEnvironments,
+	environments: selectEnvironments,
+	environmentIds: selectEnvironmentIds,
+	requests: selectRequests,
+	history: selectHistory,
+	historyById: selectHistoryById,
+	fullRequestInfoById: selectFullRequestInfoById,
+	uiMetadata: selectUiMetadata,
+	allItems: selectAllItems,
+	idSpecificUiMetadata: selectIdSpecificUiMetadata,
+	uiMetadataById: selectUiMetadataById,
+	workspaceSettings: selectWorkspaceSettings,
+	settings: selectSettings,
+	zoomLevel: selectZoomLevel,
+	defaultTheme: selectDefaultTheme,
+	theme: selectTheme,
+	saveStateTimestamps: selectSaveStateTimestamps,
+	scripts: selectScripts,
+	hasBeenModifiedSinceLastSave: selectHasBeenModifiedSinceLastSave,
+	syncMetadata: selectSyncMetadata,
+	environmentSnippets: selectEnvironmentSnippets,
+} as const;

@@ -1,12 +1,15 @@
-import { ReactNode, useEffect, useRef } from 'react';
-import { Editor, EditorProps } from '@monaco-editor/react';
-import { editor } from 'monaco-editor';
-import { Box, Stack } from '@mui/joy';
-import { EditorActions } from './EditorActions';
 import { useEditorTheme } from '@/hooks/useEditorTheme';
-import { defaultEditorOptions } from '@/managers/monaco/MonacoInitManager';
+import { useMonacoOptionsSync } from '@/hooks/useMonacoSync';
+import { MonacoManager } from '@/managers/monaco/MonacoManager';
+import type { EditorProps } from '@monaco-editor/react';
+import { Editor } from '@monaco-editor/react';
+import { Box, Stack } from '@mui/joy';
+import type { editor } from 'monaco-editor';
+import type { ReactNode } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { EditorActions } from './EditorActions';
 
-type SprocketEditorProps = Omit<EditorProps, 'onMount'> & {
+export type SprocketEditorProps = Omit<EditorProps, 'onMount'> & {
 	ActionBarItems?: ReactNode;
 	formatOnChange?: boolean;
 };
@@ -19,15 +22,15 @@ export function SprocketEditor({
 	height = '100%',
 	...overrides
 }: SprocketEditorProps) {
-	const combinedOptions = { ...defaultEditorOptions, ...options };
 	const editorTheme = useEditorTheme();
 	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+	const combinedOptions = useMonacoOptionsSync({ base: MonacoManager.defaultOptions, options, ref: editorRef });
 
-	const format = async () => {
+	const format = useCallback(async () => {
 		if (editorRef.current != null) {
 			const current = editorRef.current;
 			const action = () => current.getAction('editor.action.formatDocument')?.run();
-			if (options?.readOnly) {
+			if (combinedOptions.readOnly) {
 				current.updateOptions({ ...combinedOptions, readOnly: false });
 				await action();
 				current.updateOptions({ ...combinedOptions, readOnly: true });
@@ -35,19 +38,13 @@ export function SprocketEditor({
 				await action();
 			}
 		}
-	};
-
-	useEffect(() => {
-		if (options != null) {
-			editorRef.current?.updateOptions(combinedOptions);
-		}
 	}, [combinedOptions]);
 
 	useEffect(() => {
 		if (formatOnChange) {
 			format();
 		}
-	}, [value, editorRef.current, formatOnChange]);
+	}, [value, formatOnChange, format]);
 
 	return (
 		<Box height={height}>

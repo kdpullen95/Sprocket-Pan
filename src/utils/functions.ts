@@ -1,7 +1,7 @@
+import type { SprocketScriptContext } from '@/managers/scripts/SprocketScriptContext';
+import type { Token } from '@/types/shared/misc';
 import { getClearableTimeout, interruptingTimeout } from './misc';
-import { InterruptibleScriptReturn } from './types';
-import { Token } from '@/types/shared/misc';
-import { SprocketScriptContext } from '@/managers/scripts/SprocketScriptContext';
+import type { InterruptibleScriptReturn } from './types';
 
 /**
  * Call an async function with a maximum time limit (in milliseconds) for the timeout
@@ -33,9 +33,9 @@ export function combineReplacers(replacers: Replacer[]): Replacer {
 	};
 }
 
-export function nullifyProperties<T extends Record<string, any>>(...keys: (keyof T)[]): Replacer {
+export function nullifyProperties<T>(...keys: (keyof T)[]): Replacer {
 	return (key, value) => {
-		if (keys.includes(key)) {
+		if (keys.includes(key as never)) {
 			return undefined;
 		}
 		return value;
@@ -50,6 +50,7 @@ export function safeJsonParse<T>(str: string) {
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- I don't know how to type arbitrary args any other way
 export function checkInterrupt<T, A extends any[]>(func: (...args: A) => T, token: Token<boolean>) {
 	return (...args: A) => {
 		if (token.current) {
@@ -61,12 +62,10 @@ export function checkInterrupt<T, A extends any[]>(func: (...args: A) => T, toke
 
 export function clearLeafProperties<T extends object>(item: T, newValue: null | undefined) {
 	for (const key in item) {
-		if (item.hasOwnProperty(key)) {
-			if (typeof item[key] === 'object' && item[key] != null) {
-				clearLeafProperties(item[key], newValue);
-			} else {
-				item[key] = newValue as any;
-			}
+		if (typeof item[key] === 'object' && item[key] != null) {
+			clearLeafProperties(item[key], newValue);
+		} else {
+			item[key] = newValue as T[typeof key];
 		}
 	}
 }

@@ -1,18 +1,18 @@
+import { GlobalSelect } from '@/state/global/selectors';
+import { GlobalActions } from '@/state/global/slice';
+import { useAppDispatch } from '@/state/store';
+import { mergeDeep } from '@/utils/variables';
 import { Box, Stack } from '@mui/joy';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { SettingsTabs } from './tabs/SettingsTabs';
 import { SettingsBar } from './SettingsBar';
-import { SettingsPanelProps } from './SettingsPanel';
-import { selectGlobalLastSaved, selectGlobalSettings } from '@/state/global/selectors';
-import { globalActions } from '@/state/global/slice';
-import { useAppDispatch } from '@/state/store';
-import { mergeDeep } from '@/utils/variables';
+import type { SettingsPanelProps } from './SettingsPanel';
 import { SettingsTitle } from './SettingsTitle';
+import { SettingsTabs } from './tabs/SettingsTabs';
 
 export function GlobalSettingsPanel({ onClose }: SettingsPanelProps) {
-	const lastSaved = useSelector(selectGlobalLastSaved);
-	const previousSettings = useSelector(selectGlobalSettings);
+	const lastSaved = useSelector(GlobalSelect.lastSaved);
+	const previousSettings = useSelector(GlobalSelect.settings);
 	const [unsavedSettings, setUnsavedSettings] = useState(previousSettings);
 	const hasChanged = useMemo(() => {
 		return JSON.stringify(previousSettings) !== JSON.stringify(unsavedSettings);
@@ -21,7 +21,7 @@ export function GlobalSettingsPanel({ onClose }: SettingsPanelProps) {
 	const [search, setSearch] = useState('');
 	return (
 		<Stack height="75vh" justifyContent="stretch" alignItems="stretch" gap={1}>
-			<SettingsTitle onChange={setSearch} />
+			<SettingsTitle value={search} onChange={setSearch} />
 			<Box sx={{ flex: 1, overflow: 'auto' }}>
 				<SettingsTabs
 					searchText={search}
@@ -31,7 +31,7 @@ export function GlobalSettingsPanel({ onClose }: SettingsPanelProps) {
 				/>
 			</Box>
 			<SettingsBar
-				onSave={() => dispatch(globalActions.insertSettings(unsavedSettings))}
+				onSave={() => dispatch(GlobalActions.insertSettings(unsavedSettings))}
 				onClose={onClose}
 				settings={unsavedSettings}
 				hasChanged={hasChanged}

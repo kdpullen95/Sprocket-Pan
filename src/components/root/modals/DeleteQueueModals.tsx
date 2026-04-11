@@ -1,15 +1,15 @@
 import { InlineItemName } from '@/components/shared/InlineItemName';
 import { AreYouSureModal } from '@/components/shared/modals/AreYouSureModal';
 import { useAppDispatch } from '@/state/store';
-import { selectNextForDeletion } from '@/state/ui/selectors';
-import { uiActions } from '@/state/ui/slice';
+import { UiSelect } from '@/state/ui/selectors';
+import { UiActions } from '@/state/ui/slice';
 import { extractActions } from '@/state/util';
 import { useSelector } from 'react-redux';
 
 export function DeleteQueueModals() {
-	const nextForDeletion = useSelector(selectNextForDeletion);
+	const nextForDeletion = useSelector(UiSelect.nextForDeletion);
 	const dispatch = useAppDispatch();
-	const removeDeleteQueueEntry = () => dispatch(uiActions.removeFromDeleteQueue(nextForDeletion));
+	const removeDeleteQueueEntry = () => dispatch(UiActions.removeFromDeleteQueue(nextForDeletion));
 	const actions = nextForDeletion == null ? null : extractActions(nextForDeletion);
 	const item = useSelector((state) => actions?.select(state, nextForDeletion));
 

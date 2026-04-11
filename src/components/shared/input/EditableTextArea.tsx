@@ -1,20 +1,19 @@
+import { Cancel, Check, ModeEdit } from '@mui/icons-material';
 import { Box, IconButton, Stack, Textarea } from '@mui/joy';
 import { useEffect, useState } from 'react';
-import CheckIcon from '@mui/icons-material/Check';
-import CancelIcon from '@mui/icons-material/Cancel';
 import Markdown from 'react-markdown';
 import { SprocketTooltip } from '../SprocketTooltip';
-import { ModeEdit } from '@mui/icons-material';
 
 interface EditableTextAreaProps {
-	text: string;
+	fallback?: string;
+	text?: string;
 	setText: (text: string) => void;
 	isValidFunc?: (text: string) => boolean;
 }
 
-export function EditableTextArea({ text, setText, isValidFunc = () => true }: EditableTextAreaProps) {
+export function EditableTextArea({ fallback, text, setText, isValidFunc = () => true }: EditableTextAreaProps) {
 	const [isEditing, setIsEditing] = useState(false);
-	const [typingText, setTypingText] = useState(text);
+	const [typingText, setTypingText] = useState(text ?? '');
 
 	const isValid = isValidFunc(typingText);
 
@@ -25,13 +24,13 @@ export function EditableTextArea({ text, setText, isValidFunc = () => true }: Ed
 				setIsEditing(false);
 			}
 		} else {
-			setTypingText(text);
+			setTypingText(text ?? '');
 			setIsEditing(true);
 		}
 	}
 
 	useEffect(() => {
-		setTypingText(text);
+		setTypingText(text ?? '');
 		setIsEditing(false);
 	}, [text]);
 
@@ -40,13 +39,13 @@ export function EditableTextArea({ text, setText, isValidFunc = () => true }: Ed
 			<Stack sx={{ mt: '10px' }}>
 				<SprocketTooltip text={isEditing ? 'Save' : 'Edit'}>
 					<IconButton onClick={toggleEditing} disabled={isEditing && !isValid} size="sm">
-						{isEditing ? <CheckIcon /> : <ModeEdit />}
+						{isEditing ? <Check /> : <ModeEdit />}
 					</IconButton>
 				</SprocketTooltip>
 				{isEditing && (
 					<SprocketTooltip text="Cancel">
 						<IconButton onClick={() => setIsEditing(false)} size="sm">
-							<CancelIcon />
+							<Cancel />
 						</IconButton>
 					</SprocketTooltip>
 				)}
@@ -55,6 +54,7 @@ export function EditableTextArea({ text, setText, isValidFunc = () => true }: Ed
 				<Textarea
 					sx={{ width: '100%', mt: '10px' }}
 					variant="outlined"
+					placeholder={fallback}
 					value={typingText}
 					onChange={(e) => setTypingText(e.target.value)}
 					error={!isValid}
