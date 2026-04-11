@@ -13,7 +13,6 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { PanelProps } from '../panels.interface';
 import { EditableHeader } from '../shared/EditableHeader';
-import { EditEnvironmentBadge } from './EditEnvironmentBadge';
 
 export function EnvironmentPanel({ id }: PanelProps) {
 	const selectedEnvironment = useSelector(selectSelectedEnvironment);
@@ -55,15 +54,7 @@ export function EnvironmentPanel({ id }: PanelProps) {
 				}
 				value={environment.name}
 				onChange={(name) => dispatch(activeActions.updateEnvironment({ name, id }))}
-				right={
-					<Stack direction="row" gap={1}>
-						<EditEnvironmentBadge
-							onChange={(badge) => dispatch(activeActions.updateEnvironment({ badge, id }))}
-							environment={environment}
-						/>
-						<SyncButton id={id} />
-					</Stack>
-				}
+				right={<SyncButton id={id} />}
 			/>
 			<Box sx={{ height: '70vh', pb: '5vh' }}>
 				<EditableData

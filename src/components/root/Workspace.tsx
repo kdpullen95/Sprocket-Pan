@@ -13,7 +13,7 @@ const MIN_SIDEBAR_WIDTH = 5;
 export function Workspace() {
 	const [tab, setTab] = useState<SidebarTabs>(SidebarTabs.Workspaces);
 	const theme = useTheme();
-	const [expanded, setIsExpanded] = useState(false);
+	const [isExpanded, setIsExpanded] = useState(false);
 	const ref = usePanelRef();
 	const setPanelTab = (newTab: SidebarTabs) => {
 		if (ref.current?.isCollapsed()) {
@@ -37,7 +37,7 @@ export function Workspace() {
 			}}
 		>
 			<Box sx={{ flex: 0, minWidth: '45px', maxWidth: '45px', height: '100%' }}>
-				<VerticalMenu tab={tab} setTab={setPanelTab} showActive={expanded} />
+				<VerticalMenu tab={tab} setTab={setPanelTab} showActive={isExpanded} />
 			</Box>
 			<Group orientation="horizontal">
 				<Panel

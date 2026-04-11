@@ -1,7 +1,9 @@
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { useSingleAxisScroll } from '@/hooks/useSingleAxisScroll';
-import { tabClasses, TabList } from '@mui/joy';
-import { useTheme } from '@mui/joy/styles';
+import { useAppDispatch } from '@/state/store';
+import { uiActions } from '@/state/ui/slice';
+import { Box } from '@mui/joy';
+import { AnimatePresence, Reorder } from 'framer-motion';
 import { Tab } from './Tab';
 
 interface TabRowProps {
@@ -11,47 +13,22 @@ interface TabRowProps {
 export function TabRow({ list }: TabRowProps) {
 	const ref = useSingleAxisScroll();
 	const { average: scrollbarTheme } = useScrollbarTheme();
-	const theme = useTheme();
+	const dispatch = useAppDispatch();
 	return (
-		<TabList
-			ref={ref}
-			tabFlex="1"
-			sticky="top"
-			underlinePlacement="bottom"
-			variant="soft"
-			disableUnderline
-			id="tabScroll"
-			sx={{
-				...scrollbarTheme,
-				backgroundColor: theme.palette.background.level2,
-				zIndex: 110,
-				overflowX: 'auto',
-				overflowY: 'hidden',
-				scrollSnapType: 'x mandatory',
-				maxHeight: '45px',
-				boxSizing: 'border-box',
-				[`& .${tabClasses.root}`]: {
-					'&[aria-selected="true"]': {
-						color: `secondary.500`,
-						bgcolor: 'background.surface',
-						borderColor: 'divider',
-						'&::before': {
-							content: '""',
-							display: 'block',
-							position: 'absolute',
-							height: 2,
-							bottom: -2,
-							left: 0,
-							right: 0,
-							bgcolor: 'background.surface',
-						},
-					},
-				},
-			}}
-		>
-			{list.map((id) => (
-				<Tab key={id} id={id} />
-			))}
-		</TabList>
+		<Box ref={ref} sx={{ width: '100%', maxWidth: '100%', overflow: 'auto', ...scrollbarTheme }}>
+			<Reorder.Group
+				as="div"
+				axis="x"
+				onReorder={(newList) => dispatch(uiActions.reorderTabs(newList))}
+				values={list}
+				style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap' }}
+			>
+				<AnimatePresence initial={false}>
+					{list.map((id) => (
+						<Tab key={id} id={id} />
+					))}
+				</AnimatePresence>
+			</Reorder.Group>
+		</Box>
 	);
 }

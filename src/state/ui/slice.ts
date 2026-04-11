@@ -67,6 +67,10 @@ export const uiSlice = createSlice({
 				state.tabs.push(payload);
 			}
 		},
+		reorderTabs: (state, { payload }: PayloadAction<string[]>) => {
+			// TODO: validate that we're not adding/removing tabs here
+			state.tabs = payload;
+		},
 		setSelectedTab: (state, { payload }: PayloadAction<string>) => {
 			state.selectedTab = payload;
 			if (payload !== state.tabsHistory[state.tabsHistoryPosition]) {
