@@ -2,6 +2,7 @@ import { SprocketPanSvg } from '@/assets/icons/brands/SprocketPan';
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { ActiveSelect } from '@/state/active/selectors';
 import { UiSelect } from '@/state/ui/selectors';
+import { equalContent } from '@/utils/misc';
 import { Box, Stack } from '@mui/joy';
 import { useTheme } from '@mui/joy/styles';
 import { useSelector } from 'react-redux';
@@ -9,7 +10,7 @@ import { TabContent } from '../panels/TabContent';
 import { HeaderTabRow } from './HeaderTabRow';
 
 export function TabHeader() {
-	const tabs = useSelector(UiSelect.tabs);
+	const tabs = useSelector(UiSelect.tabs, equalContent);
 	const { guttered: scrollbarTheme } = useScrollbarTheme();
 	const settings = useSelector(ActiveSelect.settings);
 	const theme = useTheme();

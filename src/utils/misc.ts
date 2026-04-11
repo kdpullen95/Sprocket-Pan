@@ -43,3 +43,12 @@ export function getDuplicateKeys(pairs: KeyValuePair[]) {
 	});
 	return dups;
 }
+
+export function equalContent<T>(a: T[], b: T[], equal = (a: T, b: T) => a === b) {
+	if (a.length === b.length) {
+		const sortedA = [...a].sort();
+		const sortedB = [...b].sort();
+		return sortedA.every((v, i) => equal(sortedB[i], v));
+	}
+	return false;
+}

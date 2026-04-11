@@ -1,14 +1,14 @@
 import { tabTypeIcon } from '@/constants/components';
+import { useContextMenu } from '@/hooks/useContextMenu';
 import { useAppDispatch } from '@/state/store';
 import { UiSelect } from '@/state/ui/selectors';
 import { UiActions } from '@/state/ui/slice';
 import { extractActions } from '@/state/util';
 import { Close } from '@mui/icons-material';
-import { Box, IconButton, Stack, useTheme } from '@mui/joy';
+import { IconButton, Stack, useTheme } from '@mui/joy';
 import { Reorder } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { EllipsisTypography } from '../shared/EllipsisTypography';
-import { ContextMenu } from '../shared/context/ContextMenu';
 import { PredefinedContextMenuItems } from '../shared/context/ContextMenuItems';
 
 function useTabInfo(id: string) {
@@ -34,11 +34,38 @@ export function Tab({ id }: TabProps) {
 	const selected = useSelector((state) => UiSelect.isSelectedTab(state, id));
 	const theme = useTheme();
 	const { key, item } = useTabInfo(id);
+	const onContextMenu = useContextMenu([
+		{
+			text: 'Close',
+			items: [
+				{ text: 'Close This', action: () => dispatch(UiActions.closeTab(id)) },
+				{ text: 'Close Others', action: () => dispatch(UiActions.closeOtherTabs(id)) },
+				PredefinedContextMenuItems.separator,
+				{
+					text: 'Close Left',
+					action: () => dispatch(UiActions.closeTabsDirectionally({ center: id, left: true })),
+				},
+				{
+					text: 'Close Right',
+					action: () => dispatch(UiActions.closeTabsDirectionally({ center: id })),
+				},
+				PredefinedContextMenuItems.separator,
+				{ text: 'Close All', action: () => dispatch(UiActions.clearTabs()) },
+			],
+		},
+	]);
 	return (
-		<Reorder.Item as="div" value={id} id={id}>
-			<Box
+		<Reorder.Item as="div" value={id} id={id} style={{ width: '250px', overflow: 'hidden' }}>
+			<Stack
+				onContextMenu={onContextMenu}
+				direction="row"
+				flexWrap="nowrap"
+				alignItems="center"
+				justifyContent="space-between"
 				sx={{
-					minWidth: '250px',
+					maxWidth: '100%',
+					width: '100%',
+					height: '100%',
 					background: theme.palette.background.level1,
 					padding: '6px',
 					borderBottom: `2px solid ${selected ? theme.palette.primary.outlinedColor : theme.palette.background.level1}`,
@@ -47,47 +74,28 @@ export function Tab({ id }: TabProps) {
 					boxSizing: 'border-box',
 				}}
 			>
-				<ContextMenu
-					items={[
-						{
-							text: 'Close',
-							items: [
-								{ text: 'Close This', action: () => dispatch(UiActions.closeTab(id)) },
-								{ text: 'Close Others', action: () => dispatch(UiActions.closeOtherTabs(id)) },
-								PredefinedContextMenuItems.separator,
-								{
-									text: 'Close Left',
-									action: () => dispatch(UiActions.closeTabsDirectionally({ center: id, left: true })),
-								},
-								{
-									text: 'Close Right',
-									action: () => dispatch(UiActions.closeTabsDirectionally({ center: id })),
-								},
-								PredefinedContextMenuItems.separator,
-								{ text: 'Close All', action: () => dispatch(UiActions.clearTabs()) },
-							],
-						},
-					]}
+				<Stack
+					width="1px"
+					gap={1}
+					flex={1}
+					direction="row"
+					onPointerDown={(e) => e.button === 0 && dispatch(UiActions.setSelectedTab(id))}
 				>
-					<Stack direction="row" flexWrap="nowrap" alignItems="center" justifyContent="space-between">
-						<Stack gap={1} flex={1} direction="row" onPointerDown={() => dispatch(UiActions.setSelectedTab(id))}>
-							{tabTypeIcon[key]}
-							<EllipsisTypography>{item.name}</EllipsisTypography>
-						</Stack>
-						<IconButton
-							color="danger"
-							onClick={(e) => {
-								dispatch(UiActions.closeTab(id));
-								e.stopPropagation();
-							}}
-							sx={{ borderRadius: '25px' }}
-							size="sm"
-						>
-							<Close />
-						</IconButton>
-					</Stack>
-				</ContextMenu>
-			</Box>
+					{tabTypeIcon[key]}
+					<EllipsisTypography>{item.name}</EllipsisTypography>
+				</Stack>
+				<IconButton
+					color="danger"
+					onClick={(e) => {
+						dispatch(UiActions.closeTab(id));
+						e.stopPropagation();
+					}}
+					sx={{ borderRadius: '25px' }}
+					size="sm"
+				>
+					<Close />
+				</IconButton>
+			</Stack>
 		</Reorder.Item>
 	);
 }
