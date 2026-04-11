@@ -29,7 +29,7 @@ export function EditableText({
 	const [isEditing, setIsEditing] = useState(false);
 	const [typingText, setTypingText] = useState(text);
 
-	const isValid = isValidFunc(text);
+	const isValid = isValidFunc(typingText);
 
 	const commitInput = () => {
 		if (isValid) {

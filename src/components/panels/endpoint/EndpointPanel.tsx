@@ -1,6 +1,5 @@
 import { SyncButton } from '@/components/shared/buttons/SyncButton';
 import { EnvironmentTypography } from '@/components/shared/EnvironmentTypography';
-import { Constants } from '@/constants/constants';
 import { useComputedServiceEnvironment } from '@/hooks/useComputedEnvironment';
 import { useDebounce } from '@/hooks/useDebounce';
 import { EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
@@ -32,7 +31,6 @@ export function EndpointPanel({ id }: PanelProps) {
 	const [localDataState, setLocalDataState] = useDebounce({
 		state: endpoint?.url ?? '',
 		setState: (newUrl: string) => update({ url: newUrl }),
-		debounceMS: Constants.debounceTimeMS,
 	});
 
 	if (endpoint == null || service == null) {

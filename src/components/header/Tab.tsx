@@ -55,7 +55,12 @@ export function Tab({ id }: TabProps) {
 		},
 	]);
 	return (
-		<Reorder.Item as="div" value={id} id={id} style={{ width: '250px', overflow: 'hidden' }}>
+		<Reorder.Item
+			as="div"
+			value={id}
+			id={id}
+			style={{ width: '250px', minWidth: '200px', maxWidth: '300px', overflow: 'hidden' }}
+		>
 			<Stack
 				onContextMenu={onContextMenu}
 				direction="row"
@@ -82,7 +87,13 @@ export function Tab({ id }: TabProps) {
 					onPointerDown={(e) => e.button === 0 && dispatch(UiActions.setSelectedTab(id))}
 				>
 					{tabTypeIcon[key]}
-					<EllipsisTypography>{item.name}</EllipsisTypography>
+					{item.name ? (
+						<EllipsisTypography>{item.name}</EllipsisTypography>
+					) : (
+						<EllipsisTypography variant="soft" fontStyle="italic">
+							Unnamed
+						</EllipsisTypography>
+					)}
 				</Stack>
 				<IconButton
 					color="danger"
