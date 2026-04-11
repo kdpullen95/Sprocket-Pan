@@ -1,7 +1,7 @@
 import { EllipsisTypography } from '@/components/shared/EllipsisTypography';
-import { SelectOption } from '@/components/shared/input/SprocketSelect';
+import type { SelectOption } from '@/components/shared/input/SprocketSelect';
 import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
-import { Item } from '@/types/data/item';
+import type { Item } from '@/types/data/item';
 import { Stack } from '@mui/joy';
 
 export const OrphanResolution = {

@@ -1,19 +1,20 @@
 import { useEditorTheme } from '@/hooks/useEditorTheme';
 import { MonacoManager } from '@/managers/monaco/MonacoManager';
-import { selectEnvironments, selectSelectedEnvironment } from '@/state/active/selectors';
-import { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
+import { ActiveSelect } from '@/state/active/selectors';
+import type { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
 import { clamp } from '@/utils/math';
 import { replaceValuesByKey } from '@/utils/variables';
 import { Editor } from '@monaco-editor/react';
 import { Cancel, Edit, ReportProblem, Save, Visibility } from '@mui/icons-material';
 import { Badge, Box, IconButton, Snackbar } from '@mui/joy';
-import { editor } from 'monaco-editor';
+import type { editor } from 'monaco-editor';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CopyToClipboardButton } from '../../buttons/CopyToClipboardButton';
 import { FormatButton } from '../../buttons/FormatButton';
 import { SprocketTooltip } from '../../SprocketTooltip';
-import { ActionBar, ActionBarPassthroughProps } from '../ActionBar';
+import type { ActionBarPassthroughProps } from '../ActionBar';
+import { ActionBar } from '../ActionBar';
 
 export function parseEditorJSON<T>(text: string): Record<string, T> {
 	if (text === '') {
@@ -53,8 +54,8 @@ export function EditableData<T extends KeyValueValues>({
 }: EditableDataProps<T>) {
 	const theme = useEditorTheme();
 
-	const selectedEnvironment = useSelector(selectSelectedEnvironment);
-	const environments = useSelector(selectEnvironments);
+	const selectedEnvironment = useSelector(ActiveSelect.selectedEnvironment);
+	const environments = useSelector(ActiveSelect.environments);
 	const envValues = envPairs ?? (selectedEnvironment == null ? [] : environments[selectedEnvironment].pairs);
 
 	const [editorText, setEditorText] = useState(() => toEditorJSON(initialValues));

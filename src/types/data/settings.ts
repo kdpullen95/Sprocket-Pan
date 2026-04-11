@@ -1,4 +1,4 @@
-import { RecursiveValueOf, TypeOf } from '../utils/utils';
+import type { RecursiveValueOf, TypeOf } from '../utils/utils';
 
 const levels = ['service', 'endpoint', 'request'] as const;
 type level = (typeof levels)[number];

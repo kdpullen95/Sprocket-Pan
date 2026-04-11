@@ -1,4 +1,4 @@
-import { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
+import type { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
 
 type KeyValueOrOrdered<T extends KeyValueValues> = KeyValuePair<T>[] | OrderedKeyValuePairs<T>;
 

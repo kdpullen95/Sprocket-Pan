@@ -1,8 +1,9 @@
 import { SearchField } from '@/components/shared/input/SearchField';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { ItemFactory } from '@/managers/data/ItemFactory';
-import { selectScripts } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
+
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 import { searchScripts } from '@/utils/search';
 import { AddBox } from '@mui/icons-material';
@@ -14,7 +15,7 @@ import { FileSystemTrunk } from '../tree/FileSystemTrunk';
 import { ScriptFileSystem } from './ScriptFileSystem';
 
 export function ScriptsFileSystem() {
-	const scripts = useSelector(selectScripts);
+	const scripts = useSelector(ActiveSelect.scripts);
 	const [searchText, setSearchText] = useState('');
 	const dispatch = useAppDispatch();
 
@@ -28,7 +29,7 @@ export function ScriptsFileSystem() {
 					<Stack flexWrap="wrap" direction="row" justifyContent="end" alignItems="center" gap={1}>
 						<SearchField value={searchText} onChange={setSearchText} />
 						<SprocketTooltip text="Add New Script">
-							<IconButton onClick={() => dispatch(activeActions.insertScript(ItemFactory.script()))}>
+							<IconButton onClick={() => dispatch(ActiveActions.insertScript(ItemFactory.script()))}>
 								<AddBox />
 							</IconButton>
 						</SprocketTooltip>

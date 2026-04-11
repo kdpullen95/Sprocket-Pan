@@ -1,9 +1,9 @@
-import { selectIsLoadingWorkspace } from '@/state/ui/selectors';
-import { Stack, CircularProgress, Typography, Box } from '@mui/joy';
+import { UiSelect } from '@/state/ui/selectors';
+import { Box, CircularProgress, Stack, Typography } from '@mui/joy';
 import { useSelector } from 'react-redux';
 
 export function LoadingWorkspaceOverlay() {
-	const isLoading = useSelector(selectIsLoadingWorkspace);
+	const isLoading = useSelector(UiSelect.isLoadingWorkspace);
 	return (
 		<Stack
 			alignItems="center"

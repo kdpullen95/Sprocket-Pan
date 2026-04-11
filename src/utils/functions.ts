@@ -1,7 +1,7 @@
-import { SprocketScriptContext } from '@/managers/scripts/SprocketScriptContext';
-import { Token } from '@/types/shared/misc';
+import type { SprocketScriptContext } from '@/managers/scripts/SprocketScriptContext';
+import type { Token } from '@/types/shared/misc';
 import { getClearableTimeout, interruptingTimeout } from './misc';
-import { InterruptibleScriptReturn } from './types';
+import type { InterruptibleScriptReturn } from './types';
 
 /**
  * Call an async function with a maximum time limit (in milliseconds) for the timeout

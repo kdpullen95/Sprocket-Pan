@@ -4,29 +4,29 @@ import { Constants } from '@/constants/constants';
 import { useComputedServiceEnvironment } from '@/hooks/useComputedEnvironment';
 import { useDebounce } from '@/hooks/useDebounce';
 import { EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
-import { activeActions } from '@/state/active/slice';
-import { itemActions } from '@/state/items';
+import { ActiveActions } from '@/state/active/slice';
+import { ItemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { Endpoint } from '@/types/data/workspace';
+import { UiActions } from '@/state/ui/slice';
+import type { Endpoint } from '@/types/data/workspace';
 import { ExitToApp } from '@mui/icons-material';
 import { Button, Input, Stack } from '@mui/joy';
 import { useSelector } from 'react-redux';
-import { PanelProps } from '../panels.interface';
+import type { PanelProps } from '../panels.interface';
 import { EditableHeader } from '../shared/EditableHeader';
 import { VerbSelect } from '../shared/VerbSelect';
 import { EndpointEditTabs } from './EndpointEditTabs';
 
 export function EndpointPanel({ id }: PanelProps) {
 	const dispatch = useAppDispatch();
-	const endpoint = useSelector((state) => itemActions.endpoint.select(state, id));
-	const service = useSelector((state) => itemActions.service.select(state, endpoint?.serviceId));
+	const endpoint = useSelector((state) => ItemActions.endpoint.select(state, id));
+	const service = useSelector((state) => ItemActions.service.select(state, endpoint?.serviceId));
 
 	const computedEnv = useComputedServiceEnvironment(endpoint?.serviceId);
 	const envSnippets = EnvironmentContextResolver.stringWithVarsToSnippet(service?.baseUrl || 'unknown', computedEnv);
 
 	const update = (values: Partial<Endpoint>) => {
-		dispatch(activeActions.updateEndpoint({ ...values, id }));
+		dispatch(ActiveActions.updateEndpoint({ ...values, id }));
 	};
 
 	const [localDataState, setLocalDataState] = useDebounce({
@@ -62,8 +62,8 @@ export function EndpointPanel({ id }: PanelProps) {
 					disabled={!endpoint.defaultRequest}
 					onClick={() => {
 						if (endpoint.defaultRequest) {
-							dispatch(uiActions.addTab(endpoint.defaultRequest));
-							dispatch(uiActions.setSelectedTab(endpoint.defaultRequest));
+							dispatch(UiActions.addTab(endpoint.defaultRequest));
+							dispatch(UiActions.setSelectedTab(endpoint.defaultRequest));
 						}
 					}}
 				>

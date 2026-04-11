@@ -1,5 +1,6 @@
-import { formatShortFullDate, formatRelativeDate } from '@/utils/string';
-import { EditCalendar, SvgIconComponent } from '@mui/icons-material';
+import { formatRelativeDate, formatShortFullDate } from '@/utils/string';
+import type { SvgIconComponent } from '@mui/icons-material';
+import { EditCalendar } from '@mui/icons-material';
 import { Chip } from '@mui/joy';
 import { SprocketTooltip } from './SprocketTooltip';
 

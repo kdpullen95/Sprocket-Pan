@@ -1,6 +1,6 @@
 import { RustInvoker } from '@/managers/RustInvoker';
-import { selectDefaultTheme, selectZoomLevel } from '@/state/active/selectors';
-import { selectActiveWorkspace } from '@/state/global/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
+import { GlobalSelect } from '@/state/global/selectors';
 import { useColorScheme } from '@mui/joy';
 import { useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -13,9 +13,9 @@ import { ModalsWrapper } from './modals/ModalsWrapper';
 import { LoadingWorkspaceOverlay } from './overlays/LoadingWorkspaceOverlay';
 
 export function Root() {
-	const activeWorkspace = useSelector(selectActiveWorkspace);
-	const zoomLevel = useSelector(selectZoomLevel);
-	const defaultTheme = useSelector(selectDefaultTheme);
+	const activeWorkspace = useSelector(GlobalSelect.activeWorkspace);
+	const zoomLevel = useSelector(ActiveSelect.zoomLevel);
+	const defaultTheme = useSelector(ActiveSelect.defaultTheme);
 	const { setMode } = useColorScheme();
 
 	useEffect(() => {

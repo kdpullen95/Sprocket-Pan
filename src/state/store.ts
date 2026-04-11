@@ -1,17 +1,17 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import { activeSlice } from './active/slice';
-import { uiSlice } from './ui/slice';
-import { globalSlice } from './global/slice';
 import { isModifiedListener } from './active/listeners/isModifiedListener';
 import { stateAccessListener } from './active/listeners/stateAccessListener';
-import { openTabsListener } from './ui/listeners';
+import { ActiveSlice } from './active/slice';
 import { workspaceSelectionListener } from './global/listeners';
+import { GlobalSlice } from './global/slice';
+import { openTabsListener } from './ui/listeners';
+import { UiSlice } from './ui/slice';
 
 const rootReducer = combineReducers({
-	[globalSlice.name]: globalSlice.reducer,
-	[activeSlice.name]: activeSlice.reducer,
-	[uiSlice.name]: uiSlice.reducer,
+	[GlobalSlice.name]: GlobalSlice.reducer,
+	[ActiveSlice.name]: ActiveSlice.reducer,
+	[UiSlice.name]: UiSlice.reducer,
 });
 
 export function setupStore(preloadedState?: Partial<RootState>) {

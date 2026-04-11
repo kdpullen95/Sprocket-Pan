@@ -3,7 +3,7 @@ import { Divider, Stack, Typography } from '@mui/joy';
 import { toNumberOrUndefined } from '@/utils/math';
 import { HourglassBottom } from '@mui/icons-material';
 import { SettingsInput, SettingsStrategyInput } from './SettingsFields';
-import { SettingsTabProps } from './types';
+import type { SettingsTabProps } from './types';
 
 function toMSOrUndefined(num: unknown) {
 	const ret = toNumberOrUndefined(num);

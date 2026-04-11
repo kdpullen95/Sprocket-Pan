@@ -1,8 +1,9 @@
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { styled } from '@mui/joy/styles';
-import Textarea, { TextareaProps } from '@mui/joy/Textarea';
+import type { TextareaProps } from '@mui/joy/Textarea';
+import Textarea from '@mui/joy/Textarea';
+import type { JSX } from 'react';
 import * as React from 'react';
-import { JSX } from 'react';
 
 const StyledTextarea = styled(TextareaAutosize)({
 	resize: 'none',

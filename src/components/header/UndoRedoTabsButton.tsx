@@ -1,13 +1,13 @@
 import { useAppDispatch } from '@/state/store';
-import { selectPeekHistory } from '@/state/ui/selectors';
-import { uiActions } from '@/state/ui/slice';
+import { UiSelect } from '@/state/ui/selectors';
+import { UiActions } from '@/state/ui/slice';
 import { RedoRounded, UndoRounded } from '@mui/icons-material';
 import { IconButton, Stack } from '@mui/joy';
 import { useSelector } from 'react-redux';
 import { SprocketTooltip } from '../shared/SprocketTooltip';
 
 export function UndoRedoTabsButton() {
-	const { previous: goBackIndex, next: goForwardIndex } = useSelector(selectPeekHistory);
+	const { previous: goBackIndex, next: goForwardIndex } = useSelector(UiSelect.peekHistory);
 	const dispatch = useAppDispatch();
 
 	return (
@@ -15,7 +15,7 @@ export function UndoRedoTabsButton() {
 			<SprocketTooltip text="Previous Tab">
 				<IconButton
 					disabled={goBackIndex == null}
-					onClick={() => dispatch(uiActions.setSelectedTabFromHistory(goBackIndex))}
+					onClick={() => dispatch(UiActions.setSelectedTabFromHistory(goBackIndex))}
 				>
 					<UndoRounded />
 				</IconButton>
@@ -23,7 +23,7 @@ export function UndoRedoTabsButton() {
 			<SprocketTooltip text="Next Tab">
 				<IconButton
 					disabled={goForwardIndex == null}
-					onClick={() => dispatch(uiActions.setSelectedTabFromHistory(goForwardIndex))}
+					onClick={() => dispatch(UiActions.setSelectedTabFromHistory(goForwardIndex))}
 				>
 					<RedoRounded />
 				</IconButton>

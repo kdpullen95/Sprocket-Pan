@@ -1,6 +1,6 @@
 import { WarningRounded } from '@mui/icons-material';
 import { Button, DialogActions, DialogContent, DialogTitle, Divider, Modal, ModalDialog, Typography } from '@mui/joy';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface AreYouSureModalProps {
 	open: boolean;

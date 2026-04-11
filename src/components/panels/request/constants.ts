@@ -1,4 +1,4 @@
-import { EndpointResponse, NetworkFetchRequest } from '@/types/data/workspace';
+import type { EndpointResponse, NetworkFetchRequest } from '@/types/data/workspace';
 
 export const defaultResponse: { response: EndpointResponse; request: NetworkFetchRequest } = {
 	response: {

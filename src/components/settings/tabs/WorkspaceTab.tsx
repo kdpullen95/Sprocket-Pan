@@ -3,17 +3,17 @@ import { SprocketInput } from '@/components/shared/input/SprocketInput';
 import { SprocketSwitch } from '@/components/shared/input/SprocketSwitch';
 import { AreYouSureModal } from '@/components/shared/modals/AreYouSureModal';
 import { WorkspaceDataManager } from '@/managers/data/WorkspaceDataManager';
-import { selectActiveState } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
 import { saveActiveData } from '@/state/active/thunks';
-import { selectActiveWorkspace } from '@/state/global/selectors';
+import { GlobalSelect } from '@/state/global/selectors';
 import { useAppDispatch } from '@/state/store';
 import { DeleteForever, FileUpload, Folder, Save, Warning } from '@mui/icons-material';
 import { Alert, Button, FormControl, FormLabel, IconButton, Stack, Typography } from '@mui/joy';
 import { open } from '@tauri-apps/plugin-dialog';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { SettingsTabProps } from './types';
+import type { SettingsTabProps } from './types';
 
 export interface WorkspaceTabProps extends SettingsTabProps {
 	goToWorkspaceSelection: () => void;
@@ -31,8 +31,8 @@ export function WorkspaceTab({ overlay, onChange, goToWorkspaceSelection }: Work
 	const dispatch = useAppDispatch();
 	const [deleteHistoryModalOpen, setDeleteHistoryModalOpen] = useState(false);
 	const [isQuitModalOpen, setIsQuitModalOpen] = useState(false);
-	const state = useSelector(selectActiveState);
-	const workspace = useSelector(selectActiveWorkspace);
+	const state = useSelector(ActiveSelect.slice);
+	const workspace = useSelector(GlobalSelect.activeWorkspace);
 
 	const sync = overlay?.data?.sync;
 	const updateSync = (value: typeof sync) => onChange({ data: { sync: value } });
@@ -42,7 +42,7 @@ export function WorkspaceTab({ overlay, onChange, goToWorkspaceSelection }: Work
 	}
 
 	function deleteHistory() {
-		dispatch(activeActions.deleteAllHistory());
+		dispatch(ActiveActions.deleteAllHistory());
 	}
 
 	const exportData = () => WorkspaceDataManager.exportData(state, workspace!);

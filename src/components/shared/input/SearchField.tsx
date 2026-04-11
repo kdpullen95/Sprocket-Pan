@@ -2,7 +2,7 @@ import { Constants } from '@/constants/constants';
 import { useDebounce } from '@/hooks/useDebounce';
 import { ClearRounded, PendingOutlined, Search } from '@mui/icons-material';
 import { IconButton, Input } from '@mui/joy';
-import { SxProps } from '@mui/joy/styles/types';
+import type { SxProps } from '@mui/joy/styles/types';
 import { SprocketTooltip } from '../SprocketTooltip';
 
 export interface SearchFieldProps {

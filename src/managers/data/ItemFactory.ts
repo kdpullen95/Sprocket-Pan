@@ -1,5 +1,12 @@
 import { ItemPrefix } from '@/types/data/item';
-import { Endpoint, EndpointRequest, Environment, Script, Service, WorkspaceMetadata } from '@/types/data/workspace';
+import type {
+	Endpoint,
+	EndpointRequest,
+	Environment,
+	Script,
+	Service,
+	WorkspaceMetadata,
+} from '@/types/data/workspace';
 import { toValidFunctionName } from '@/utils/string';
 import { generateSlug } from 'random-word-slugs';
 import { v4 } from 'uuid';

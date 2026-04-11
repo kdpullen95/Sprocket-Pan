@@ -1,5 +1,6 @@
 import { Dropdown, IconButton, Menu, MenuButton, MenuItem } from '@mui/joy';
-import { PropsWithChildren, ReactNode, useState } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
+import { useState } from 'react';
 
 export interface MenuOption {
 	label: string;

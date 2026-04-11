@@ -1,16 +1,16 @@
-import { Box, Typography } from '@mui/joy';
-import { getEditorLanguage, ResponseBody } from './ResponseBody';
-import { HeadersDisplayTable } from './HeadersDisplayTable';
-import { VisualEventLog } from './VisualEventLog';
+import { ButtonTabs } from '@/components/shared/ButtonTabs';
+import { SprocketEditor } from '@/components/shared/input/monaco/SprocketEditor';
 import { SprocketTabs } from '@/components/shared/SprocketTabs';
 import { UriTypography } from '@/components/shared/UriTypography';
 import { statusCodes } from '@/constants/statusCodes';
-import { HistoricalEndpointResponse } from '@/types/data/workspace';
+import type { HistoricalEndpointResponse } from '@/types/data/workspace';
 import { formatFullDate } from '@/utils/string';
-import { defaultResponse } from '../constants';
 import { mergeDeep } from '@/utils/variables';
-import { SprocketEditor } from '@/components/shared/input/monaco/SprocketEditor';
-import { ButtonTabs } from '@/components/shared/ButtonTabs';
+import { Box, Typography } from '@mui/joy';
+import { defaultResponse } from '../constants';
+import { HeadersDisplayTable } from './HeadersDisplayTable';
+import { getEditorLanguage, ResponseBody } from './ResponseBody';
+import { VisualEventLog } from './VisualEventLog';
 
 function autofillDefaults(entry: HistoricalEndpointResponse) {
 	return mergeDeep(defaultResponse, entry);

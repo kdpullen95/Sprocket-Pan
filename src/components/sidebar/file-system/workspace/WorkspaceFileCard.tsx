@@ -3,8 +3,8 @@ import { EllipsisTypography } from '@/components/shared/EllipsisTypography';
 import { RelativeTimeChip } from '@/components/shared/RelativeTimeChip';
 import { Minidenticon } from '@/components/shared/flair/Minidenticon';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { WorkspaceMetadata } from '@/types/data/workspace';
+import { UiActions } from '@/state/ui/slice';
+import type { WorkspaceMetadata } from '@/types/data/workspace';
 import { OpenInNew } from '@mui/icons-material';
 import { Box, Card, Stack } from '@mui/joy';
 import { useTheme } from '@mui/joy/styles';
@@ -43,7 +43,7 @@ export function WorkspaceFileCard({ workspace, onOpenTab, onSwitchTo }: Workspac
 					options={[
 						{ label: 'Switch To', Icon: FluentArrowSwap, onClick: () => onSwitchTo(workspace) },
 						{ label: 'Open Tab', Icon: OpenInNew, onClick: () => onOpenTab(workspace.id) },
-						menuOptionDelete(() => dispatch(uiActions.addToDeleteQueue(workspace.id))),
+						menuOptionDelete(() => dispatch(UiActions.addToDeleteQueue(workspace.id))),
 					]}
 				/>
 			</Box>

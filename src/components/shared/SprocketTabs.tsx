@@ -2,7 +2,7 @@ import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { useSingleAxisScroll } from '@/hooks/useSingleAxisScroll';
 import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
 import { useTheme } from '@mui/joy/styles';
-import { SxProps } from '@mui/joy/styles/types';
+import type { SxProps } from '@mui/joy/styles/types';
 import { useState } from 'react';
 
 interface SprocketTab {

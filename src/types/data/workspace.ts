@@ -1,10 +1,10 @@
-import { KeyValuePair } from '../shared/keyValues';
-import { SprocketError } from '../state/state';
-import { RecursivePartial } from '../utils/utils';
-import { AuditLog } from './audit';
-import { Item } from './item';
-import { Settings } from './settings';
-import { QueryParams, RawBodyType, RequestBodyType, RESTfulRequestVerb, SPHeaders, UiMetadata } from './shared';
+import type { KeyValuePair } from '../shared/keyValues';
+import type { SprocketError } from '../state/state';
+import type { RecursivePartial } from '../utils/utils';
+import type { AuditLog } from './audit';
+import type { Item } from './item';
+import type { Settings } from './settings';
+import type { QueryParams, RawBodyType, RequestBodyType, RESTfulRequestVerb, SPHeaders, UiMetadata } from './shared';
 
 export interface WorkspaceMetadata extends Item {
 	description: string;

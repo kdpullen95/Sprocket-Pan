@@ -1,5 +1,5 @@
-import { selectWorkspacesList } from '@/state/global/selectors';
-import { itemActions } from '@/state/items';
+import { GlobalSelect } from '@/state/global/selectors';
+import { ItemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
 import { toValidFolderName } from '@/utils/string';
 import { AddCircle } from '@mui/icons-material';
@@ -27,7 +27,7 @@ interface CreateNewWorkspaceModalProps {
 }
 
 export function CreateNewWorkspaceModal({ open, closeFunc }: CreateNewWorkspaceModalProps) {
-	const workspaces = useSelector(selectWorkspacesList);
+	const workspaces = useSelector(GlobalSelect.workspacesList);
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -50,7 +50,7 @@ export function CreateNewWorkspaceModal({ open, closeFunc }: CreateNewWorkspaceM
 	function onCreate() {
 		setLoading(true);
 		dispatch(
-			itemActions.workspace.create({
+			ItemActions.workspace.create({
 				name,
 				description,
 				lastModified: new Date().getTime(),

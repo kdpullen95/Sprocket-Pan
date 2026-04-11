@@ -1,8 +1,8 @@
-import { Snippet } from '@/managers/EnvironmentContextResolver';
-import { selectSettings } from '@/state/active/selectors';
+import type { Snippet } from '@/managers/EnvironmentContextResolver';
+import { ActiveSelect } from '@/state/active/selectors';
 import { VariableNameDisplay } from '@/types/data/settings';
 import { Typography } from '@mui/joy';
-import { TypographyProps } from '@mui/joy/Typography/TypographyProps';
+import type { TypographyProps } from '@mui/joy/Typography/TypographyProps';
 import { useSelector } from 'react-redux';
 import { SprocketTooltip } from './SprocketTooltip';
 
@@ -13,7 +13,7 @@ interface EnvironmentTypographyProps {
 }
 
 export function EnvironmentTypography({ snippets, displayVariableNames, typographyProps }: EnvironmentTypographyProps) {
-	const settings = useSelector(selectSettings);
+	const settings = useSelector(ActiveSelect.settings);
 	const displaySetting = displayVariableNames ?? settings.interface.variableNameDisplay;
 	const shouldDisplayVariableNames = displaySetting === VariableNameDisplay.before;
 	const shouldHoverVariableNames = displaySetting === VariableNameDisplay.hover;

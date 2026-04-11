@@ -1,7 +1,7 @@
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { tabTypeIcon } from '@/constants/components';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
+import { UiActions } from '@/state/ui/slice';
 import { camelCaseToTitle } from '@/utils/string';
 import { OpenInNew } from '@mui/icons-material';
 import { Autocomplete, FormControl, FormLabel, IconButton, Stack } from '@mui/joy';
@@ -43,9 +43,9 @@ export function SearchableRequestDropdown<T extends SearchableItem>({
 						color="primary"
 						onClick={() => {
 							if (selected) {
-								dispatch(uiActions.addTab(selected.id));
-								dispatch(uiActions.setSelectedTab(selected.id));
-								dispatch(uiActions.popDiffQueue());
+								dispatch(UiActions.addTab(selected.id));
+								dispatch(UiActions.setSelectedTab(selected.id));
+								dispatch(UiActions.popDiffQueue());
 							}
 						}}
 					>

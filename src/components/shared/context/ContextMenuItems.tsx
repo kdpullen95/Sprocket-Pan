@@ -1,5 +1,5 @@
 import { PredefinedMenuItem } from '@tauri-apps/api/menu';
-import { ContextMenuItem } from './ContextMenu';
+import type { ContextMenuItem } from './ContextMenu';
 
 export const ContextMenuItems = {
 	duplicate: (action) => ({ action, text: 'Duplicate' }),

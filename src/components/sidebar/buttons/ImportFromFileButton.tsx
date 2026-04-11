@@ -7,7 +7,7 @@ import { DropdownMenuItem } from '@/components/shared/DropdownMenuItem';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { useClickOutsideAlerter } from '@/hooks/useClickOutsideAlerter';
 import { WorkspaceDataManager } from '@/managers/data/WorkspaceDataManager';
-import { activeActions } from '@/state/active/slice';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 import { Box, Dropdown, IconButton, ListItemDecorator, Menu, MenuButton } from '@mui/joy';
 import { open } from '@tauri-apps/plugin-dialog';
@@ -39,7 +39,7 @@ export function ImportFromFileButton() {
 								});
 								if (selectedUrl && typeof selectedUrl === 'string') {
 									const data = await WorkspaceDataManager.loadSprocketFile(selectedUrl);
-									dispatch(activeActions.injectState(data));
+									dispatch(ActiveActions.injectState(data));
 								}
 							}}
 						>
@@ -60,7 +60,7 @@ export function ImportFromFileButton() {
 								});
 								if (selectedUrl && typeof selectedUrl === 'string') {
 									// const data = WorkspaceDataManager.loadSwaggerFile(selectedUrl);
-									// dispatch(activeActions.injectState(data));
+									// dispatch(ActiveActions.injectState(data));
 								}
 							}}
 						>
@@ -81,7 +81,7 @@ export function ImportFromFileButton() {
 								});
 								if (selectedUrl && typeof selectedUrl === 'string') {
 									// const data = WorkspaceDataManager.loadPostmanFile(selectedUrl);
-									// dispatch(activeActions.injectState(data));
+									// dispatch(ActiveActions.injectState(data));
 								}
 							}}
 						>
@@ -102,7 +102,7 @@ export function ImportFromFileButton() {
 								});
 								if (selectedUrl && typeof selectedUrl === 'string') {
 									// const data = WorkspaceDataManager.loadInsomniaFile(selectedUrl);
-									// dispatch(activeActions.injectState(data));
+									// dispatch(ActiveActions.injectState(data));
 								}
 							}}
 						>

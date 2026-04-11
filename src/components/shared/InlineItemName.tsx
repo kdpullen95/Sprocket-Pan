@@ -1,4 +1,4 @@
-import { Item } from '@/types/data/item';
+import type { Item } from '@/types/data/item';
 
 interface InlineItemNameProps {
 	item?: Item | null;

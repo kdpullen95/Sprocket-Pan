@@ -1,17 +1,17 @@
+import { GlobalSelect } from '@/state/global/selectors';
 import { Sheet, Stack, useTheme } from '@mui/joy';
 import { useSelector } from 'react-redux';
-import { selectActiveWorkspace } from '@/state/global/selectors';
-import { SidebarTabs } from './types';
-import { SideDrawerContent } from './SideDrawerContent';
 import { UndoRedoTabsButton } from '../header/UndoRedoTabsButton';
 import { EllipsisTypography } from '../shared/EllipsisTypography';
+import { SideDrawerContent } from './SideDrawerContent';
+import type { SidebarTabs } from './types';
 
 interface SideDrawerProps {
 	tab: SidebarTabs;
 }
 
 export function SideDrawer({ tab }: SideDrawerProps) {
-	const activeWorkspace = useSelector(selectActiveWorkspace);
+	const activeWorkspace = useSelector(GlobalSelect.activeWorkspace);
 	const theme = useTheme();
 
 	return (

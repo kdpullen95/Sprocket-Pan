@@ -1,5 +1,5 @@
 import { useDebounce } from '@/hooks/useDebounce';
-import { Script } from '@/types/data/workspace';
+import type { Script } from '@/types/data/workspace';
 import { Cancel, Code, PlayCircle } from '@mui/icons-material';
 import { Button, CircularProgress, FormControl, FormLabel, Input, Stack } from '@mui/joy';
 

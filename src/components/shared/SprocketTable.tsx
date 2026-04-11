@@ -1,6 +1,6 @@
 import { Table } from '@mui/joy';
 import { useTheme } from '@mui/joy/styles';
-import { TableProps } from '@mui/joy/Table/TableProps';
+import type { TableProps } from '@mui/joy/Table/TableProps';
 
 type SprocketTableRow = Record<string, React.ReactNode> & { key: string };
 

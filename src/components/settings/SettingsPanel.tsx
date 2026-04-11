@@ -1,7 +1,7 @@
-import { selectActiveState, selectWorkspaceSettings } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
-import { selectGlobalSettings } from '@/state/global/selectors';
-import { globalActions } from '@/state/global/slice';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
+import { GlobalSelect } from '@/state/global/selectors';
+import { GlobalActions } from '@/state/global/slice';
 import { useAppDispatch } from '@/state/store';
 import { clearLeafProperties } from '@/utils/functions';
 import { mergeDeep } from '@/utils/variables';
@@ -17,9 +17,8 @@ export interface SettingsPanelProps {
 }
 
 export function SettingsPanel({ onClose }: SettingsPanelProps) {
-	const lastSaved = useSelector(selectActiveState).lastSaved;
-	const workspaceSettings = useSelector(selectWorkspaceSettings);
-	const globalSettings = useSelector(selectGlobalSettings);
+	const { lastSaved, settings: workspaceSettings } = useSelector(ActiveSelect.slice);
+	const globalSettings = useSelector(GlobalSelect.settings);
 	const [unsavedSettings, setUnsavedSettings] = useState(workspaceSettings);
 	const [unsavedGlobalSettings, setUnsavedGlobalSettings] = useState(globalSettings);
 	const hasChanged = useMemo(() => {
@@ -30,7 +29,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 	}, [workspaceSettings, unsavedSettings, globalSettings, unsavedGlobalSettings]);
 	const dispatch = useAppDispatch();
 	function goToWorkspaceSelection() {
-		dispatch(globalActions.setSelectedWorkspace(undefined));
+		dispatch(GlobalActions.setSelectedWorkspace(undefined));
 	}
 	const [search, setSearch] = useState('');
 	return (
@@ -53,8 +52,8 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 			</Box>
 			<SettingsBar
 				onSave={() => {
-					dispatch(activeActions.insertSettings(unsavedSettings));
-					dispatch(globalActions.insertSettings(unsavedGlobalSettings));
+					dispatch(ActiveActions.insertSettings(unsavedSettings));
+					dispatch(GlobalActions.insertSettings(unsavedGlobalSettings));
 				}}
 				onClose={onClose}
 				overlay={unsavedSettings}

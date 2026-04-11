@@ -1,4 +1,4 @@
-import {
+import type {
 	Endpoint,
 	EndpointRequest,
 	Service,
@@ -16,7 +16,7 @@ import { save } from '@tauri-apps/plugin-dialog';
 import { writeTextFile } from '@tauri-apps/plugin-fs';
 import { FileSystemManager } from '../file-system/FileSystemManager';
 import { FileSystemWorker } from '../file-system/FileSystemWorker';
-import { InvokerFileUpdate } from '../RustInvoker';
+import type { InvokerFileUpdate } from '../RustInvoker';
 import { SaveUpdateManager } from '../SaveUpdateManager';
 
 export const defaultWorkspaceSyncedData: WorkspaceSyncedData = {

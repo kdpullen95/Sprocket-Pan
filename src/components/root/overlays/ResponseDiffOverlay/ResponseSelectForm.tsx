@@ -1,10 +1,10 @@
 import { HistoryControl } from '@/components/panels/request/response/HistoryControl';
-import { selectEndpoints, selectHistory, selectRequests, selectServices } from '@/state/active/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
 import { BREAK_ALL_TEXT } from '@/styles/text';
-import { Endpoint, EndpointRequest, Service } from '@/types/data/workspace';
+import type { Endpoint, EndpointRequest, Service } from '@/types/data/workspace';
 import { formatShortFullDate } from '@/utils/string';
 import { FormControl, FormLabel, Stack, Typography } from '@mui/joy';
-import { SxProps } from '@mui/joy/styles/types';
+import type { SxProps } from '@mui/joy/styles/types';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SearchableRequestDropdown } from './SearchableRequestDropdown';
@@ -19,10 +19,10 @@ interface ResponseSelectFormProps {
 }
 
 export function ResponseSelectForm({ onChange, initialValue, collapsed = false, sx }: ResponseSelectFormProps) {
-	const services = useSelector(selectServices);
-	const endpoints = useSelector(selectEndpoints);
-	const requests = useSelector(selectRequests);
-	const histories = useSelector(selectHistory);
+	const services = useSelector(ActiveSelect.services);
+	const endpoints = useSelector(ActiveSelect.endpoints);
+	const requests = useSelector(ActiveSelect.requests);
+	const histories = useSelector(ActiveSelect.history);
 
 	const [selectedHistoryIndex, setSelectedHistoryIndex] = useState<number>(0);
 	const [selectedRequest, setSelectedRequest] = useState<EndpointRequest | null>(null);

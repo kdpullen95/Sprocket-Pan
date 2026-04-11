@@ -1,7 +1,7 @@
 import { FluentCode } from '@/assets/icons/fluent/FluentCode';
 import { FluentCube } from '@/assets/icons/fluent/FluentCube';
 import { FluentList } from '@/assets/icons/fluent/FluentList';
-import { selectSelectedEnvironmentValue } from '@/state/active/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
 import { Workspaces } from '@mui/icons-material';
 import { Box, Sheet, Stack, useTheme } from '@mui/joy';
 import { useSelector } from 'react-redux';
@@ -10,14 +10,15 @@ import { OpenSettingsButton } from '../shared/buttons/OpenSettingsButton';
 import { EnvironmentBadge } from '../shared/EnvironmentBadge';
 import { TrapezoidalSheet } from '../shared/flair/TrapezoidalSheet';
 import { SaveButton } from './buttons/SaveButton';
-import { SidebarTabButton, SidebarTabButtonProps } from './buttons/SidebarTabButton';
+import type { SidebarTabButtonProps } from './buttons/SidebarTabButton';
+import { SidebarTabButton } from './buttons/SidebarTabButton';
 import { SidebarTabs } from './types';
 
 type VerticalMenuProps = Pick<SidebarTabButtonProps, 'tab' | 'setTab' | 'showActive'>;
 
 export function VerticalMenu(args: VerticalMenuProps) {
 	const theme = useTheme();
-	const environment = useSelector(selectSelectedEnvironmentValue);
+	const environment = useSelector(ActiveSelect.selectedEnvironmentValue);
 	return (
 		<Sheet sx={{ width: '100%', height: '100%', backgroundColor: theme.palette.background.level2 }}>
 			<Stack alignItems="stretch" justifyContent="stretch" height="100%">

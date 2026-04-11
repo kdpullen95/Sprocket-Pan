@@ -1,7 +1,7 @@
+import { tabTypeIcon } from '@/constants/components';
+import type { Settings } from '@/types/data/settings';
 import { Chip, Sheet } from '@mui/joy';
 import { ScriptChips } from '../ScriptChips';
-import { tabTypeIcon } from '@/constants/components';
-import { Settings } from '@/types/data/settings';
 
 type Strategy = Settings['script']['strategy'];
 

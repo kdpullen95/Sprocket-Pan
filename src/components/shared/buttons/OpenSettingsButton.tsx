@@ -1,6 +1,7 @@
 import { Settings } from '@mui/icons-material';
 import { IconButton } from '@mui/joy';
-import { JSX, useState } from 'react';
+import type { JSX } from 'react';
+import { useState } from 'react';
 import { SprocketTooltip } from '../SprocketTooltip';
 import { SprocketModal } from '../modals/SprocketModal';
 

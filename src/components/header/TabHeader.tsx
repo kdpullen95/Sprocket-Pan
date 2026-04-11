@@ -1,62 +1,61 @@
 import { SprocketPanSvg } from '@/assets/icons/brands/SprocketPan';
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
-import { selectSettings } from '@/state/active/selectors';
-import { useAppDispatch } from '@/state/store';
-import { selectUiState } from '@/state/ui/selectors';
-import { uiActions } from '@/state/ui/slice';
-import { Box, Stack, TabPanel, Tabs } from '@mui/joy';
+import { ActiveSelect } from '@/state/active/selectors';
+import { UiSelect } from '@/state/ui/selectors';
+import { Box, Stack } from '@mui/joy';
 import { useTheme } from '@mui/joy/styles';
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { TabContent } from '../panels/TabContent';
-import { TabRow } from './TabRow';
+import { HeaderTabRow } from './HeaderTabRow';
 
 export function TabHeader() {
-	const { tabs, selectedTab } = useSelector(selectUiState);
+	const tabs = useSelector(UiSelect.tabs);
 	const { guttered: scrollbarTheme } = useScrollbarTheme();
-	const settings = useSelector(selectSettings);
+	const settings = useSelector(ActiveSelect.settings);
 	const theme = useTheme();
-	const dispatch = useAppDispatch();
-	useEffect(() => {
-		document.getElementById(`tab_${selectedTab}`)?.scrollIntoView();
-		const fileToScrollTo = document.getElementById(`file_${selectedTab}`);
-		fileToScrollTo?.scrollIntoView({ block: 'center' });
-	}, [selectedTab]);
-
 	return (
-		<>
-			<Box height="0" width="100%" position="relative">
-				<Stack
-					alignItems="center"
-					justifyContent="center"
-					position="absolute"
-					sx={{ height: '100vh', width: '100%', overflow: 'hidden' }}
+		<Box height="100%" width="100%" position="relative">
+			<Stack
+				alignItems="center"
+				justifyContent="center"
+				position="absolute"
+				sx={{ height: '100vh', width: '100%', overflow: 'hidden' }}
+			>
+				<SprocketPanSvg
+					style={{
+						width: 'auto',
+						minHeight: '600px',
+						height: '80%',
+						opacity: settings.theme.decoration.opacity,
+						fill: theme.palette.primary.outlinedActiveBg,
+						stroke: theme.palette.primary.softActiveBg,
+						strokeWidth: '5px',
+					}}
+				/>
+			</Stack>
+			<Stack
+				position="absolute"
+				sx={{
+					height: '100%',
+					width: '100%',
+					maxWidth: '100%',
+					overflow: 'hidden',
+					backgroundColor: theme.palette.background.surface,
+				}}
+			>
+				<HeaderTabRow />
+				<Box
+					sx={{
+						flex: 1,
+						overflow: 'auto',
+						...scrollbarTheme,
+					}}
 				>
-					<SprocketPanSvg
-						style={{
-							width: 'auto',
-							minHeight: '600px',
-							height: '80%',
-							opacity: settings.theme.decoration.opacity,
-							fill: theme.palette.primary.outlinedActiveBg,
-							stroke: theme.palette.primary.softActiveBg,
-							strokeWidth: '5px',
-						}}
-					/>
-				</Stack>
-			</Box>
-			<Tabs size="lg" value={selectedTab} onChange={(_, val) => dispatch(uiActions.setSelectedTab(val as string))}>
-				<TabRow list={tabs} />
-				{tabs.map((id) => (
-					<TabPanel
-						value={id}
-						key={id}
-						sx={{ padding: 0, height: 'calc(100vh - 45px)', overflow: 'auto', ...scrollbarTheme }}
-					>
-						<TabContent id={id} />
-					</TabPanel>
-				))}
-			</Tabs>
-		</>
+					{tabs.map((id) => (
+						<TabContent key={id} id={id} />
+					))}
+				</Box>
+			</Stack>
+		</Box>
 	);
 }

@@ -1,5 +1,5 @@
 import { tabTypeIcon } from '@/constants/components';
-import { ScriptRunnerStrategy } from '@/types/data/settings';
+import type { ScriptRunnerStrategy } from '@/types/data/settings';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { East, West } from '@mui/icons-material';
 import { Chip, IconButton } from '@mui/joy';

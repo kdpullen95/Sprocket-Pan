@@ -1,11 +1,11 @@
 import { EllipsisTypography } from '@/components/shared/EllipsisTypography';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { tabTypeIcon } from '@/constants/components';
-import { selectHistoryById } from '@/state/active/selectors';
-import { itemActions } from '@/state/items';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ItemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { EndpointRequest } from '@/types/data/workspace';
+import { UiActions } from '@/state/ui/slice';
+import type { EndpointRequest } from '@/types/data/workspace';
 import { formatFullDate } from '@/utils/string';
 import { Event, OpenInNew } from '@mui/icons-material';
 import { IconButton, ListItem, ListItemContent, Stack, Typography } from '@mui/joy';
@@ -16,8 +16,8 @@ interface RecentRequestListItemProps {
 }
 
 export function RecentRequestListItem({ request }: RecentRequestListItemProps) {
-	const history = useSelector((state) => selectHistoryById(state, request.id));
-	const endpoint = useSelector((state) => itemActions.endpoint.select(state, request.endpointId));
+	const history = useSelector((state) => ActiveSelect.historyById(state, request.id));
+	const endpoint = useSelector((state) => ItemActions.endpoint.select(state, request.endpointId));
 	const dispatch = useAppDispatch();
 
 	return (
@@ -40,8 +40,8 @@ export function RecentRequestListItem({ request }: RecentRequestListItemProps) {
 								<IconButton
 									color="primary"
 									onClick={() => {
-										dispatch(uiActions.addTab(request.id));
-										dispatch(uiActions.setSelectedTab(request.id));
+										dispatch(UiActions.addTab(request.id));
+										dispatch(UiActions.setSelectedTab(request.id));
 									}}
 								>
 									<OpenInNew />

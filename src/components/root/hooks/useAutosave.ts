@@ -1,11 +1,11 @@
-import { selectSettings } from '@/state/active/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
 import { saveActiveData } from '@/state/active/thunks';
 import { useAppDispatch } from '@/state/store';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 export function useAutosave() {
-	const settings = useSelector(selectSettings);
+	const settings = useSelector(ActiveSelect.settings);
 	const autosave = settings.data.autosave;
 	const dispatch = useAppDispatch();
 	useEffect(() => {
@@ -18,5 +18,5 @@ export function useAutosave() {
 		return () => {
 			clearInterval(interval);
 		};
-	}, [autosave]);
+	}, [autosave, dispatch]);
 }

@@ -1,7 +1,7 @@
 import { statusCodes } from '@/constants/statusCodes';
-import { KeyValuePair } from '@/types/shared/keyValues';
-import { Token } from '@/types/shared/misc';
-import { Interrupt } from './types';
+import type { KeyValuePair } from '@/types/shared/keyValues';
+import type { Token } from '@/types/shared/misc';
+import type { Interrupt } from './types';
 
 export function sleep(ms = 0): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));

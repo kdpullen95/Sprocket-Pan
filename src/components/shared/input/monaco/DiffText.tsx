@@ -1,8 +1,9 @@
 import { useEditorTheme } from '@/hooks/useEditorTheme';
 import { useMonacoOptionsSync } from '@/hooks/useMonacoSync';
 import { MonacoManager } from '@/managers/monaco/MonacoManager';
-import { DiffEditor, DiffEditorProps } from '@monaco-editor/react';
-import { editor } from 'monaco-editor';
+import type { DiffEditorProps } from '@monaco-editor/react';
+import { DiffEditor } from '@monaco-editor/react';
+import type { editor } from 'monaco-editor';
 import { useCallback, useEffect, useRef } from 'react';
 
 const base = {

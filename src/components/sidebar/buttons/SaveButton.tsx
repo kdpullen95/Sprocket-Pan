@@ -1,5 +1,5 @@
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { selectHasBeenModifiedSinceLastSave } from '@/state/active/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
 import { saveActiveData } from '@/state/active/thunks';
 import { useAppDispatch } from '@/state/store';
 import { Save } from '@mui/icons-material';
@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 export function SaveButton() {
 	const [loading, setLoading] = useState(false);
-	const isModified = useSelector(selectHasBeenModifiedSinceLastSave);
+	const isModified = useSelector(ActiveSelect.hasBeenModifiedSinceLastSave);
 	const dispatch = useAppDispatch();
 
 	function save() {

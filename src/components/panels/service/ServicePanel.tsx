@@ -1,23 +1,23 @@
+import { SyncButton } from '@/components/shared/buttons/SyncButton';
+import { SprocketTabs } from '@/components/shared/SprocketTabs';
+import { ActiveActions } from '@/state/active/slice';
+import { ItemActions } from '@/state/items';
+import { useAppDispatch } from '@/state/store';
+import type { Service } from '@/types/data/workspace';
+import { AccordionGroup, Stack } from '@mui/joy';
 import { useSelector } from 'react-redux';
-import { PanelProps } from '../panels.interface';
+import type { PanelProps } from '../panels.interface';
+import { EditableHeader } from '../shared/EditableHeader';
 import { PrePostScriptDisplay } from '../shared/PrePostScriptDisplay';
 import { EnvironmentsSection } from './EnvironmentsSection';
-import { AccordionGroup, Stack } from '@mui/joy';
 import { GeneralSection } from './GeneralSection';
-import { SprocketTabs } from '@/components/shared/SprocketTabs';
-import { activeActions } from '@/state/active/slice';
-import { useAppDispatch } from '@/state/store';
-import { Service } from '@/types/data/workspace';
-import { EditableHeader } from '../shared/EditableHeader';
-import { SyncButton } from '@/components/shared/buttons/SyncButton';
-import { itemActions } from '@/state/items';
 
 export function ServicePanel({ id }: PanelProps) {
 	const dispatch = useAppDispatch();
-	const service = useSelector((state) => itemActions.service.select(state, id));
+	const service = useSelector((state) => ItemActions.service.select(state, id));
 
 	function update(values: Partial<Service>) {
-		dispatch(activeActions.updateService({ ...values, id }));
+		dispatch(ActiveActions.updateService({ ...values, id }));
 	}
 
 	if (service == null) {

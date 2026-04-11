@@ -1,8 +1,8 @@
-import { ContextMenuItem } from '@/components/shared/context/ContextMenu';
+import type { ContextMenuItem } from '@/components/shared/context/ContextMenu';
 import { useAppDispatch } from '@/state/store';
-import { selectIsActiveTab } from '@/state/ui/selectors';
-import { uiActions } from '@/state/ui/slice';
-import { PropsWithChildren } from 'react';
+import { UiSelect } from '@/state/ui/selectors';
+import { UiActions } from '@/state/ui/slice';
+import type { PropsWithChildren } from 'react';
 import { useSelector } from 'react-redux';
 import { FileSystemEntry } from './FileSystemEntry';
 
@@ -14,14 +14,14 @@ export interface FileSystemLeafProps extends PropsWithChildren {
 
 export function FileSystemLeaf({ id, menuItems, children, color }: FileSystemLeafProps) {
 	const dispatch = useAppDispatch();
-	const isSelected = useSelector((state) => selectIsActiveTab(state, id));
+	const isSelected = useSelector((state) => UiSelect.isSelectedTab(state, id));
 	return (
 		<FileSystemEntry id={id} menuItems={menuItems} isSelected={isSelected}>
 			<button
 				style={{ gap: '7px', display: 'flex', alignItems: 'center', flex: 1, minWidth: '50px', color }}
 				onClick={() => {
-					dispatch(uiActions.addTab(id));
-					dispatch(uiActions.setSelectedTab(id));
+					dispatch(UiActions.addTab(id));
+					dispatch(UiActions.setSelectedTab(id));
 				}}
 			>
 				{children}

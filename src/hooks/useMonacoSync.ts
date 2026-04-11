@@ -1,5 +1,6 @@
-import { editor } from 'monaco-editor';
-import { RefObject, useEffect, useMemo } from 'react';
+import type { editor } from 'monaco-editor';
+import type { RefObject } from 'react';
+import { useEffect, useMemo } from 'react';
 
 type EditorRefs = editor.IStandaloneDiffEditor | editor.IStandaloneCodeEditor;
 type EditorOption<T extends EditorRefs> = Parameters<T['updateOptions']>[0];

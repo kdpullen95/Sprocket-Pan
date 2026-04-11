@@ -1,5 +1,5 @@
-import { Settings } from './settings';
-import { UiMetadata } from './shared';
+import type { Settings } from './settings';
+import type { UiMetadata } from './shared';
 
 export type GlobalData = {
 	uiMetadata: UiMetadata;

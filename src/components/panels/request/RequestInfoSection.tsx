@@ -5,12 +5,12 @@ import { SyncButton } from '@/components/shared/buttons/SyncButton';
 import { EnvironmentTypography } from '@/components/shared/EnvironmentTypography';
 import { SprocketTable } from '@/components/shared/SprocketTable';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { selectEnvironmentSnippets } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
-import { itemActions } from '@/state/items';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
+import { ItemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { Endpoint, EndpointRequest } from '@/types/data/workspace';
+import { UiActions } from '@/state/ui/slice';
+import type { Endpoint, EndpointRequest } from '@/types/data/workspace';
 import { Edit, Fingerprint } from '@mui/icons-material';
 import { Card, IconButton, Stack, Typography } from '@mui/joy';
 import { useSelector } from 'react-redux';
@@ -22,8 +22,8 @@ export interface RequestInfoSectionProps {
 
 export function RequestInfoSection({ request }: RequestInfoSectionProps) {
 	const dispatch = useAppDispatch();
-	const endpoint = useSelector((state) => itemActions.endpoint.select(state, request.endpointId));
-	const envSnippets = useSelector((state) => selectEnvironmentSnippets(state, request.id));
+	const endpoint = useSelector((state) => ItemActions.endpoint.select(state, request.endpointId));
+	const envSnippets = useSelector((state) => ActiveSelect.environmentSnippets(state, request.id));
 
 	if (endpoint == null) {
 		throw new Error('endpoint is null in the requestInfoSection');
@@ -31,7 +31,7 @@ export function RequestInfoSection({ request }: RequestInfoSectionProps) {
 
 	const isDefault = endpoint.defaultRequest === request.id;
 	function updateAssociatedEndpoint(values: Partial<Endpoint>) {
-		dispatch(activeActions.updateEndpoint({ ...values, id: request.endpointId }));
+		dispatch(ActiveActions.updateEndpoint({ ...values, id: request.endpointId }));
 	}
 
 	return (
@@ -59,8 +59,8 @@ export function RequestInfoSection({ request }: RequestInfoSectionProps) {
 							variant="outlined"
 							color="primary"
 							onClick={() => {
-								dispatch(uiActions.addTab(request.endpointId));
-								dispatch(uiActions.setSelectedTab(request.endpointId));
+								dispatch(UiActions.addTab(request.endpointId));
+								dispatch(UiActions.setSelectedTab(request.endpointId));
 							}}
 						>
 							<Edit />

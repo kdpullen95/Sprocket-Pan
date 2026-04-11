@@ -1,4 +1,4 @@
-import { WorkspaceMetadata } from '@/types/data/workspace';
+import type { WorkspaceMetadata } from '@/types/data/workspace';
 import { log } from '@/utils/logging';
 import { WorkspaceDataManager } from '../data/WorkspaceDataManager';
 import { FileSystemWorker } from './FileSystemWorker';

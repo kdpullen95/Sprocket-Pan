@@ -9,7 +9,7 @@ import { getVersion } from '@tauri-apps/api/app';
 import { emit } from '@tauri-apps/api/event';
 import { useEffect, useState } from 'react';
 import { SettingsSelect, SettingsSwitch } from './SettingsFields';
-import { SettingsTabProps } from './types';
+import type { SettingsTabProps } from './types';
 
 export function GeneralTab({ overlay, settings, onChange, onUpdateGlobal, searchText }: SettingsTabProps) {
 	const [checkingForUpdate, setCheckingForUpdate] = useState(false);

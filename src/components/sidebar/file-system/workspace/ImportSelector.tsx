@@ -1,16 +1,17 @@
 import { SprocketPan } from '@/assets/icons/brands/SprocketPan';
-import { open } from '@tauri-apps/plugin-dialog';
-import { WorkspaceDataManager } from '@/managers/data/WorkspaceDataManager';
-import { activeActions } from '@/state/active/slice';
-import { useAppDispatch } from '@/state/store';
-import { WorkspaceData } from '@/types/data/workspace';
-import { Box, Button, Stack, Typography } from '@mui/joy';
-import { useState } from 'react';
-import { SprocketModal, SprocketModalProps } from '@/components/shared/modals/SprocketModal';
-import { useSelector } from 'react-redux';
-import { selectActiveWorkspace } from '@/state/global/selectors';
 import { InlineItemName } from '@/components/shared/InlineItemName';
+import type { SprocketModalProps } from '@/components/shared/modals/SprocketModal';
+import { SprocketModal } from '@/components/shared/modals/SprocketModal';
+import { WorkspaceDataManager } from '@/managers/data/WorkspaceDataManager';
+import { ActiveActions } from '@/state/active/slice';
+import { GlobalSelect } from '@/state/global/selectors';
+import { useAppDispatch } from '@/state/store';
+import type { WorkspaceData } from '@/types/data/workspace';
 import { joinList } from '@/utils/string';
+import { Box, Button, Stack, Typography } from '@mui/joy';
+import { open } from '@tauri-apps/plugin-dialog';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const options = [
 	{
@@ -32,7 +33,7 @@ const desiredKeys: (keyof WorkspaceData)[] = [
 
 export function ImportSelector(props: Pick<SprocketModalProps, 'open' | 'onClose'>) {
 	const [data, setData] = useState<Partial<WorkspaceData> | null>(null);
-	const selectedWorkspace = useSelector(selectActiveWorkspace);
+	const selectedWorkspace = useSelector(GlobalSelect.activeWorkspace);
 	const dispatch = useAppDispatch();
 
 	const infoStr =
@@ -46,7 +47,7 @@ export function ImportSelector(props: Pick<SprocketModalProps, 'open' | 'onClose
 
 	const apply = () => {
 		if (data != null) {
-			dispatch(activeActions.injectState(data));
+			dispatch(ActiveActions.injectState(data));
 			props.onClose?.();
 			setData(null);
 		}

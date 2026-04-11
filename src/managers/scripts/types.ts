@@ -1,6 +1,11 @@
-import { AuditLog, RequestEvent } from '@/types/data/audit';
-import { EndpointRequest, EndpointResponse, HistoricalEndpointResponse, WorkspaceData } from '@/types/data/workspace';
-import { Interrupt } from '@/utils/types';
+import type { AuditLog, RequestEvent } from '@/types/data/audit';
+import type {
+	EndpointRequest,
+	EndpointResponse,
+	HistoricalEndpointResponse,
+	WorkspaceData,
+} from '@/types/data/workspace';
+import type { Interrupt } from '@/utils/types';
 
 export interface RunTypeScriptReturn<T> {
 	result: Promise<T>;

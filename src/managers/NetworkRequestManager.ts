@@ -1,9 +1,10 @@
 import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
 import { CONTENT_TYPE } from '@/constants/request';
-import { RootState } from '@/state/store';
-import { AuditLog } from '@/types/data/audit';
-import { RawBodyType, RawBodyTypes, SPHeaders } from '@/types/data/shared';
-import { Endpoint, EndpointRequest, EndpointResponse, NetworkFetchRequest, Service } from '@/types/data/workspace';
+import type { RootState } from '@/state/store';
+import type { AuditLog } from '@/types/data/audit';
+import type { RawBodyType, SPHeaders } from '@/types/data/shared';
+import { RawBodyTypes } from '@/types/data/shared';
+import type { Endpoint, EndpointRequest, EndpointResponse, NetworkFetchRequest, Service } from '@/types/data/workspace';
 import {
 	getEnvValuesFromData,
 	getSettingsFromState,
@@ -19,8 +20,10 @@ import yaml from 'js-yaml';
 import * as xmlParse from 'xml2js';
 import { AuditLogManager } from './AuditLogManager';
 import { StateAccessManager } from './data/StateAccessManager';
-import { BuildEnvironmentVariablesArgs, EnvironmentContextResolver } from './EnvironmentContextResolver';
-import { RunTypescriptWithFullContextArgs, ScriptRunnerManager } from './scripts/ScriptRunnerManager';
+import type { BuildEnvironmentVariablesArgs } from './EnvironmentContextResolver';
+import { EnvironmentContextResolver } from './EnvironmentContextResolver';
+import type { RunTypescriptWithFullContextArgs } from './scripts/ScriptRunnerManager';
+import { ScriptRunnerManager } from './scripts/ScriptRunnerManager';
 
 const xmlBuilder = new xmlParse.Builder();
 

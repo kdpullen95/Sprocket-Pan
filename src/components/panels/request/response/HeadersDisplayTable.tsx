@@ -2,7 +2,7 @@ import { CopyToClipboardButton } from '@/components/shared/buttons/CopyToClipboa
 import { HoverDecorator } from '@/components/shared/HoverDecorator';
 import { SprocketTable } from '@/components/shared/SprocketTable';
 import { BREAK_ALL_TEXT } from '@/styles/text';
-import { KeyValuePair } from '@/types/shared/keyValues';
+import type { KeyValuePair } from '@/types/shared/keyValues';
 import { toKeyValuePairs } from '@/utils/application';
 import { Box, Typography } from '@mui/joy';
 

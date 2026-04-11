@@ -1,11 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import { activeActions } from '../active/slice';
+import { ActiveActions } from '../active/slice';
+import type { RootState } from '../store';
 
-export const collapseAll = createAsyncThunk<void, string[], { state: RootState }>('ui/collapseAll', (ids, thunk) => {
-	ids.forEach((id) => thunk.dispatch(activeActions.setUiMetadataById({ id, collapsed: true })));
+const collapseAll = createAsyncThunk<void, string[], { state: RootState }>('ui/collapseAll', (ids, thunk) => {
+	ids.forEach((id) => thunk.dispatch(ActiveActions.setUiMetadataById({ id, collapsed: true })));
 });
 
-export const expandAll = createAsyncThunk<void, string[], { state: RootState }>('ui/expandAll', (ids, thunk) => {
-	ids.forEach((id) => thunk.dispatch(activeActions.setUiMetadataById({ id, collapsed: false })));
+const expandAll = createAsyncThunk<void, string[], { state: RootState }>('ui/expandAll', (ids, thunk) => {
+	ids.forEach((id) => thunk.dispatch(ActiveActions.setUiMetadataById({ id, collapsed: false })));
 });
+
+export const UiThunks = {
+	collapseAll,
+	expandAll,
+};

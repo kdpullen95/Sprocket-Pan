@@ -1,5 +1,5 @@
-import { PayloadAction } from '@reduxjs/toolkit';
-import { AppDispatch, RootState } from './store';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { AppDispatch, RootState } from './store';
 
 /**
  * This a TEMPORARY type that exists to facilitate the transition from a manager-based

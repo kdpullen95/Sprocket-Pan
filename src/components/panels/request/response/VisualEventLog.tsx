@@ -2,16 +2,10 @@ import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { CollapseExpandButton } from '@/components/sidebar/buttons/CollapseExpandButton';
 import { tabTypeIcon } from '@/constants/components';
 import { AuditLogManager } from '@/managers/AuditLogManager';
-import {
-	selectEndpoints,
-	selectEnvironments,
-	selectRequests,
-	selectScripts,
-	selectServices,
-} from '@/state/active/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { AuditLog, TransformedAuditLog } from '@/types/data/audit';
+import { UiActions } from '@/state/ui/slice';
+import type { AuditLog, TransformedAuditLog } from '@/types/data/audit';
 import { camelCaseToTitle, formatMilliseconds } from '@/utils/string';
 import {
 	Anchor,
@@ -83,11 +77,7 @@ interface VisualEventLogInnerProps {
 }
 
 function VisualEventLogInner({ transformedLog, requestId, indentation }: VisualEventLogInnerProps) {
-	const requests = useSelector(selectRequests);
-	const environments = useSelector(selectEnvironments);
-	const services = useSelector(selectServices);
-	const endpoints = useSelector(selectEndpoints);
-	const scripts = useSelector(selectScripts);
+	const { requests, environments, services, endpoints, scripts } = useSelector(ActiveSelect.allItems);
 	const data = { requests, environments, services, endpoints, scripts };
 	const dispatch = useAppDispatch();
 	const [collapsed, setCollapsed] = useState(false);
@@ -140,8 +130,8 @@ function VisualEventLogInner({ transformedLog, requestId, indentation }: VisualE
 												onClick={() => {
 													if (associatedItem != null) {
 														const id = requestEvent.associatedId as string;
-														dispatch(uiActions.addTab(id));
-														dispatch(uiActions.setSelectedTab(id));
+														dispatch(UiActions.addTab(id));
+														dispatch(UiActions.setSelectedTab(id));
 													}
 												}}
 											>

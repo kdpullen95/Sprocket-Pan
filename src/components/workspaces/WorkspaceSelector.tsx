@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import { Box, Container, Stack, Typography, useTheme } from '@mui/joy';
-import { useSelector } from 'react-redux';
-import { selectWorkspacesList } from '@/state/global/selectors';
+import { GlobalDataManager } from '@/managers/data/GlobalDataManager';
+import { GlobalSelect } from '@/state/global/selectors';
+import { GlobalActions } from '@/state/global/slice';
 import { useAppDispatch } from '@/state/store';
+import { UiActions } from '@/state/ui/slice';
+import { Box, Container, Stack, Typography, useTheme } from '@mui/joy';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { GlobalSettingsPanel } from '../settings/GlobalSettingsPanel';
 import { OpenSettingsButton } from '../shared/buttons/OpenSettingsButton';
 import { CreateNewWorkspaceModal } from './CreateNewWorkspaceModal';
 import { NewWorkspaceCard } from './NewWorkspaceCard';
 import { WorkspaceEntry } from './WorkspaceEntry';
-import { uiActions } from '@/state/ui/slice';
-import { GlobalDataManager } from '@/managers/data/GlobalDataManager';
-import { globalActions } from '@/state/global/slice';
 
 export function WorkspaceSelector() {
-	const workspaces = useSelector(selectWorkspacesList);
+	const workspaces = useSelector(GlobalSelect.workspacesList);
 	const [createNewModalOpen, setCreateNewModalOpen] = useState(false);
 	const dispatch = useAppDispatch();
 	const theme = useTheme();
@@ -21,8 +21,8 @@ export function WorkspaceSelector() {
 	async function updateWorkspaceSlice() {
 		const workspaces = await GlobalDataManager.getWorkspaces();
 		const data = await GlobalDataManager.getGlobalData();
-		dispatch(globalActions.setData(data));
-		dispatch(globalActions.setWorkspaces(workspaces));
+		dispatch(GlobalActions.setData(data));
+		dispatch(GlobalActions.setWorkspaces(workspaces));
 	}
 
 	useEffect(() => {
@@ -45,7 +45,7 @@ export function WorkspaceSelector() {
 						<WorkspaceEntry
 							key={workspace.fileName}
 							workspace={workspace}
-							onDelete={() => dispatch(uiActions.addToDeleteQueue(workspace.id))}
+							onDelete={() => dispatch(UiActions.addToDeleteQueue(workspace.id))}
 						/>
 					))}
 					<NewWorkspaceCard onCreate={() => setCreateNewModalOpen(true)} />

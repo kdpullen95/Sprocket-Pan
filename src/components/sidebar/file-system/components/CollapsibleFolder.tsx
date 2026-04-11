@@ -3,7 +3,7 @@ import { FluentFolderLinkSvg } from '@/assets/icons/fluent/FluentFolderLink';
 import { FluentFolderLinkOpenSvg } from '@/assets/icons/fluent/FluentFolderLinkOpen';
 import { FluentFolderOpenSvg } from '@/assets/icons/fluent/FluentFolderOpen';
 import { useShowSync } from '@/hooks/useShowSync';
-import { activeActions } from '@/state/active/slice';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 
 interface FolderProps {
@@ -15,7 +15,7 @@ export function CollapsibleFolder({ collapsed, id }: FolderProps) {
 	const showSync = useShowSync(id);
 	const dispatch = useAppDispatch();
 	const setCollapsed = (value: boolean) => {
-		dispatch(activeActions.setUiMetadataById({ id: id, collapsed: value }));
+		dispatch(ActiveActions.setUiMetadataById({ id: id, collapsed: value }));
 	};
 	let Icon = FluentFolderOpenSvg;
 	if (collapsed && showSync) {

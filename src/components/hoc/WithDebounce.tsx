@@ -1,7 +1,8 @@
 import { Constants } from '@/constants/constants';
 import { useDebounce } from '@/hooks/useDebounce';
-import { ReactNode } from 'react';
-import { SprocketEditor, SprocketEditorProps } from '../shared/input/monaco/SprocketEditor';
+import type { ReactNode } from 'react';
+import type { SprocketEditorProps } from '../shared/input/monaco/SprocketEditor';
+import { SprocketEditor } from '../shared/input/monaco/SprocketEditor';
 
 type InputOutput<T> = { value?: T; onChange?: (val?: T, ...trash: any) => void };
 

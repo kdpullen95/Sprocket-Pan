@@ -1,5 +1,5 @@
 import { ContextMenu } from '@/components/shared/context/ContextMenu';
-import { FileSystemLeafProps } from './FileSystemLeaf';
+import type { FileSystemLeafProps } from './FileSystemLeaf';
 
 interface FileSystemEntryProps extends Omit<FileSystemLeafProps, 'color'> {
 	isSelected?: boolean;

@@ -1,4 +1,4 @@
-import { WorkspaceItemType } from './workspace';
+import type { WorkspaceItemType } from './workspace';
 
 export const ItemType = {
 	endpoint: 'endpoint',

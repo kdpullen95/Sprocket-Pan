@@ -1,9 +1,9 @@
-import { selectSettings, selectSyncMetadata } from '@/state/active/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
 import { toggleSync } from '@/state/active/thunks';
 import { useAppDispatch } from '@/state/store';
 import { Sync, SyncDisabled } from '@mui/icons-material';
 import { IconButton } from '@mui/joy';
-import { TooltipProps } from '@mui/joy/Tooltip/TooltipProps';
+import type { TooltipProps } from '@mui/joy/Tooltip/TooltipProps';
 import { useSelector } from 'react-redux';
 import { SprocketTooltip } from '../SprocketTooltip';
 
@@ -12,8 +12,8 @@ interface SyncButtonProps extends Pick<TooltipProps, 'placement' | 'variant'> {
 }
 
 export function SyncButton({ id, placement = 'left', variant }: SyncButtonProps) {
-	const sync = useSelector(selectSyncMetadata);
-	const settings = useSelector(selectSettings);
+	const sync = useSelector(ActiveSelect.syncMetadata);
+	const settings = useSelector(ActiveSelect.settings);
 	const enabled = sync.items[id] ?? false;
 	const dispatch = useAppDispatch();
 

@@ -1,6 +1,7 @@
 import { log } from '@/utils/logging';
 import { BaseDirectory, exists, mkdir, readDir, readTextFile, remove } from '@tauri-apps/plugin-fs';
-import { InvokerFileUpdate, RustInvoker } from '../RustInvoker';
+import type { InvokerFileUpdate } from '../RustInvoker';
+import { RustInvoker } from '../RustInvoker';
 
 export class FileSystemWorker {
 	public static readonly DEFAULT_DIRECTORY = BaseDirectory.AppLocalData;

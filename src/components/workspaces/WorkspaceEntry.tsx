@@ -1,6 +1,6 @@
-import { globalActions } from '@/state/global/slice';
+import { GlobalActions } from '@/state/global/slice';
 import { useAppDispatch } from '@/state/store';
-import { WorkspaceMetadata } from '@/types/data/workspace';
+import type { WorkspaceMetadata } from '@/types/data/workspace';
 import { formatFullDate } from '@/utils/string';
 import { Delete, EditCalendar, Info, OpenInNew } from '@mui/icons-material';
 import { Button, Card, Stack, Typography } from '@mui/joy';
@@ -20,7 +20,7 @@ export function WorkspaceEntry({ workspace, onDelete }: WorkspaceEntryProps) {
 		onDelete(workspace);
 	}
 	function openWorkspace() {
-		dispatch(globalActions.setSelectedWorkspace(workspace));
+		dispatch(GlobalActions.setSelectedWorkspace(workspace));
 	}
 	return (
 		<Card

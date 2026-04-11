@@ -1,8 +1,8 @@
 import { EllipsisTypography } from '@/components/shared/EllipsisTypography';
 import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
-import { selectEnvironments } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
-import { Service } from '@/types/data/workspace';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
+import type { Service } from '@/types/data/workspace';
 import { Link } from '@mui/icons-material';
 import { Stack } from '@mui/joy';
 import { useMemo } from 'react';
@@ -13,7 +13,7 @@ interface LinkedEnvironmentEditorProps {
 }
 
 export function LinkedEnvironmentEditor({ service }: LinkedEnvironmentEditorProps) {
-	const environments = useSelector(selectEnvironments);
+	const environments = useSelector(ActiveSelect.environments);
 	const dispatch = useDispatch();
 	const envList = useMemo(
 		() =>
@@ -31,8 +31,8 @@ export function LinkedEnvironmentEditor({ service }: LinkedEnvironmentEditorProp
 						value={env.linkedEnv ?? ''}
 						onChange={(value) =>
 							value == null
-								? dispatch(activeActions.removeLinkedEnv({ serviceId: service.id, envId: env.id }))
-								: dispatch(activeActions.addLinkedEnv({ serviceEnvId: value, serviceId: service.id, envId: env.id }))
+								? dispatch(ActiveActions.removeLinkedEnv({ serviceId: service.id, envId: env.id }))
+								: dispatch(ActiveActions.addLinkedEnv({ serviceEnvId: value, serviceId: service.id, envId: env.id }))
 						}
 						options={Object.values(service.localEnvironments).map((env) => ({ value: env.id, label: env.name }))}
 					/>

@@ -1,6 +1,6 @@
 import { Cancel, Check, ModeEdit } from '@mui/icons-material';
 import { Box, IconButton, Input, Stack } from '@mui/joy';
-import { TypographyProps } from '@mui/joy/Typography/TypographyProps';
+import type { TypographyProps } from '@mui/joy/Typography/TypographyProps';
 import { useEffect, useState } from 'react';
 import { EllipsisTypography } from '../EllipsisTypography';
 import { SprocketTooltip } from '../SprocketTooltip';

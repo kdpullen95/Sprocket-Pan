@@ -2,8 +2,8 @@
 import { useComponentIdentifier } from '@/hooks/useComponentIdentifier';
 import { Info } from '@mui/icons-material';
 import { FormControl, FormHelperText, FormLabel, Option, Select } from '@mui/joy';
-import { SelectProps } from '@mui/joy/Select/SelectProps';
-import { SxProps } from '@mui/joy/styles/types';
+import type { SelectProps } from '@mui/joy/Select/SelectProps';
+import type { SxProps } from '@mui/joy/styles/types';
 import { SprocketTooltip } from '../SprocketTooltip';
 
 export type SelectOption<T> = {

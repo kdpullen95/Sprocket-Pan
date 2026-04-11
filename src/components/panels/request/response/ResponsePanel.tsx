@@ -1,17 +1,17 @@
-import { Typography, Stack, IconButton } from '@mui/joy';
-import { HistoryControl } from './HistoryControl';
-import { ResponseInfo } from './ResponseInfo';
-import { OpenDiffToolButton } from './OpenDiffToolButton';
-import { activeActions } from '@/state/active/slice';
-import { useAppDispatch } from '@/state/store';
-import { EndpointRequest } from '@/types/data/workspace';
-import { formatFullDate } from '@/utils/string';
-import { useSelector } from 'react-redux';
-import { selectHistoryById } from '@/state/active/selectors';
-import { useEffect, useState } from 'react';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
-import { DeleteForever } from '@mui/icons-material';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
+import { useAppDispatch } from '@/state/store';
+import type { EndpointRequest } from '@/types/data/workspace';
 import { clamp } from '@/utils/math';
+import { formatFullDate } from '@/utils/string';
+import { DeleteForever } from '@mui/icons-material';
+import { IconButton, Stack, Typography } from '@mui/joy';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { HistoryControl } from './HistoryControl';
+import { OpenDiffToolButton } from './OpenDiffToolButton';
+import { ResponseInfo } from './ResponseInfo';
 
 interface ResponsePanelProps {
 	request: EndpointRequest;
@@ -19,7 +19,7 @@ interface ResponsePanelProps {
 
 export function ResponsePanel({ request }: ResponsePanelProps) {
 	const dispatch = useAppDispatch();
-	const history = useSelector((state) => selectHistoryById(state, request.id));
+	const history = useSelector((state) => ActiveSelect.historyById(state, request.id));
 	const [index, setIndex] = useState(history.length - 1);
 	const boundedIndex = clamp(index, 0, history.length - 1);
 	const data = history[boundedIndex];
@@ -48,7 +48,7 @@ export function ResponsePanel({ request }: ResponsePanelProps) {
 							aria-label="Delete Response"
 							onClick={() => {
 								dispatch(
-									activeActions.deleteResponseFromHistory({ requestId: request.id, historyIndex: boundedIndex }),
+									ActiveActions.deleteResponseFromHistory({ requestId: request.id, historyIndex: boundedIndex }),
 								);
 							}}
 						>

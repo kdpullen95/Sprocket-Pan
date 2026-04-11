@@ -1,5 +1,5 @@
 import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
-import { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
+import type { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
 import { toKeyValuePairs } from './application';
 
 export function parseOrderedKeyValuePairs<T extends KeyValueValues>(value: string) {

@@ -1,6 +1,7 @@
 import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
 import { verbColors } from '@/constants/style';
-import { RESTfulRequestVerb, RESTfulRequestVerbs } from '@/types/data/shared';
+import type { RESTfulRequestVerb } from '@/types/data/shared';
+import { RESTfulRequestVerbs } from '@/types/data/shared';
 import { Label } from '@mui/icons-material';
 
 interface VerbSelectProps {

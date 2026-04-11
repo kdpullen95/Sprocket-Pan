@@ -1,7 +1,7 @@
 import { SettingsGroup } from '../SettingsGroup';
 import { useShouldDisplayFromSearch } from './hooks';
 import { SettingsPaletteSelect } from './SettingsFields';
-import { SettingsTabProps } from './types';
+import type { SettingsTabProps } from './types';
 
 export function SettingsPaletteSelectGroup({
 	overlay,

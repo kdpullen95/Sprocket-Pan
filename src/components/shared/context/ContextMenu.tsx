@@ -1,5 +1,7 @@
-import { Menu, MenuOptions } from '@tauri-apps/api/menu';
-import React, { PropsWithChildren, useMemo } from 'react';
+import type { MenuOptions } from '@tauri-apps/api/menu';
+import { Menu } from '@tauri-apps/api/menu';
+import type { PropsWithChildren } from 'react';
+import React, { useMemo } from 'react';
 
 export type ContextMenuItem = NonNullable<MenuOptions['items']>[number];
 

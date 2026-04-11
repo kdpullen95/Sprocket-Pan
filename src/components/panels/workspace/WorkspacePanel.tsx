@@ -4,26 +4,26 @@ import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { Minidenticon } from '@/components/shared/flair/Minidenticon';
 import { EditableText } from '@/components/shared/input/EditableText';
 import { EditableTextArea } from '@/components/shared/input/EditableTextArea';
-import { globalActions } from '@/state/global/slice';
-import { itemActions } from '@/state/items';
+import { GlobalActions } from '@/state/global/slice';
+import { ItemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
-import { WorkspaceMetadata } from '@/types/data/workspace';
+import type { WorkspaceMetadata } from '@/types/data/workspace';
 import { Refresh } from '@mui/icons-material';
 import { Box, IconButton, Stack, Typography } from '@mui/joy';
 import { generateSlug } from 'random-word-slugs';
 import { useSelector } from 'react-redux';
-import { PanelProps } from '../panels.interface';
+import type { PanelProps } from '../panels.interface';
 import { EditableHeader } from '../shared/EditableHeader';
 
 export function WorkspacePanel({ id }: PanelProps) {
-	const workspace = useSelector((state) => itemActions.workspace.select(state, id));
+	const workspace = useSelector((state) => ItemActions.workspace.select(state, id));
 	const dispatch = useAppDispatch();
 	if (workspace == null) {
 		throw new Error(`${id} could not be found`);
 	}
 
 	const update = (val: Partial<WorkspaceMetadata>) => {
-		dispatch(globalActions.updateWorkspace({ ...workspace, ...val }));
+		dispatch(GlobalActions.updateWorkspace({ ...workspace, ...val }));
 	};
 
 	return (

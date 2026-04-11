@@ -1,5 +1,5 @@
-import { selectEndpoints, selectHistory, selectRequests } from '@/state/active/selectors';
-import { Service } from '@/types/data/workspace';
+import { ActiveSelect } from '@/state/active/selectors';
+import type { Service } from '@/types/data/workspace';
 import { Box, List } from '@mui/joy';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,9 +10,9 @@ interface RecentRequestsSectionProps {
 }
 
 export function RecentRequestsSection({ service }: RecentRequestsSectionProps) {
-	const requests = useSelector(selectRequests);
-	const histories = useSelector(selectHistory);
-	const endpoints = useSelector(selectEndpoints);
+	const requests = useSelector(ActiveSelect.requests);
+	const histories = useSelector(ActiveSelect.history);
+	const endpoints = useSelector(ActiveSelect.endpoints);
 	const recentRequests = useMemo(
 		() =>
 			service.endpointIds

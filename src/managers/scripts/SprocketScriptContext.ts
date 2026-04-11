@@ -1,8 +1,9 @@
 import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
-import { activeActions, Update } from '@/state/active/slice';
-import { EndpointRequest, HistoricalEndpointResponse } from '@/types/data/workspace';
-import { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
-import { Token } from '@/types/shared/misc';
+import type { Update } from '@/state/active/slice';
+import { ActiveActions } from '@/state/active/slice';
+import type { EndpointRequest, HistoricalEndpointResponse } from '@/types/data/workspace';
+import type { KeyValuePair, KeyValueValues } from '@/types/shared/keyValues';
+import type { Token } from '@/types/shared/misc';
 import { getEnvValuesFromData, getSettingsFromState } from '@/utils/application';
 import { checkInterrupt } from '@/utils/functions';
 import { log } from '@/utils/logging';
@@ -11,7 +12,7 @@ import * as http from '@tauri-apps/plugin-http';
 import { StateAccessManager } from '../data/StateAccessManager';
 import { EnvironmentContextResolver } from '../EnvironmentContextResolver';
 import { NetworkRequestManager } from '../NetworkRequestManager';
-import { HttpOptions, OptionalScriptContext, SprocketInjectedScripts } from './types';
+import type { HttpOptions, OptionalScriptContext, SprocketInjectedScripts } from './types';
 
 export class SprocketScriptContext implements SprocketInjectedScripts {
 	private token: Token<boolean> = { current: false };
@@ -83,7 +84,7 @@ export class SprocketScriptContext implements SprocketInjectedScripts {
 		newPairs.apply(request?.environmentOverride?.pairs);
 		newPairs.set(key, value);
 		this.dispatch(
-			activeActions.updateRequest({
+			ActiveActions.updateRequest({
 				id: request!.id,
 				environmentOverride: { ...request!.environmentOverride, pairs: newPairs.toArray() },
 			}),
@@ -99,7 +100,7 @@ export class SprocketScriptContext implements SprocketInjectedScripts {
 			newPairs.apply(env.pairs);
 			newPairs.set(key, value);
 			this.dispatch(
-				activeActions.updateService({
+				ActiveActions.updateService({
 					id: service.id,
 					localEnvironments: {
 						...service.localEnvironments,
@@ -117,7 +118,7 @@ export class SprocketScriptContext implements SprocketInjectedScripts {
 		if (env != null) {
 			newPairs.apply(env.pairs);
 			newPairs.set(key, value);
-			this.dispatch(activeActions.updateEnvironment({ ...env, pairs: newPairs.toArray() }));
+			this.dispatch(ActiveActions.updateEnvironment({ ...env, pairs: newPairs.toArray() }));
 		}
 	};
 
@@ -149,7 +150,7 @@ export class SprocketScriptContext implements SprocketInjectedScripts {
 		if (modifications.headers != undefined) {
 			update.headers = new OrderedKeyValuePairs(update.headers, modifications.headers).toArray();
 		}
-		this.dispatch(activeActions.updateRequest(update));
+		this.dispatch(ActiveActions.updateRequest(update));
 	};
 
 	fetch = async <T>(url: string, request: HttpOptions) => {
@@ -167,7 +168,7 @@ export class SprocketScriptContext implements SprocketInjectedScripts {
 		const res = await NetworkRequestManager.makeRequestWithScripts(requestId);
 		const settings = getSettingsFromState(this.getState());
 		this.dispatch(
-			activeActions.addResponseToHistory({
+			ActiveActions.addResponseToHistory({
 				requestId,
 				...res,
 				maxLength: settings.history.maxLength,
@@ -182,21 +183,21 @@ export class SprocketScriptContext implements SprocketInjectedScripts {
 		const request = this.getRequest();
 		const newHeaders = new OrderedKeyValuePairs(request.headers);
 		newHeaders.delete(key);
-		this.dispatch(activeActions.updateRequest({ id: request.id, headers: newHeaders.toArray() }));
+		this.dispatch(ActiveActions.updateRequest({ id: request.id, headers: newHeaders.toArray() }));
 	};
 
 	setHeader = (key: string, value: string) => {
 		const request = this.getRequest();
 		const newHeaders = new OrderedKeyValuePairs(request.headers);
 		newHeaders.set(key, value);
-		this.dispatch(activeActions.updateRequest({ id: request.id, headers: newHeaders.toArray() }));
+		this.dispatch(ActiveActions.updateRequest({ id: request.id, headers: newHeaders.toArray() }));
 	};
 
 	setQueryParam = (key: string, value: KeyValueValues | undefined) => {
 		const request = this.getRequest();
 		const newQueryParams = new OrderedKeyValuePairs(request.queryParams);
 		newQueryParams.set(key, value);
-		this.dispatch(activeActions.updateRequest({ id: request.id, queryParams: newQueryParams.toArray() }));
+		this.dispatch(ActiveActions.updateRequest({ id: request.id, queryParams: newQueryParams.toArray() }));
 	};
 
 	get data() {

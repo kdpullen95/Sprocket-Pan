@@ -1,4 +1,4 @@
-import { TypeOf } from '@/types/utils/utils';
+import type { TypeOf } from '@/types/utils/utils';
 
 type ClickEvent = Pick<MouseEvent, 'ctrlKey' | 'metaKey' | 'shiftKey'>;
 

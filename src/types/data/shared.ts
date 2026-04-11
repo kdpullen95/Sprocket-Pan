@@ -1,4 +1,4 @@
-import { KeyValuePair, KeyValueValues } from '../shared/keyValues';
+import type { KeyValuePair, KeyValueValues } from '../shared/keyValues';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Reference<TVariable extends string> = `{{${TVariable}}}`;

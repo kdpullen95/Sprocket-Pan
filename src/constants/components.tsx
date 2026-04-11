@@ -1,6 +1,6 @@
-import { TabType } from '@/types/state/state';
+import type { TabType } from '@/types/state/state';
 import { Code, FolderOpen, FolderOpenSharp, Key, TableChart, TextSnippet, Workspaces } from '@mui/icons-material';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 export const tabTypeIcon: Record<TabType, ReactNode> = {
 	endpoint: <FolderOpen />,

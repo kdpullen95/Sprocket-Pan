@@ -1,6 +1,6 @@
-import { RootEnvironment } from '@/types/data/workspace';
+import type { RootEnvironment } from '@/types/data/workspace';
 import { Badge } from '@mui/joy';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 interface EnvironmentBadgeProps extends PropsWithChildren {
 	environment: Pick<RootEnvironment, 'badge' | 'name'> | null;

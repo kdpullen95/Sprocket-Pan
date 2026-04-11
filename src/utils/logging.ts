@@ -1,4 +1,4 @@
-import { UnlistenFn } from '@tauri-apps/api/event';
+import type { UnlistenFn } from '@tauri-apps/api/event';
 import { attachConsole, debug, error, info, trace, warn } from '@tauri-apps/plugin-log';
 
 type LogAction = 'info' | 'warn' | 'debug' | 'error' | 'trace';

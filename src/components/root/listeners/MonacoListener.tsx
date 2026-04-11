@@ -1,12 +1,12 @@
 import { MonacoManager } from '@/managers/monaco/MonacoManager';
-import { selectScripts } from '@/state/active/selectors';
+import { ActiveSelect } from '@/state/active/selectors';
 import { useMonaco } from '@monaco-editor/react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 export function MonacoListener() {
 	const monaco = useMonaco();
-	const scripts = useSelector(selectScripts);
+	const scripts = useSelector(ActiveSelect.scripts);
 
 	useEffect(() => {
 		if (monaco) {

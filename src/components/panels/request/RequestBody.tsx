@@ -1,10 +1,11 @@
 import { DebouncedSprocketEditor } from '@/components/hoc/WithDebounce';
 import { EditableFormTable } from '@/components/shared/input/EditableFormTable';
 import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
-import { activeActions } from '@/state/active/slice';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
-import { RawBodyTypes, RequestBodyType, RequestBodyTypes } from '@/types/data/shared';
-import { EndpointRequest } from '@/types/data/workspace';
+import type { RequestBodyType } from '@/types/data/shared';
+import { RawBodyTypes, RequestBodyTypes } from '@/types/data/shared';
+import type { EndpointRequest } from '@/types/data/workspace';
 import { getRequestBodyCategory } from '@/utils/conversion';
 import { DataObject, List as ListIcon } from '@mui/icons-material';
 import { Stack } from '@mui/joy';
@@ -20,7 +21,7 @@ export function RequestBody({ request }: RequestBodyProps) {
 	const dispatch = useAppDispatch();
 
 	function update(values: Partial<EndpointRequest>) {
-		dispatch(activeActions.updateRequest({ ...values, id: request.id }));
+		dispatch(ActiveActions.updateRequest({ ...values, id: request.id }));
 	}
 
 	const onSelectChange = (value: RequestBodyType) => {

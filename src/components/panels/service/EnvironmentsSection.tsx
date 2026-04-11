@@ -2,26 +2,26 @@ import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { useComputedRootEnvironment } from '@/hooks/useComputedEnvironment';
 import { ItemFactory } from '@/managers/data/ItemFactory';
-import { selectSelectedEnvironment, selectSelectedServiceEnvironments } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
-import { Environment } from '@/types/data/workspace';
+import type { Environment } from '@/types/data/workspace';
 import { Link, LinkOff, ModeEdit, PlaylistAdd } from '@mui/icons-material';
 import { Box, Divider, IconButton, Stack } from '@mui/joy';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { EnvironmentEditor } from './EnvironmentEditor';
 import { LinkedEnvironmentEditor } from './LinkedEnvironmentEditor';
-import { SectionProps } from './sectionProps';
+import type { SectionProps } from './sectionProps';
 
 export function EnvironmentsSection({ service, onChange }: SectionProps) {
-	const selectedEnvironment = useSelector(selectSelectedServiceEnvironments)[service.id];
+	const selectedEnvironment = useSelector(ActiveSelect.selectedServiceEnvironments)[service.id];
 	const [visibleEnvId, setVisibleEnvId] = useState<string | null>(selectedEnvironment ?? null);
 	const localEnvs = service.localEnvironments;
 	const envList = Object.values(localEnvs);
 	const visibleEnv = visibleEnvId == null ? null : service.localEnvironments[visibleEnvId];
 	const dispatch = useAppDispatch();
-	const selectedEnv = useSelector(selectSelectedEnvironment);
+	const selectedEnv = useSelector(ActiveSelect.selectedEnvironment);
 
 	const envPairs = useComputedRootEnvironment().toArray();
 
@@ -52,7 +52,7 @@ export function EnvironmentsSection({ service, onChange }: SectionProps) {
 
 	function toggleLinkedEnvMode() {
 		onChange({ linkedEnvMode: !service.linkedEnvMode });
-		dispatch(activeActions.selectEnvironment(selectedEnv));
+		dispatch(ActiveActions.selectEnvironment(selectedEnv));
 	}
 
 	function toggleSelectedEnv() {
@@ -60,7 +60,7 @@ export function EnvironmentsSection({ service, onChange }: SectionProps) {
 			return;
 		}
 		const serviceEnvId = selectedEnvironment === visibleEnvId ? undefined : visibleEnvId;
-		dispatch(activeActions.setSelectedServiceEnvironment({ serviceId: service.id, serviceEnvId }));
+		dispatch(ActiveActions.setSelectedServiceEnvironment({ serviceId: service.id, serviceEnvId }));
 	}
 
 	return (

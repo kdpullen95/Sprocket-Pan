@@ -1,9 +1,6 @@
-import { ActionCreatorWithPayload, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
-import { selectRequests, selectEndpoints, selectEnvironments, selectScripts, selectServices } from './active/selectors';
-import { activeActions } from './active/slice';
-import { globalActions } from './global/slice';
-import { selectWorkspaces } from './global/selectors';
-import {
+import { ItemFactory } from '@/managers/data/ItemFactory';
+import { ItemType } from '@/types/data/item';
+import type {
 	Endpoint,
 	EndpointRequest,
 	Environment,
@@ -12,36 +9,40 @@ import {
 	Service,
 	WorkspaceMetadata,
 } from '@/types/data/workspace';
-import { RootState } from './store';
-import { Create } from './types';
-import { ItemFactory } from '@/managers/data/ItemFactory';
-import { uiActions } from './ui/slice';
-import { ItemType } from '@/types/data/item';
 import { getDescendents } from '@/utils/getters';
+import type { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector } from '@reduxjs/toolkit';
+import { ActiveSelect } from './active/selectors';
+import { ActiveActions } from './active/slice';
+import { GlobalSelect } from './global/selectors';
+import { GlobalActions } from './global/slice';
+import type { RootState } from './store';
+import type { Create } from './types';
+import { UiActions } from './ui/slice';
 
-const selectRequest = createSelector([selectRequests, (_, id?: string) => id], (requests, id) =>
+const selectRequest = createSelector([ActiveSelect.requests, (_, id?: string) => id], (requests, id) =>
 	id == null ? null : requests[id],
 );
 
-const selectEndpoint = createSelector([selectEndpoints, (_, id?: string) => id], (endpoints, id) =>
+const selectEndpoint = createSelector([ActiveSelect.endpoints, (_, id?: string) => id], (endpoints, id) =>
 	id == null ? null : endpoints[id],
 );
 
 const selectEnvironment = createSelector(
-	[selectEnvironments, (_, id: string) => id],
+	[ActiveSelect.environments, (_, id: string) => id],
 	(environments, id) => environments[id],
 );
 
 const selectScript = createSelector(
-	[selectScripts, (_, scriptName: string) => scriptName],
+	[ActiveSelect.scripts, (_, scriptName: string) => scriptName],
 	(scripts, scriptName) => scripts[scriptName],
 );
 
-const selectService = createSelector([selectServices, (_, id?: string) => id], (services, id) =>
+const selectService = createSelector([ActiveSelect.services, (_, id?: string) => id], (services, id) =>
 	id == null ? null : services[id],
 );
 
-const selectWorkspace = createSelector([selectWorkspaces, (_, id?: string) => id], (workspaces, id) =>
+const selectWorkspace = createSelector([GlobalSelect.workspaces, (_, id?: string) => id], (workspaces, id) =>
 	id == null ? null : workspaces[id],
 );
 
@@ -50,7 +51,7 @@ const deletePrefix = 't/items/delete/';
 
 function constructDeleteThunk(action: ActionCreatorWithPayload<string>, type: ItemType) {
 	return createAsyncThunk<void, string, { state: RootState }>(deletePrefix + type, (id, thunk) => {
-		thunk.dispatch(uiActions.closeTabs([id, ...getDescendents(thunk.getState().active, id)]));
+		thunk.dispatch(UiActions.closeTabs([id, ...getDescendents(thunk.getState().active, id)]));
 		thunk.dispatch(action(id));
 	});
 }
@@ -63,7 +64,7 @@ const createRequest = createAsyncThunk<string, Create<EndpointRequest>, { state:
 	createPrefix + 'request',
 	(base, thunk) => {
 		const newRequest = ItemFactory.request(base);
-		thunk.dispatch(activeActions.insertRequest(newRequest));
+		thunk.dispatch(ActiveActions.insertRequest(newRequest));
 		return newRequest.id;
 	},
 );
@@ -73,7 +74,7 @@ const createEndpoint = createAsyncThunk<string, Create<Endpoint>, { state: RootS
 	({ requestIds, ...base } = {}, thunk) => {
 		const state = thunk.getState().active;
 		const newEndpoint = ItemFactory.endpoint(base);
-		thunk.dispatch(activeActions.insertEndpoint(newEndpoint));
+		thunk.dispatch(ActiveActions.insertEndpoint(newEndpoint));
 		// re: [''], we want at least one request made for a new endpoint automatically
 		// this could be optimized with batch
 		(requestIds ?? ['']).forEach(async (id) => {
@@ -81,7 +82,7 @@ const createEndpoint = createAsyncThunk<string, Create<Endpoint>, { state: RootS
 				.dispatch(createRequest({ ...state.requests[id], endpointId: newEndpoint.id }))
 				.unwrap();
 			if (newEndpoint.defaultRequest === id || id === '') {
-				thunk.dispatch(activeActions.updateEndpoint({ defaultRequest: newReqId, id: newEndpoint.id }));
+				thunk.dispatch(ActiveActions.updateEndpoint({ defaultRequest: newReqId, id: newEndpoint.id }));
 			}
 		});
 		return newEndpoint.id;
@@ -93,7 +94,7 @@ const createService = createAsyncThunk<string, Create<Service>, { state: RootSta
 	({ endpointIds, ...base } = {}, thunk) => {
 		const state = thunk.getState().active;
 		const newService = ItemFactory.service(base);
-		thunk.dispatch(activeActions.insertService(newService));
+		thunk.dispatch(ActiveActions.insertService(newService));
 		endpointIds?.forEach((id) => {
 			thunk.dispatch(createEndpoint({ ...state.endpoints[id], serviceId: newService.id }));
 		});
@@ -105,7 +106,7 @@ const createScript = createAsyncThunk<string, Create<Script>, { state: RootState
 	createPrefix + 'script',
 	(base, thunk) => {
 		const newScript = ItemFactory.script(base);
-		thunk.dispatch(activeActions.insertScript(newScript));
+		thunk.dispatch(ActiveActions.insertScript(newScript));
 		return newScript.id;
 	},
 );
@@ -114,7 +115,7 @@ const createEnvironment = createAsyncThunk<string, Create<RootEnvironment>, { st
 	createPrefix + 'environment',
 	(base, thunk) => {
 		const newEnv = ItemFactory.environment(base);
-		thunk.dispatch(activeActions.insertEnvironment(newEnv));
+		thunk.dispatch(ActiveActions.insertEnvironment(newEnv));
 		return newEnv.id;
 	},
 );
@@ -123,56 +124,56 @@ const createWorkspace = createAsyncThunk<string, Create<WorkspaceMetadata>, { st
 	createPrefix + 'workspace',
 	(base, thunk) => {
 		const newWorkspace = ItemFactory.workspace(base);
-		thunk.dispatch(globalActions.insertWorkspace(newWorkspace));
+		thunk.dispatch(GlobalActions.insertWorkspace(newWorkspace));
 		return newWorkspace.id;
 	},
 );
 
-export const itemActions = {
+export const ItemActions = {
 	endpoint: {
 		duplicate: (base: Endpoint) => createEndpoint({ ...base, name: base.name + ' (Copy)' }),
-		update: activeActions.updateEndpoint,
-		delete: constructDeleteThunk(activeActions.deleteEndpoint, ItemType.endpoint),
+		update: ActiveActions.updateEndpoint,
+		delete: constructDeleteThunk(ActiveActions.deleteEndpoint, ItemType.endpoint),
 		create: createEndpoint,
 		select: selectEndpoint,
 		property: 'endpoints',
 	},
 	service: {
 		duplicate: (base: Service) => createService({ ...base, name: base.name + ' (Copy)' }),
-		update: activeActions.updateService,
-		delete: constructDeleteThunk(activeActions.deleteService, ItemType.service),
+		update: ActiveActions.updateService,
+		delete: constructDeleteThunk(ActiveActions.deleteService, ItemType.service),
 		create: createService,
 		select: selectService,
 		property: 'services',
 	},
 	request: {
 		duplicate: (base: EndpointRequest) => createRequest({ ...base, name: base.name + ' (Copy)' }),
-		update: activeActions.updateRequest,
-		delete: constructDeleteThunk(activeActions.deleteRequest, ItemType.request),
+		update: ActiveActions.updateRequest,
+		delete: constructDeleteThunk(ActiveActions.deleteRequest, ItemType.request),
 		create: createRequest,
 		select: selectRequest,
 		property: 'requests',
 	},
 	script: {
 		duplicate: (base: Script) => createScript({ ...base, name: base.name + ' (Copy)' }),
-		update: activeActions.updateScript,
-		delete: constructDeleteThunk(activeActions.deleteScript, ItemType.script),
+		update: ActiveActions.updateScript,
+		delete: constructDeleteThunk(ActiveActions.deleteScript, ItemType.script),
 		create: createScript,
 		select: selectScript,
 		property: 'scripts',
 	},
 	environment: {
 		duplicate: (base: Environment) => createEnvironment({ ...base, name: base.name + ' (Copy)' }),
-		update: activeActions.updateEnvironment,
-		delete: constructDeleteThunk(activeActions.deleteEnvironment, ItemType.script),
+		update: ActiveActions.updateEnvironment,
+		delete: constructDeleteThunk(ActiveActions.deleteEnvironment, ItemType.script),
 		create: createEnvironment,
 		select: selectEnvironment,
 		property: 'environments',
 	},
 	workspace: {
 		duplicate: (base: WorkspaceMetadata) => createWorkspace({ ...base, name: base.name + ' (Copy)' }),
-		update: globalActions.updateWorkspace,
-		delete: constructDeleteThunk(globalActions.deleteWorkspace, ItemType.workspace),
+		update: GlobalActions.updateWorkspace,
+		delete: constructDeleteThunk(GlobalActions.deleteWorkspace, ItemType.workspace),
 		create: createWorkspace,
 		select: selectWorkspace,
 		property: 'workspaces',

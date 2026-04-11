@@ -1,10 +1,12 @@
 import { useEditorTheme } from '@/hooks/useEditorTheme';
 import { useMonacoOptionsSync } from '@/hooks/useMonacoSync';
 import { MonacoManager } from '@/managers/monaco/MonacoManager';
-import { Editor, EditorProps } from '@monaco-editor/react';
+import type { EditorProps } from '@monaco-editor/react';
+import { Editor } from '@monaco-editor/react';
 import { Box, Stack } from '@mui/joy';
-import { editor } from 'monaco-editor';
-import { ReactNode, useCallback, useEffect, useRef } from 'react';
+import type { editor } from 'monaco-editor';
+import type { ReactNode } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { EditorActions } from './EditorActions';
 
 export type SprocketEditorProps = Omit<EditorProps, 'onMount'> & {

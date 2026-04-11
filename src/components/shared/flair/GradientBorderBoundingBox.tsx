@@ -1,5 +1,5 @@
 import { Box } from '@mui/joy';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 interface GradientBorderBoundingBoxProps extends PropsWithChildren {
 	gradient?: string;

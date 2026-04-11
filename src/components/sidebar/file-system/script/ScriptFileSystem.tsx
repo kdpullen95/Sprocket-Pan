@@ -2,9 +2,9 @@ import { FluentCodeSvg } from '@/assets/icons/fluent/FluentCode';
 import { FluentLinkSvg } from '@/assets/icons/fluent/FluentLink';
 import { ContextMenuItems } from '@/components/shared/context/ContextMenuItems';
 import { useShowSync } from '@/hooks/useShowSync';
-import { itemActions } from '@/state/items';
+import { ItemActions } from '@/state/items';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
+import { UiActions } from '@/state/ui/slice';
 import { useSelector } from 'react-redux';
 import { EllipsesP } from '../components/EllipsesP';
 import { FileSystemLeaf } from '../tree/FileSystemLeaf';
@@ -14,7 +14,7 @@ interface ScriptFileSystemProps {
 }
 
 export function ScriptFileSystem({ scriptId }: ScriptFileSystemProps) {
-	const script = useSelector((state) => itemActions.script.select(state, scriptId));
+	const script = useSelector((state) => ItemActions.script.select(state, scriptId));
 	const dispatch = useAppDispatch();
 	const showSync = useShowSync(scriptId);
 	if (script == null) {
@@ -25,8 +25,8 @@ export function ScriptFileSystem({ scriptId }: ScriptFileSystemProps) {
 		<FileSystemLeaf
 			id={scriptId}
 			menuItems={[
-				ContextMenuItems.duplicate(() => dispatch(itemActions.script.duplicate(script))),
-				ContextMenuItems.delete(() => dispatch(uiActions.addToDeleteQueue(script.id))),
+				ContextMenuItems.duplicate(() => dispatch(ItemActions.script.duplicate(script))),
+				ContextMenuItems.delete(() => dispatch(UiActions.addToDeleteQueue(script.id))),
 			]}
 		>
 			<div style={{ flex: 0 }}>{showSync ? <FluentLinkSvg /> : <FluentCodeSvg />}</div>

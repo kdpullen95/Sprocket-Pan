@@ -1,5 +1,5 @@
-import { Settings } from '@/types/data/settings';
-import { WorkspaceSettings } from '@/types/data/workspace';
+import type { Settings } from '@/types/data/settings';
+import type { WorkspaceSettings } from '@/types/data/workspace';
 import { ExitToApp, NotInterested, ThumbUpAlt } from '@mui/icons-material';
 import { Button, Stack } from '@mui/joy';
 import { TipsSectionComponent } from './TipsSection';

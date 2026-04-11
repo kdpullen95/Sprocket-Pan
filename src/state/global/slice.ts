@@ -1,9 +1,10 @@
 import { DEFAULT_SETTINGS } from '@/constants/defaults';
 import { GlobalDataManager } from '@/managers/data/GlobalDataManager';
-import { GlobalData } from '@/types/data/global';
-import { WorkspaceMetadata } from '@/types/data/workspace';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { PayloadUpdate } from '../types';
+import type { GlobalData } from '@/types/data/global';
+import type { WorkspaceMetadata } from '@/types/data/workspace';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadUpdate } from '../types';
 
 export interface GlobalState extends GlobalData {
 	activeWorkspace?: string;
@@ -17,7 +18,7 @@ const initialState: GlobalState = {
 	lastSaved: 0,
 };
 
-export const globalSlice = createSlice({
+export const GlobalSlice = createSlice({
 	name: 'global',
 	initialState,
 	reducers: {
@@ -58,4 +59,4 @@ export const globalSlice = createSlice({
 	},
 });
 
-export const globalActions = globalSlice.actions;
+export const GlobalActions = GlobalSlice.actions;

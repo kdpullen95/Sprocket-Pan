@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, Switch } from '@mui/joy';
-import { SwitchProps } from '@mui/joy/Switch/SwitchProps';
+import type { SwitchProps } from '@mui/joy/Switch/SwitchProps';
 
 export interface SprocketSwitchProps extends Omit<SwitchProps, 'onChange' | 'endDecorator'> {
 	onChange: (val: boolean) => void;

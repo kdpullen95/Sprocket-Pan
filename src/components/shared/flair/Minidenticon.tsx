@@ -1,5 +1,5 @@
 import { Avatar } from '@mui/joy';
-import { AvatarProps } from '@mui/joy/Avatar/AvatarProps';
+import type { AvatarProps } from '@mui/joy/Avatar/AvatarProps';
 import { minidenticon } from 'minidenticons';
 import { useMemo } from 'react';
 

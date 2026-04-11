@@ -1,7 +1,7 @@
 import { tabTypeIcon } from '@/constants/components';
 import { useAppDispatch } from '@/state/store';
-import { selectActiveTab } from '@/state/ui/selectors';
-import { uiActions } from '@/state/ui/slice';
+import { UiSelect } from '@/state/ui/selectors';
+import { UiActions } from '@/state/ui/slice';
 import { extractActions } from '@/state/util';
 import { Close } from '@mui/icons-material';
 import { Box, IconButton, Stack, useTheme } from '@mui/joy';
@@ -31,7 +31,7 @@ interface TabProps {
 
 export function Tab({ id }: TabProps) {
 	const dispatch = useAppDispatch();
-	const selected = useSelector(selectActiveTab) === id;
+	const selected = useSelector((state) => UiSelect.isSelectedTab(state, id));
 	const theme = useTheme();
 	const { key, item } = useTabInfo(id);
 	return (
@@ -52,32 +52,32 @@ export function Tab({ id }: TabProps) {
 						{
 							text: 'Close',
 							items: [
-								{ text: 'Close This', action: () => dispatch(uiActions.closeTab(id)) },
-								{ text: 'Close Others', action: () => dispatch(uiActions.closeOtherTabs(id)) },
+								{ text: 'Close This', action: () => dispatch(UiActions.closeTab(id)) },
+								{ text: 'Close Others', action: () => dispatch(UiActions.closeOtherTabs(id)) },
 								PredefinedContextMenuItems.separator,
 								{
 									text: 'Close Left',
-									action: () => dispatch(uiActions.closeTabsDirectionally({ center: id, left: true })),
+									action: () => dispatch(UiActions.closeTabsDirectionally({ center: id, left: true })),
 								},
 								{
 									text: 'Close Right',
-									action: () => dispatch(uiActions.closeTabsDirectionally({ center: id })),
+									action: () => dispatch(UiActions.closeTabsDirectionally({ center: id })),
 								},
 								PredefinedContextMenuItems.separator,
-								{ text: 'Close All', action: () => dispatch(uiActions.clearTabs()) },
+								{ text: 'Close All', action: () => dispatch(UiActions.clearTabs()) },
 							],
 						},
 					]}
 				>
 					<Stack direction="row" flexWrap="nowrap" alignItems="center" justifyContent="space-between">
-						<Stack gap={1} flex={1} direction="row" onPointerDown={() => dispatch(uiActions.setSelectedTab(id))}>
+						<Stack gap={1} flex={1} direction="row" onPointerDown={() => dispatch(UiActions.setSelectedTab(id))}>
 							{tabTypeIcon[key]}
 							<EllipsisTypography>{item.name}</EllipsisTypography>
 						</Stack>
 						<IconButton
 							color="danger"
 							onClick={(e) => {
-								dispatch(uiActions.closeTab(id));
+								dispatch(UiActions.closeTab(id));
 								e.stopPropagation();
 							}}
 							sx={{ borderRadius: '25px' }}

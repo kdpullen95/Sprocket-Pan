@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/joy';
-import { SheetProps } from '@mui/joy/Sheet/SheetProps';
+import type { SheetProps } from '@mui/joy/Sheet/SheetProps';
 import { TrapezoidalSheet } from './TrapezoidalSheet';
 
 interface TrapezoidalHeaderProps extends SheetProps {

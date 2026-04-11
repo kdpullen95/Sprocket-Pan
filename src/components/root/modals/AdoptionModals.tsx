@@ -1,15 +1,15 @@
-import { useSelector } from 'react-redux';
-import { DialogTitle, Divider, Modal, ModalDialog } from '@mui/joy';
 import { useAppDispatch } from '@/state/store';
-import { uiActions } from '@/state/ui/slice';
-import { selectOrphans } from '@/state/ui/selectors';
+import { UiSelect } from '@/state/ui/selectors';
+import { UiActions } from '@/state/ui/slice';
+import { DialogTitle, Divider, Modal, ModalDialog } from '@mui/joy';
+import { useSelector } from 'react-redux';
 import { AdoptionOverlay } from '../overlays/AdoptionOverlay/AdoptionOverlay';
 
 export function AdoptionModals() {
-	const orphans = useSelector(selectOrphans);
+	const orphans = useSelector(UiSelect.orphans);
 	const dispatch = useAppDispatch();
 
-	const onClose = () => dispatch(uiActions.setOrphans(null));
+	const onClose = () => dispatch(UiActions.setOrphans(null));
 
 	return (
 		<Modal

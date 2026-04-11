@@ -3,7 +3,7 @@ import { log } from '@/utils/logging';
 import { Warning } from '@mui/icons-material';
 import { Alert, Sheet, Stack, Typography } from '@mui/joy';
 import { useEffect } from 'react';
-import { FallbackProps } from 'react-error-boundary';
+import type { FallbackProps } from 'react-error-boundary';
 
 export function ErrorFallback({ error }: FallbackProps) {
 	useEffect(() => {

@@ -3,7 +3,7 @@
 import { Command } from '@/managers/ShortcutManager';
 import { TipsSection } from '@/types/data/settings';
 import { Box, Chip, Stack, Typography } from '@mui/joy';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import { Keys } from '../shared/Keys';
 import { A } from '../shared/Link';
 

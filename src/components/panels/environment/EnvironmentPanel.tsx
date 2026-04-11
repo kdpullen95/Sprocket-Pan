@@ -3,22 +3,22 @@ import { EditableData, parseEditorJSON, toEditorJSON } from '@/components/shared
 import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
-import { selectEnvironments, selectSecrets, selectSelectedEnvironment } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 import { toKeyValuePairs } from '@/utils/application';
 import { AccountTree, RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 import { Box, IconButton, Stack, Typography } from '@mui/joy';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { PanelProps } from '../panels.interface';
+import type { PanelProps } from '../panels.interface';
 import { EditableHeader } from '../shared/EditableHeader';
 
 export function EnvironmentPanel({ id }: PanelProps) {
-	const selectedEnvironment = useSelector(selectSelectedEnvironment);
-	const environments = useSelector(selectEnvironments);
+	const selectedEnvironment = useSelector(ActiveSelect.selectedEnvironment);
+	const environments = useSelector(ActiveSelect.environments);
 	const environment = environments[id];
-	const secrets = useSelector(selectSecrets);
+	const secrets = useSelector(ActiveSelect.secrets);
 	const dispatch = useAppDispatch();
 
 	const envList = useMemo(
@@ -46,14 +46,14 @@ export function EnvironmentPanel({ id }: PanelProps) {
 				left={
 					<SprocketTooltip text={selectedEnvironment === id ? 'Unselect' : 'Select'}>
 						<IconButton
-							onClick={() => dispatch(activeActions.selectEnvironment(selectedEnvironment === id ? undefined : id))}
+							onClick={() => dispatch(ActiveActions.selectEnvironment(selectedEnvironment === id ? undefined : id))}
 						>
 							{selectedEnvironment === id ? <RadioButtonChecked /> : <RadioButtonUnchecked />}
 						</IconButton>
 					</SprocketTooltip>
 				}
 				value={environment.name}
-				onChange={(name) => dispatch(activeActions.updateEnvironment({ name, id }))}
+				onChange={(name) => dispatch(ActiveActions.updateEnvironment({ name, id }))}
 				right={<SyncButton id={id} />}
 			/>
 			<Box sx={{ height: '70vh', pb: '5vh' }}>
@@ -68,12 +68,12 @@ export function EnvironmentPanel({ id }: PanelProps) {
 								multiple
 								value={environment.parents ?? []}
 								options={envList.map((env) => ({ value: env.id, label: env.name }))}
-								onChange={(parents) => dispatch(activeActions.updateEnvironment({ parents, id }))}
+								onChange={(parents) => dispatch(ActiveActions.updateEnvironment({ parents, id }))}
 							/>
 						),
 					}}
 					initialValues={environment.pairs}
-					onChange={(pairs) => dispatch(activeActions.updateEnvironment({ pairs, id }))}
+					onChange={(pairs) => dispatch(ActiveActions.updateEnvironment({ pairs, id }))}
 					fullSize
 					envPairs={secrets}
 					viewParser={parseEditorText}

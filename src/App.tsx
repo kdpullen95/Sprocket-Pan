@@ -1,12 +1,12 @@
 import { CssBaseline, CssVarsProvider } from '@mui/joy';
 import { Provider, useSelector } from 'react-redux';
 import { Root } from './components/root/Root';
-import { selectTheme } from './state/active/selectors';
+import { ActiveSelect } from './state/active/selectors';
 import { store } from './state/store';
 import { createTheme } from './utils/style';
 
 function ReduxApp() {
-	const { colors, filters } = useSelector(selectTheme);
+	const { colors, filters } = useSelector(ActiveSelect.theme);
 	return (
 		<CssVarsProvider theme={createTheme(colors)} disableTransitionOnChange defaultMode="system">
 			<CssBaseline />

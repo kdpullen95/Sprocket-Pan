@@ -1,11 +1,11 @@
+import type { Settings } from '@/types/data/settings';
 import {
-	Settings,
 	BaseTheme,
 	ListStyling,
-	ScrollbarVisibility,
-	VariableNameDisplay,
-	TipsSection,
 	LogLevels,
+	ScrollbarVisibility,
+	TipsSection,
+	VariableNameDisplay,
 } from '@/types/data/settings';
 import { MS_IN_MINUTE } from './constants';
 

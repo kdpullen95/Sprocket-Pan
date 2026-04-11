@@ -1,6 +1,6 @@
-import { Script } from '@/types/data/workspace';
-import { useMonaco } from '@monaco-editor/react';
-import { editor } from 'monaco-editor';
+import type { Script } from '@/types/data/workspace';
+import type { useMonaco } from '@monaco-editor/react';
+import type { editor } from 'monaco-editor';
 import { getScriptsAsCode } from '../scripts/scripts';
 import { internalTypesRaw } from './internalTypes';
 

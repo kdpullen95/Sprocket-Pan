@@ -27,7 +27,7 @@ Instead, just make sure to add the new property at src\constants\defaults
 
 import { OrderedKeyValuePairs } from '@/classes/OrderedKeyValuePairs';
 import { ItemPrefix } from '@/types/data/item';
-import {
+import type {
 	Environment,
 	HistoricalEndpointResponse,
 	WorkspaceData,

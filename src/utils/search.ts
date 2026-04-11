@@ -1,4 +1,4 @@
-import { Endpoint, EndpointRequest, Environment, Script, Service, WorkspaceData } from '@/types/data/workspace';
+import type { Endpoint, EndpointRequest, Environment, Script, Service, WorkspaceData } from '@/types/data/workspace';
 import { log } from './logging';
 
 function cleanText(text?: string) {

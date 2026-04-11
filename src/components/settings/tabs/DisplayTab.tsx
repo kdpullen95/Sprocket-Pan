@@ -4,7 +4,7 @@ import { Stack } from '@mui/joy';
 import { SettingsGroup } from '../SettingsGroup';
 import { SettingsSelect, SettingsSlider, SettingsSwitch } from './SettingsFields';
 import { SettingsPaletteSelectGroup } from './SettingsPaletteSelectGroup';
-import { SettingsTabProps } from './types';
+import type { SettingsTabProps } from './types';
 
 export function DisplayTab({ overlay, settings, searchText, onChange, onUpdateGlobal }: SettingsTabProps) {
 	return (

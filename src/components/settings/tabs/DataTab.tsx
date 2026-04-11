@@ -7,7 +7,7 @@ import { FolderOpen, History, ManageHistory, Timer } from '@mui/icons-material';
 import { Button, Stack, Typography } from '@mui/joy';
 import { appLogDir } from '@tauri-apps/api/path';
 import { SettingsInput, SettingsSwitch } from './SettingsFields';
-import { SettingsTabProps } from './types';
+import type { SettingsTabProps } from './types';
 
 function toMSMinuteOrUndefined(num: unknown) {
 	const ret = toNumberOrUndefined(num);

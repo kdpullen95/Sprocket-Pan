@@ -1,7 +1,8 @@
-import { ToastProps } from '@/components/root/Toasts';
-import { OrphanData } from '@/managers/data/WorkspaceDataManager';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { SelectedResponse } from '../../components/root/overlays/ResponseDiffOverlay/ResponseSelectForm';
+import type { ToastProps } from '@/components/root/Toasts';
+import type { OrphanData } from '@/managers/data/WorkspaceDataManager';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { SelectedResponse } from '../../components/root/overlays/ResponseDiffOverlay/ResponseSelectForm';
 import { log } from '../../utils/logging';
 
 export type DiffQueueEntry = { original: SelectedResponse; modified: SelectedResponse };
@@ -38,7 +39,7 @@ function closeTab(state: UiState, closeId: string) {
 	}
 }
 
-export const uiSlice = createSlice({
+export const UiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
@@ -133,4 +134,4 @@ export const uiSlice = createSlice({
 	},
 });
 
-export const uiActions = uiSlice.actions;
+export const UiActions = UiSlice.actions;

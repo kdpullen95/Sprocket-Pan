@@ -3,22 +3,22 @@ import { TrapezoidalHeader } from '@/components/shared/flair/TrapezoidalHeader';
 import { EditableText } from '@/components/shared/input/EditableText';
 import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
 import { NetworkRequestManager } from '@/managers/NetworkRequestManager';
-import { selectFullRequestInfoById, selectSettings } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
-import { EndpointRequest } from '@/types/data/workspace';
+import type { EndpointRequest } from '@/types/data/workspace';
 import { Send } from '@mui/icons-material';
 import { Box, Button, CircularProgress, Stack } from '@mui/joy';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Group, Panel } from 'react-resizable-panels';
-import { PanelProps } from '../panels.interface';
+import type { PanelProps } from '../panels.interface';
 import { RequestEditTabs } from './RequestEditTabs';
 import { ResponsePanel } from './response/ResponsePanel';
 
 export function RequestPanel({ id }: PanelProps) {
-	const { request, endpoint, service } = useSelector((state) => selectFullRequestInfoById(state, id));
-	const settings = useSelector(selectSettings);
+	const { request, endpoint, service } = useSelector((state) => ActiveSelect.fullRequestInfoById(state, id));
+	const settings = useSelector(ActiveSelect.settings);
 	const [isLoading, setIsLoading] = useState(false);
 	const { guttered: scrollbarTheme } = useScrollbarTheme();
 
@@ -35,7 +35,7 @@ export function RequestPanel({ id }: PanelProps) {
 		setIsLoading(true);
 		const result = await NetworkRequestManager.makeRequestWithScripts(request.id);
 		dispatch(
-			activeActions.addResponseToHistory({
+			ActiveActions.addResponseToHistory({
 				requestId: request.id,
 				...result,
 				maxLength: settings.history.maxLength,
@@ -46,7 +46,7 @@ export function RequestPanel({ id }: PanelProps) {
 	}
 
 	function update(values: Partial<EndpointRequest>) {
-		dispatch(activeActions.updateRequest({ ...values, id: request.id }));
+		dispatch(ActiveActions.updateRequest({ ...values, id: request.id }));
 	}
 
 	return (

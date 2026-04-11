@@ -1,8 +1,8 @@
 import { SearchField } from '@/components/shared/input/SearchField';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { ItemFactory } from '@/managers/data/ItemFactory';
-import { selectEnvironments } from '@/state/active/selectors';
-import { activeActions } from '@/state/active/slice';
+import { ActiveSelect } from '@/state/active/selectors';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
 import { searchEnvironments } from '@/utils/search';
 import { AddBox } from '@mui/icons-material';
@@ -15,7 +15,7 @@ import { FileSystemTrunk } from '../tree/FileSystemTrunk';
 import { EnvironmentFileSystem } from './EnvironmentFileSystem';
 
 export function EnvironmentsFileSystem() {
-	const environments = useSelector(selectEnvironments);
+	const environments = useSelector(ActiveSelect.environments);
 	const [searchText, setSearchText] = useState('');
 	const dispatch = useAppDispatch();
 
@@ -34,7 +34,7 @@ export function EnvironmentsFileSystem() {
 						<Stack direction="row">
 							<OpenSecretsButton />
 							<SprocketTooltip text="Add New Environment">
-								<IconButton onClick={() => dispatch(activeActions.insertEnvironment(ItemFactory.environment()))}>
+								<IconButton onClick={() => dispatch(ActiveActions.insertEnvironment(ItemFactory.environment()))}>
 									<AddBox />
 								</IconButton>
 							</SprocketTooltip>

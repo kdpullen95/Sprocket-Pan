@@ -1,18 +1,19 @@
-import { RequestBody } from './RequestBody';
-import { PrePostScriptDisplay } from '../shared/PrePostScriptDisplay';
-import { RequestInfoSection, RequestInfoSectionProps } from './RequestInfoSection';
+import { EditableData } from '@/components/shared/input/monaco/EditableData';
 import { SprocketTabs } from '@/components/shared/SprocketTabs';
 import { useComputedRequestEnvironment } from '@/hooks/useComputedEnvironment';
-import { activeActions } from '@/state/active/slice';
+import { ActiveActions } from '@/state/active/slice';
 import { useAppDispatch } from '@/state/store';
-import { EndpointRequest } from '@/types/data/workspace';
-import { EditableData } from '@/components/shared/input/monaco/EditableData';
+import type { EndpointRequest } from '@/types/data/workspace';
+import { PrePostScriptDisplay } from '../shared/PrePostScriptDisplay';
+import { RequestBody } from './RequestBody';
+import type { RequestInfoSectionProps } from './RequestInfoSection';
+import { RequestInfoSection } from './RequestInfoSection';
 
 export function RequestEditTabs({ request }: RequestInfoSectionProps) {
 	const envPairs = useComputedRequestEnvironment(request.id).toArray();
 	const dispatch = useAppDispatch();
 	function update(values: Partial<EndpointRequest>) {
-		dispatch(activeActions.updateRequest({ ...values, id: request.id }));
+		dispatch(ActiveActions.updateRequest({ ...values, id: request.id }));
 	}
 
 	return (
