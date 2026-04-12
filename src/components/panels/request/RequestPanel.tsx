@@ -51,7 +51,7 @@ export function RequestPanel({ id }: PanelProps) {
 
 	return (
 		<Group orientation="horizontal">
-			<Panel defaultSize={50} minSize={33}>
+			<Panel defaultSize="50%" minSize="33%">
 				<Box height="100%" sx={{ overflow: 'auto', ...scrollbarTheme }}>
 					<TrapezoidalHeader>Request</TrapezoidalHeader>
 					<Stack gap={1} p={2} minWidth="400px">
@@ -71,7 +71,7 @@ export function RequestPanel({ id }: PanelProps) {
 				</Box>
 			</Panel>
 			<SprocketResizeHandle sx={{ my: 7 }} />
-			<Panel defaultSize={50} minSize={33}>
+			<Panel defaultSize="50%" minSize="33%">
 				<Box height="100%" sx={{ overflowY: 'auto', ...scrollbarTheme }}>
 					<TrapezoidalHeader reverse>Response</TrapezoidalHeader>
 					<Stack gap={1} p={2} minWidth="400px">

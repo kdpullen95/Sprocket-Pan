@@ -8,13 +8,15 @@ import { SidebarTabs } from '../sidebar/types';
 import { VerticalMenu } from '../sidebar/VerticalMenu';
 import { useAutosave } from './hooks/useAutosave';
 
-const MIN_SIDEBAR_WIDTH = 5;
+const MIN_SIDEBAR_WIDTH = 10;
 
 export function Workspace() {
 	const [tab, setTab] = useState<SidebarTabs>(SidebarTabs.Workspaces);
-	const theme = useTheme();
 	const [isExpanded, setIsExpanded] = useState(false);
 	const ref = usePanelRef();
+	const theme = useTheme();
+	useAutosave();
+
 	const setPanelTab = (newTab: SidebarTabs) => {
 		if (ref.current?.isCollapsed()) {
 			ref.current?.expand();
@@ -23,7 +25,7 @@ export function Workspace() {
 		}
 		setTab(newTab);
 	};
-	useAutosave();
+
 	return (
 		<Stack
 			direction="row"
@@ -41,8 +43,8 @@ export function Workspace() {
 			</Box>
 			<Group orientation="horizontal">
 				<Panel
-					defaultSize={25}
-					minSize={10}
+					defaultSize="25%"
+					minSize="250px"
 					panelRef={ref}
 					collapsible
 					onResize={(size) => setIsExpanded(size.inPixels >= MIN_SIDEBAR_WIDTH)}
@@ -50,7 +52,7 @@ export function Workspace() {
 					<SideDrawer tab={tab} />
 				</Panel>
 				<SprocketResizeHandle />
-				<Panel defaultSize={75} minSize={50}>
+				<Panel defaultSize="75%" minSize="50%">
 					<TabHeader />
 				</Panel>
 			</Group>

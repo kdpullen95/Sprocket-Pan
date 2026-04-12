@@ -85,7 +85,7 @@ export function ScriptPanel({ id }: PanelProps) {
 				right={<SyncButton id={id} />}
 			/>
 			<Group orientation="vertical" style={{ height: 'calc(100vh - 140px)' }}>
-				<Panel defaultSize={66} minSize={20}>
+				<Panel defaultSize="66%" minSize="20%">
 					<SprocketEditor
 						ActionBarItems={
 							<ScriptActions
@@ -108,7 +108,7 @@ export function ScriptPanel({ id }: PanelProps) {
 					/>
 				</Panel>
 				<SprocketResizeHandle horizontal />
-				<Panel defaultSize={33} minSize={10}>
+				<Panel defaultSize="33%" minSize="10%">
 					<SprocketEditor
 						ActionBarItems={<Typography level="h4">Return Variable Output</Typography>}
 						value={scriptOutput}

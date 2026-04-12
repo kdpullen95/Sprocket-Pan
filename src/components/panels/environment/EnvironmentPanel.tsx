@@ -1,6 +1,7 @@
 import { SyncButton } from '@/components/shared/buttons/SyncButton';
 import { EditableData, parseEditorJSON, toEditorJSON } from '@/components/shared/input/monaco/EditableData';
 import { SprocketSelect } from '@/components/shared/input/SprocketSelect';
+import { SprocketTabs } from '@/components/shared/SprocketTabs';
 import { SprocketTooltip } from '@/components/shared/SprocketTooltip';
 import { EnvironmentContextResolver } from '@/managers/EnvironmentContextResolver';
 import { ActiveSelect } from '@/state/active/selectors';
@@ -41,7 +42,7 @@ export function EnvironmentPanel({ id }: PanelProps) {
 	}
 
 	return (
-		<Stack gap={2} p={2}>
+		<Stack gap={2} p={1}>
 			<EditableHeader
 				left={
 					<SprocketTooltip text={selectedEnvironment === id ? 'Unselect' : 'Select'}>
@@ -56,29 +57,40 @@ export function EnvironmentPanel({ id }: PanelProps) {
 				onChange={(name) => dispatch(ActiveActions.updateEnvironment({ name, id }))}
 				right={<SyncButton id={id} />}
 			/>
-			<Box sx={{ height: '70vh', pb: '5vh' }}>
-				<EditableData
-					actions={{
-						start: (
-							<SprocketSelect
-								tooltip="Parent Environments"
-								startDecorator={<AccountTree />}
-								sx={{ minWidth: '250px' }}
-								placeholder="None"
-								multiple
-								value={environment.parents ?? []}
-								options={envList.map((env) => ({ value: env.id, label: env.name }))}
-								onChange={(parents) => dispatch(ActiveActions.updateEnvironment({ parents, id }))}
-							/>
+			<SprocketTabs
+				sx={{ flex: 1 }}
+				tabs={[
+					{
+						title: 'Editor',
+						content: (
+							<Box sx={{ height: 'calc(100vh - 250px)' }}>
+								<EditableData
+									actions={{
+										start: (
+											<SprocketSelect
+												tooltip="Parent Environments"
+												startDecorator={<AccountTree />}
+												sx={{ minWidth: '250px' }}
+												placeholder="None"
+												multiple
+												value={environment.parents ?? []}
+												options={envList.map((env) => ({ value: env.id, label: env.name }))}
+												onChange={(parents) => dispatch(ActiveActions.updateEnvironment({ parents, id }))}
+											/>
+										),
+									}}
+									initialValues={environment.pairs}
+									onChange={(pairs) => dispatch(ActiveActions.updateEnvironment({ pairs, id }))}
+									fullSize
+									envPairs={secrets}
+									viewParser={parseEditorText}
+								/>
+							</Box>
 						),
-					}}
-					initialValues={environment.pairs}
-					onChange={(pairs) => dispatch(ActiveActions.updateEnvironment({ pairs, id }))}
-					fullSize
-					envPairs={secrets}
-					viewParser={parseEditorText}
-				/>
-			</Box>
+					},
+					{ title: 'Settings', content: <div>settings</div> },
+				]}
+			/>
 		</Stack>
 	);
 }

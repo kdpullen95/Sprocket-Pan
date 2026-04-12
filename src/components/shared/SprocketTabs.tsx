@@ -1,9 +1,7 @@
-import { useScrollbarTheme } from '@/hooks/useScrollbarTheme';
-import { useSingleAxisScroll } from '@/hooks/useSingleAxisScroll';
-import { Tab, TabList, TabPanel, Tabs } from '@mui/joy';
-import { useTheme } from '@mui/joy/styles';
+import { Box, Stack } from '@mui/joy';
 import type { SxProps } from '@mui/joy/styles/types';
 import { useState } from 'react';
+import { ButtonTabs } from './ButtonTabs';
 
 interface SprocketTab {
 	content: React.ReactNode;
@@ -16,40 +14,15 @@ interface SprocketTabsProps {
 }
 
 export function SprocketTabs({ tabs, sx }: SprocketTabsProps) {
-	const [tab, setTab] = useState(0);
-	const { minimal: scrollbarTheme } = useScrollbarTheme();
-	const theme = useTheme();
-	const ref = useSingleAxisScroll();
+	const [tab, setTab] = useState(tabs.at(0)?.title);
 	return (
-		<Tabs
-			aria-label="tabs"
-			size="lg"
-			value={tab}
-			onChange={(_event, newValue) => setTab((newValue ?? 0) as number)}
-			sx={{ maxWidth: '100%', ...sx }}
-		>
-			<TabList
-				ref={ref}
-				color="primary"
-				sx={{
-					borderTop: '1px solid ' + theme.palette.background.level1,
-					overflowX: 'auto',
-					overflowY: 'hidden',
-					maxWidth: '100%',
-					...scrollbarTheme,
-				}}
-			>
-				{tabs.map(({ title }, index) => (
-					<Tab sx={{ minWidth: 'fit-content' }} color={index === tab ? 'primary' : 'neutral'} value={index} key={index}>
-						{title}
-					</Tab>
-				))}
-			</TabList>
-			{tabs.map((tab, index) => (
-				<TabPanel key={index} value={index}>
-					{tab.content}
-				</TabPanel>
+		<Stack sx={sx} gap={1} maxWidth="100%">
+			<ButtonTabs tabs={tabs} onChange={(index) => setTab(tabs[index].title)} />
+			{tabs.map(({ title, content }) => (
+				<Box sx={{ display: title === tab ? 'block' : 'none' }} key={title}>
+					{content}
+				</Box>
 			))}
-		</Tabs>
+		</Stack>
 	);
 }

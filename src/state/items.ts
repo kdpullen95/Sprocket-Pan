@@ -10,6 +10,7 @@ import type {
 	WorkspaceMetadata,
 } from '@/types/data/workspace';
 import { getDescendents } from '@/utils/getters';
+import { sleep } from '@/utils/misc';
 import type { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSelector } from '@reduxjs/toolkit';
 import { ActiveSelect } from './active/selectors';
@@ -50,8 +51,10 @@ const selectWorkspace = createSelector([GlobalSelect.workspaces, (_, id?: string
 const deletePrefix = 't/items/delete/';
 
 function constructDeleteThunk(action: ActionCreatorWithPayload<string>, type: ItemType) {
-	return createAsyncThunk<void, string, { state: RootState }>(deletePrefix + type, (id, thunk) => {
+	return createAsyncThunk<void, string, { state: RootState }>(deletePrefix + type, async (id, thunk) => {
 		thunk.dispatch(UiActions.closeTabs([id, ...getDescendents(thunk.getState().active, id)]));
+		// TODO: this sucks, is there any way to actually flush state and not batch these?? and still use redux and modern react???
+		await sleep(50);
 		thunk.dispatch(action(id));
 	});
 }
@@ -165,7 +168,7 @@ export const ItemActions = {
 	environment: {
 		duplicate: (base: Environment) => createEnvironment({ ...base, name: base.name + ' (Copy)' }),
 		update: ActiveActions.updateEnvironment,
-		delete: constructDeleteThunk(ActiveActions.deleteEnvironment, ItemType.script),
+		delete: constructDeleteThunk(ActiveActions.deleteEnvironment, ItemType.environment),
 		create: createEnvironment,
 		select: selectEnvironment,
 		property: 'environments',
